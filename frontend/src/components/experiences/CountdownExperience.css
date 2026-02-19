@@ -9,6 +9,10 @@
 .time-label { margin-top: .2rem; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: #64748b; }
 .time-separator { display: none; }
 .countdown-hint { color: #64748b; text-align: center; }
+.energy-row{display:flex;align-items:center;gap:.5rem}
+.energy-button{background:#fff;border:1px solid rgba(148,163,184,.4);border-radius:10px;padding:.4rem .6rem;font-weight:700;font-size:.78rem;white-space:nowrap}
+.energy-track{flex:1;height:10px;background:#e2e8f0;border-radius:999px;overflow:hidden}
+.energy-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);transition:width .2s ease}
 .countdown-ended, .countdown-message { text-align: center; }
 .end-title { font-size: 1.7rem; }
 .end-message { font-size: 1.2rem; font-weight: 800; }

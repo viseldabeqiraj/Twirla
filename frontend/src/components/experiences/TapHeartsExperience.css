@@ -1,4 +1,5 @@
 .hearts-container { width: 100%; min-height: 340px; }
+.hearts-timer{display:inline-block;margin-bottom:.45rem;padding:.25rem .55rem;border-radius:999px;background:#fee2e2;color:#b91c1c;font-size:.76rem;font-weight:800}
 .hearts-progress { margin-bottom: .85rem; }
 .progress-bar { height: 12px; border-radius: 999px; background: rgba(148,163,184,.25); overflow: hidden; }
 .progress-fill { height: 100%; border-radius: inherit; transition: width .22s ease; }

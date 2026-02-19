@@ -15,6 +15,8 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const [isRevealed, setIsRevealed] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
   const [revealedPercent, setRevealedPercent] = useState(0);
+  const [secondsLeft, setSecondsLeft] = useState(10);
+  const [failed, setFailed] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isScratchingRef = useRef(false);
 
@@ -25,6 +27,20 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
   //   ? { canPlay: true, lastPlayTime: null, hoursRemaining: null }
   //   : canUserPlay(shopId, playCooldownHours);
   const playStatus = { canPlay: true, hoursRemaining: null as number | null };
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSecondsLeft((s) => {
+        if (isRevealed || failed) return s;
+        if (s <= 1) {
+          setFailed(true);
+          return 0;
+        }
+        return s - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [isRevealed, failed]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -87,7 +103,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
     const canvas = canvasRef.current;
     // Allow scratching even if already revealed (for visual feedback)
     // But don't allow if user can't play (cooldown check)
-    if (!canvas || isRevealed) return;
+    if (!canvas || isRevealed || failed) return;
     
     // TEMP (testing): cooldown check removed.
     // const currentPlayStatus = canUserPlay(shopId, playCooldownHours);
@@ -172,6 +188,16 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
     );
   }
 
+  if (failed) {
+    return (
+      <div className="scratch-message">
+        <h3>Too slow! 😬</h3>
+        <p>You revealed {revealedPercent}%. Reach 60% in 10 seconds.</p>
+        <button className="retry-scratch" onClick={() => { setFailed(false); setSecondsLeft(10); setRevealedPercent(0); const c = canvasRef.current; const ctx = c?.getContext('2d'); if (c && ctx) { const r = c.getBoundingClientRect(); ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle = scratch.overlayColor; ctx.fillRect(0,0,r.width,r.height); ctx.fillStyle = '#fff'; ctx.font = 'bold 20px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(t('scratch.cardLabel'), r.width/2, r.height/2);} }}>Retry</button>
+      </div>
+    );
+  }
+
   if (isRevealed) {
     return (
       <div className="scratch-reveal" style={{ position: 'relative' }}>
@@ -211,7 +237,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
       </div>
       <p className="scratch-hint">
         <span className="scratch-icon">✋</span>
-        {t('scratch.hint')} · {revealedPercent}%
+        {t('scratch.hint')} · {revealedPercent}% · ⏱️ {secondsLeft}s
       </p>
     </div>
   );

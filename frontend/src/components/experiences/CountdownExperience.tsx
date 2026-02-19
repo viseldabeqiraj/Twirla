@@ -24,6 +24,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
   const [wasAlreadyEnded, setWasAlreadyEnded] = useState(false);
   const [initialDurationMs, setInitialDurationMs] = useState<number | null>(null);
+  const [energy, setEnergy] = useState(0);
 
   if (!countdown) return null;
 
@@ -149,8 +150,12 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
           <div className="time-label">{t('countdown.seconds')}</div>
         </div>
       </div>
+      <div className="energy-row">
+        <button className="energy-button" onClick={() => setEnergy((e) => Math.min(100, e + 12))}>Charge hype ⚡</button>
+        <div className="energy-track"><div className="energy-fill" style={{ width: `${energy}%` }} /></div>
+      </div>
       {countdown.showCtaBeforeEnd && (
-        <p className="countdown-hint">{t('countdown.dontMissOut')}</p>
+        <p className="countdown-hint">{t('countdown.dontMissOut')} {energy >= 100 ? ' · Hype maxed!' : ''}</p>
       )}
     </div>
   );

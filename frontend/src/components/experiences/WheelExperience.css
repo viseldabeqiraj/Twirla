@@ -7,6 +7,11 @@
 
 .wheel-prize-strip { display: flex; gap: .35rem; flex-wrap: wrap; justify-content: center; }
 .wheel-prize-chip { font-size: .7rem; background: rgba(255,255,255,.8); border: 1px solid rgba(148,163,184,.4); padding: .22rem .5rem; border-radius: 999px; }
+.skill-meter-wrap{width:100%;max-width:260px;text-align:center}
+.skill-meter-label{font-size:.78rem;color:#64748b;margin-bottom:.25rem}
+.skill-meter{position:relative;height:8px;background:#e2e8f0;border-radius:999px}
+.skill-meter span{position:absolute;top:-4px;width:16px;height:16px;background:#ec4899;border-radius:999px;transform:translateX(-50%);box-shadow:0 2px 8px rgba(236,72,153,.45)}
+.lock-skill-button{margin-top:.45rem;background:#fff;border:1px solid rgba(148,163,184,.45);padding:.35rem .7rem;border-radius:10px;font-size:.76rem;font-weight:700}
 
 .spin-button { background: #0f172a; color: #fff; border-radius: 10px; padding: .75rem 1rem; font-weight: 800; min-width: 180px; }
 .spin-button:hover:not(:disabled) { opacity: .92; }

@@ -7,5 +7,6 @@
 .scratch-hint { color: #64748b; font-size: .83rem; }
 .scratch-icon { margin-right: .3rem; }
 .scratch-reveal, .scratch-message { text-align: center; }
+.retry-scratch{margin-top:.5rem;background:#fff;border:1px solid rgba(148,163,184,.45);padding:.4rem .7rem;border-radius:10px;font-weight:700}
 .scratch-reveal .reveal-title { font-size: 1.65rem; margin-bottom: .45rem; }
 .scratch-reveal .reveal-content { border-radius: 12px; padding: .95rem; background: linear-gradient(120deg, var(--primary-color), var(--secondary-color)); color: #fff; }
