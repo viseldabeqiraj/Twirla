@@ -1,7 +1,7 @@
 export interface ShopConfig {
   shopId: string;
-  playCooldownHours?: number; // Hours between plays (default 24)
-  mode?: ExperienceMode; // Optional, determined by URL
+  playCooldownHours?: number;
+  mode?: ExperienceMode;
   branding: BrandingConfig;
   text: TextConfig;
   cta: CtaConfig;
@@ -12,10 +12,18 @@ export interface ShopConfig {
 }
 
 export enum ExperienceMode {
-  Wheel = "Wheel",
-  TapHearts = "TapHearts",
-  Scratch = "Scratch",
-  Countdown = "Countdown"
+  Wheel = 'Wheel',
+  TapHearts = 'TapHearts',
+  Scratch = 'Scratch',
+  Countdown = 'Countdown',
+}
+
+export interface ThemeConfig {
+  backgroundPattern?: 'gradient' | 'aurora' | 'mesh' | 'dark';
+  surfaceStyle?: 'glass' | 'solid' | 'neon';
+  fontFamily?: string;
+  borderRadius?: number;
+  buttonRadius?: number;
 }
 
 export interface BrandingConfig {
@@ -23,6 +31,8 @@ export interface BrandingConfig {
   secondaryColor: string;
   logoUrl?: string;
   brandName?: string;
+  accentColor?: string;
+  theme?: ThemeConfig;
 }
 
 export interface TextConfig {
@@ -47,7 +57,7 @@ export interface PrizeConfig {
   weight: number;
   iconUrl?: string;
   description?: string;
-  isWinning?: boolean; // null/undefined = auto-detect, true = winning, false = losing
+  isWinning?: boolean;
 }
 
 export interface TapHeartsConfig {
@@ -65,8 +75,7 @@ export interface ScratchConfig {
 }
 
 export interface CountdownConfig {
-  endAt: string; // ISO 8601 string
+  endAt: string;
   endMessage: string;
   showCtaBeforeEnd: boolean;
 }
-

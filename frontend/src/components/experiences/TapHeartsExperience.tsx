@@ -22,6 +22,7 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
   const [hearts, setHearts] = useState<Heart[]>([]);
   const [tapCount, setTapCount] = useState(0);
   const [showReveal, setShowReveal] = useState(false);
+  const [lastTapBurst, setLastTapBurst] = useState<{ x: number; y: number } | null>(null);
 
   if (!tapHearts) return null;
 
@@ -47,7 +48,13 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
 
   const handleHeartTap = (heartId: number) => {
     if (!playStatus.canPlay) return;
-    
+
+    const tappedHeart = hearts.find((h) => h.id === heartId);
+    if (tappedHeart) {
+      setLastTapBurst({ x: tappedHeart.x, y: tappedHeart.y });
+      setTimeout(() => setLastTapBurst(null), 220);
+    }
+
     setHearts(prev => prev.map(heart => 
       heart.id === heartId && !heart.tapped
         ? { ...heart, tapped: true }
@@ -117,10 +124,14 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
             count: tapCount, 
             total: tapHearts.heartsToTap 
           })}
+          <span className="progress-percent"> · {Math.round((tapCount / tapHearts.heartsToTap) * 100)}%</span>
         </p>
       </div>
       
       <div className="hearts-area">
+        {lastTapBurst && (
+          <span className="tap-burst" style={{ left: `${lastTapBurst.x}%`, top: `${lastTapBurst.y}%` }}>+1</span>
+        )}
         {hearts.map(heart => (
           <button
             key={heart.id}

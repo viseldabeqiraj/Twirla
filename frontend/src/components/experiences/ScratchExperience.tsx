@@ -14,6 +14,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const { t } = useTranslation();
   const [isRevealed, setIsRevealed] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
+  const [revealedPercent, setRevealedPercent] = useState(0);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isScratchingRef = useRef(false);
 
@@ -119,6 +120,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
     }
 
     const revealed = (transparentPixels / (pixels.length / 4)) * 100;
+    setRevealedPercent(Math.min(100, Math.round(revealed)));
 
     // If 60% revealed (most of the panel), show full reveal
     if (revealed >= 60 && !isRevealed && !hasRecordedPlay) {
@@ -209,7 +211,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
       </div>
       <p className="scratch-hint">
         <span className="scratch-icon">✋</span>
-        {t('scratch.hint')}
+        {t('scratch.hint')} · {revealedPercent}%
       </p>
     </div>
   );

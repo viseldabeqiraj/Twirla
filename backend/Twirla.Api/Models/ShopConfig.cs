@@ -66,6 +66,17 @@ public class BrandingConfig
     public string SecondaryColor { get; set; } = "#FFFFFF";
     public string? LogoUrl { get; set; }
     public string? BrandName { get; set; }
+    public string? AccentColor { get; set; }
+    public ThemeConfig? Theme { get; set; }
+}
+
+public class ThemeConfig
+{
+    public string? BackgroundPattern { get; set; }
+    public string? SurfaceStyle { get; set; }
+    public string? FontFamily { get; set; }
+    public int? BorderRadius { get; set; }
+    public int? ButtonRadius { get; set; }
 }
 
 public class TextConfig

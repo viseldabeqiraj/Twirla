@@ -1,111 +1,14 @@
-.countdown-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.5rem;
-}
+.countdown-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.countdown-progress-track { width: 100%; height: 10px; background: rgba(148,163,184,.25); border-radius: 999px; overflow: hidden; }
+.countdown-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transition: width .35s ease; }
 
-.countdown-timer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
+.countdown-timer { display: grid; grid-template-columns: repeat(4, minmax(58px, 1fr)); gap: .55rem; width: 100%; }
+.time-unit { background: rgba(255,255,255,.75); border: 1px solid rgba(148,163,184,.25); border-radius: 12px; padding: .65rem .25rem; text-align: center; }
+.time-value { font-size: 1.65rem; font-weight: 800; line-height: 1; color: var(--primary-color); font-variant-numeric: tabular-nums; }
+.time-label { margin-top: .25rem; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: #64748b; }
+.time-separator { display: none; }
 
-.time-unit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 70px;
-}
-
-.time-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  line-height: 1;
-  margin-bottom: 0.5rem;
-  font-variant-numeric: tabular-nums;
-}
-
-.time-label {
-  font-size: 0.85rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-}
-
-.time-separator {
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--primary-color);
-  margin: 0 0.25rem;
-  line-height: 1;
-  padding-bottom: 1.5rem;
-}
-
-.countdown-hint {
-  font-size: 1rem;
-  color: #666;
-  font-style: italic;
-}
-
-.countdown-ended {
-  text-align: center;
-  padding: 2rem 0;
-}
-
-.countdown-message {
-  text-align: center;
-  padding: 2rem;
-  color: #666;
-  font-size: 1.1rem;
-}
-
-.cooldown-message {
-  margin-top: 0.5rem;
-  font-size: 0.95rem;
-  color: #888;
-}
-
-.end-title {
-  font-size: 2rem;
-  color: var(--primary-color);
-  margin-bottom: 1rem;
-  font-weight: 700;
-}
-
-.end-message {
-  font-size: 1.5rem;
-  color: #333;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-
-.end-subtitle {
-  font-size: 1.1rem;
-  color: #666;
-}
-
-@media (max-width: 480px) {
-  .time-value {
-    font-size: 2rem;
-  }
-
-  .time-label {
-    font-size: 0.75rem;
-  }
-
-  .time-separator {
-    font-size: 1.5rem;
-    padding-bottom: 1.2rem;
-  }
-
-  .time-unit {
-    min-width: 60px;
-  }
-}
-
+.countdown-ended, .countdown-message { text-align: center; padding: 1rem 0; }
+.end-title { font-size: 1.8rem; color: var(--primary-color); }
+.end-message { font-size: 1.25rem; font-weight: 700; }
+.end-subtitle, .cooldown-message, .countdown-hint { color: #64748b; }

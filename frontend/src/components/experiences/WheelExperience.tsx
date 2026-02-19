@@ -268,6 +268,11 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
         })}
         </div>
       </div>
+      <div className="wheel-prize-strip">
+        {wheel.prizes.map((prize, idx) => (
+          <span key={idx} className="wheel-prize-chip">{prize.label}</span>
+        ))}
+      </div>
       <div className="spin-button-container">
         <button 
           className={`spin-button ${buttonShake ? 'shake' : ''}`}

@@ -23,6 +23,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
   const [hasEnded, setHasEnded] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
   const [wasAlreadyEnded, setWasAlreadyEnded] = useState(false);
+  const [initialDurationMs, setInitialDurationMs] = useState<number | null>(null);
 
   if (!countdown) return null;
 
@@ -36,12 +37,13 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
     const initialDiff = endDate.getTime() - now.getTime();
     
     if (initialDiff <= 0) {
-      // Countdown already ended - mark as ended but don't record play
       setHasEnded(true);
       setWasAlreadyEnded(true);
       setTimeRemaining(null);
       return;
     }
+
+    setInitialDurationMs(initialDiff);
     
     const calculateTimeRemaining = (): TimeRemaining | null => {
       const endDate = new Date(countdown.endAt);
@@ -114,8 +116,16 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
     );
   }
 
+  const remainingMs = timeRemaining
+    ? (((timeRemaining.days * 24 + timeRemaining.hours) * 60 + timeRemaining.minutes) * 60 + timeRemaining.seconds) * 1000
+    : 0;
+  const progress = initialDurationMs ? Math.max(0, Math.min(100, ((initialDurationMs - remainingMs) / initialDurationMs) * 100)) : 0;
+
   return (
     <div className="countdown-container">
+      <div className="countdown-progress-track">
+        <div className="countdown-progress-fill" style={{ width: `${progress}%` }} />
+      </div>
       <div className="countdown-timer">
         <div className="time-unit">
           <div className="time-value">{timeRemaining.days}</div>
