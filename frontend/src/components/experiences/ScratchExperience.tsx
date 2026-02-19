@@ -3,6 +3,7 @@ import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
+import confetti from 'canvas-confetti';
 import './ScratchExperience.css';
 
 interface ScratchExperienceProps {
@@ -140,6 +141,16 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
 
     // If 60% revealed (most of the panel), show full reveal
     if (revealed >= 60 && !isRevealed && !hasRecordedPlay) {
+      try {
+        confetti({
+          particleCount: 140,
+          spread: 75,
+          startVelocity: 35,
+          gravity: 0.9,
+          origin: { x: 0.5, y: 0.35 },
+          colors: [config.branding.primaryColor, config.branding.secondaryColor, '#ffffff'],
+        });
+      } catch {}
       // Set revealed state first
       setIsRevealed(true);
       // Record play after a delay to ensure reveal UI is shown first
