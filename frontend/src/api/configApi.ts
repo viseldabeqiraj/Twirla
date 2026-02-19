@@ -36,7 +36,8 @@ export async function fetchShopConfig(shopId: string, mode?: string, language?: 
       throw new Error(`API request failed: ${response.status}`);
     }
 
-    return response.json();
+    const data = await response.json();
+    return data as ShopConfig;
   } catch {
     // Cloudflare static hosting fallback
     return loadFromStaticJson(shopId, mode);

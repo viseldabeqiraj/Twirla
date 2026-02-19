@@ -39,8 +39,16 @@ export default function ExperiencePage() {
     fetchShopConfig(finalShopId, mode, language)
       .then((config) => {
         console.log('Config loaded:', config);
-        // Set the mode on the config for the ExperienceHost
-        setConfig({ ...config, mode: mode as any });
+        const normalizeMode = (raw: string) => {
+          const m = raw.toLowerCase();
+          if (m === 'wheel') return 'Wheel';
+          if (m === 'taphearts' || m === 'tap-hearts') return 'TapHearts';
+          if (m === 'scratch') return 'Scratch';
+          if (m === 'countdown') return 'Countdown';
+          return raw;
+        };
+
+        setConfig({ ...config, mode: normalizeMode(mode) as any });
       })
       .catch((err) => {
         console.error('Error fetching config:', err);
