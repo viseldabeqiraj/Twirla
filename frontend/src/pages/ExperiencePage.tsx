@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ShopConfig } from '../types/ShopConfig';
+import { ExperienceMode, ShopConfig } from '../types/ShopConfig';
 import { fetchShopConfig } from '../api/configApi';
 import { useTranslation } from '../i18n/i18n';
 import ExperienceHost from '../components/ExperienceHost';
@@ -87,6 +87,13 @@ export default function ExperiencePage() {
     );
   }
 
+  const availableModes = [
+    config.wheel ? ExperienceMode.Wheel : null,
+    config.tapHearts ? ExperienceMode.TapHearts : null,
+    config.scratch ? ExperienceMode.Scratch : null,
+    config.countdown ? ExperienceMode.Countdown : null,
+  ].filter(Boolean) as ExperienceMode[];
+
   return (
     <div 
       style={{
@@ -98,6 +105,7 @@ export default function ExperiencePage() {
         currentMode={mode!} 
         shopName={shopName!} 
         uniqueId={uniqueId!}
+        availableModes={availableModes}
       />
       <LanguageSwitcher />
       <ExperienceHost config={config} />

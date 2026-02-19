@@ -9,29 +9,29 @@ interface ModeNavigationProps {
   availableModes?: ExperienceMode[];
 }
 
-const modeLabels: Record<string, string> = {
-  Wheel: 'Wheel',
-  TapHearts: 'Tap Hearts',
-  Scratch: 'Scratch',
-  Countdown: 'Countdown'
+const modeMeta: Record<ExperienceMode, { label: string; path: string; emoji: string }> = {
+  [ExperienceMode.Wheel]: { label: 'Wheel', path: 'wheel', emoji: '🎯' },
+  [ExperienceMode.TapHearts]: { label: 'Tap Hearts', path: 'taphearts', emoji: '💗' },
+  [ExperienceMode.Scratch]: { label: 'Scratch', path: 'scratch', emoji: '✨' },
+  [ExperienceMode.Countdown]: { label: 'Countdown', path: 'countdown', emoji: '⏳' },
 };
 
-export default function ModeNavigation({ 
-  currentMode, 
-  shopName, 
-  uniqueId,
-  availableModes
-}: ModeNavigationProps) {
-  const navigate = useNavigate();
-  const allModes: ExperienceMode[] = availableModes || [
-    ExperienceMode.Wheel,
-    ExperienceMode.TapHearts,
-    ExperienceMode.Scratch,
-    ExperienceMode.Countdown
-  ];
+const normalizeMode = (mode: string): ExperienceMode | null => {
+  const m = mode.toLowerCase();
+  if (m === 'wheel') return ExperienceMode.Wheel;
+  if (m === 'taphearts' || m === 'tap-hearts') return ExperienceMode.TapHearts;
+  if (m === 'scratch') return ExperienceMode.Scratch;
+  if (m === 'countdown') return ExperienceMode.Countdown;
+  return null;
+};
 
-  const handleModeChange = (mode: string) => {
-    navigate(`/${mode}/${shopName}/${uniqueId}`);
+export default function ModeNavigation({ currentMode, shopName, uniqueId, availableModes }: ModeNavigationProps) {
+  const navigate = useNavigate();
+  const currentNormalized = normalizeMode(currentMode);
+  const allModes: ExperienceMode[] = availableModes || [ExperienceMode.Wheel, ExperienceMode.TapHearts, ExperienceMode.Scratch, ExperienceMode.Countdown];
+
+  const handleModeChange = (mode: ExperienceMode) => {
+    navigate(`/${modeMeta[mode].path}/${shopName}/${uniqueId}`);
   };
 
   return (
@@ -39,12 +39,8 @@ export default function ModeNavigation({
       <div className="mode-nav-container">
         <div className="mode-nav-buttons">
           {allModes.map((mode) => (
-            <button
-              key={mode}
-              className={`mode-nav-button ${currentMode === mode ? 'active' : ''}`}
-              onClick={() => handleModeChange(mode)}
-            >
-              {modeLabels[mode] || mode}
+            <button key={mode} className={`mode-nav-button ${currentNormalized === mode ? 'active' : ''}`} onClick={() => handleModeChange(mode)}>
+              <span>{modeMeta[mode].emoji}</span> {modeMeta[mode].label}
             </button>
           ))}
         </div>
