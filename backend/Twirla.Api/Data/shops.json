@@ -1,0 +1,215 @@
+{
+  "shops": [
+    {
+      "shopId": "pinkster-a7f3b2c9d1e4",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#F23383",
+        "secondaryColor": "#F6C7CD",
+        "logoUrl": "/logos/pinkster.png",
+        "brandName": "Pinkster.al"
+      },
+      "text": {
+        "title": "Spin to Win!",
+        "subtitle": "Try your luck and win amazing prizes",
+        "ctaText": "DM us to claim your prize",
+        "resultTitle": "Congratulations!",
+        "resultSubtitle": "You've won a prize!",
+        "translations": {
+          "sq": {
+            "title": "Rrotullo për të Fituar!",
+            "subtitle": "Provo fatin dhe fiton çmime të mrekullueshme",
+            "ctaText": "Na shkruaj për të marrë çmimin",
+            "resultTitle": "Urime!",
+            "resultSubtitle": "Ke fituar një çmim!"
+          }
+        }
+      },
+      "cta": {
+        "url": "https://instagram.com/pinkster.al"
+      },
+      "wheel": {
+        "allowRepeatSpins": false,
+        "prizes": [
+          {
+            "label": "10% Off",
+            "weight": 30,
+            "iconUrl": null,
+            "description": "Get 10% off your next purchase",
+            "translations": {
+              "sq": {
+                "label": "10% Zbritje",
+                "description": "Merr 10% zbritje në blerjen tënde të ardhshme"
+              }
+            }
+          },
+          {
+            "label": "20% Off",
+            "weight": 20,
+            "description": "Get 20% off your next purchase",
+            "translations": {
+              "sq": {
+                "label": "20% Zbritje",
+                "description": "Merr 20% zbritje në blerjen tënde të ardhshme"
+              }
+            }
+          },
+          {
+            "label": "Free Shipping",
+            "weight": 25,
+            "description": "Free shipping on your order",
+            "translations": {
+              "sq": {
+                "label": "Transport Falas",
+                "description": "Transport falas për porosinë tënde"
+              }
+            }
+          },
+          {
+            "label": "Try Again",
+            "weight": 15,
+            "isWinning": false,
+            "description": "Better luck next time!",
+            "translations": {
+              "sq": {
+                "label": "Provo Përsëri",
+                "description": "Fat më të mirë herën tjetër!"
+              }
+            }
+          },
+          {
+            "label": "Free Gift",
+            "weight": 15,
+            "description": "Free gift with purchase",
+            "translations": {
+              "sq": {
+                "label": "Dhurate Falas",
+                "description": "Dhurate falas me blerjen"
+              }
+            }
+          },
+          {
+            "label": "No Prize",
+            "weight": 10,
+            "isWinning": false,
+            "description": "Better luck next time!",
+            "translations": {
+              "sq": {
+                "label": "Asnjë Çmim",
+                "description": "Fat më të mirë herën tjetër!"
+              }
+            }
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 10,
+        "heartColor": "#FF69B4",
+        "revealText": "You've unlocked a special discount!",
+        "revealSubtitle": "Use code PINK20 for 20% off",
+        "translations": {
+          "sq": {
+            "revealText": "Ke hapur një zbritje speciale!",
+            "revealSubtitle": "Përdor kodin PINK20 për 20% zbritje"
+          }
+        }
+      },
+      "scratch": {
+        "overlayColor": "#CCCCCC",
+        "overlayText": "Scratch here!",
+        "revealText": "You won 25% off!",
+        "revealSubtitle": "Use code PINK25 at checkout",
+        "translations": {
+          "sq": {
+            "overlayText": "Gërvisht këtu!",
+            "revealText": "Fitove 25% zbritje!",
+            "revealSubtitle": "Përdor kodin PINK25 në checkout"
+          }
+        }
+      },
+      "countdown": {
+        "endAt": "2024-12-31T23:59:59Z",
+        "endMessage": "The sale is now live! Shop now before it ends!",
+        "showCtaBeforeEnd": true,
+        "translations": {
+          "sq": {
+            "endMessage": "Shitja është tani aktive! Bli tani para se të përfundojë!"
+          }
+        }
+      }
+    },
+    {
+      "shopId": "fashionista-x8k2m5n9p3q",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#A837D7",
+        "secondaryColor": "#F8BBD0",
+        "logoUrl": "/logos/fashionista.png",
+        "brandName": "Fashionista"
+      },
+      "text": {
+        "title": "Tap the Hearts!",
+        "subtitle": "Tap 12 hearts to reveal your surprise",
+        "ctaText": "Shop Now",
+        "resultTitle": "You did it!",
+        "resultSubtitle": "Thanks for all the love!"
+      },
+      "cta": {
+        "url": "https://instagram.com/fashionista"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          {
+            "label": "15% Off",
+            "weight": 25,
+            "description": "15% off entire order"
+          },
+          {
+            "label": "25% Off",
+            "weight": 20,
+            "description": "25% off entire order"
+          },
+          {
+            "label": "Free Gift",
+            "weight": 15,
+            "description": "Free gift with purchase"
+          },
+          {
+            "label": "50% Off",
+            "weight": 5,
+            "description": "50% off one item"
+          },
+          {
+            "label": "Free Shipping",
+            "weight": 20,
+            "description": "Free shipping on your order"
+          },
+          {
+            "label": "Try Again",
+            "weight": 15,
+            "isWinning": false,
+            "description": "Better luck next time!"
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 12,
+        "heartColor": "#E91E63",
+        "revealText": "You've unlocked a special discount!",
+        "revealSubtitle": "Use code FASHION20 for 20% off"
+      },
+      "scratch": {
+        "overlayColor": "#424242",
+        "overlayText": "Scratch here!",
+        "revealText": "You won 30% off!",
+        "revealSubtitle": "Use code FASHION30 at checkout"
+      },
+      "countdown": {
+        "endAt": "2024-12-31T23:59:59Z",
+        "endMessage": "The sale is now live! Shop now before it ends!",
+        "showCtaBeforeEnd": true
+      }
+    }
+  ]
+}

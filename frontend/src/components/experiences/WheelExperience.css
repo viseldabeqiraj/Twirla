@@ -1,0 +1,522 @@
+.wheel-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
+}
+
+.wheel-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.15)) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+.wheel-pointer {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3)) drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+  transition: transform 0.1s ease;
+  pointer-events: none;
+  font-size: 34px;
+  line-height: 1;
+  color: var(--primary-color, #FF6B6B);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.wheel-wrapper:has(.wheel.stopped) .wheel-pointer {
+  animation: pointerBounce 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.3s;
+}
+
+@keyframes pointerBounce {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  25% {
+    transform: translateX(-50%) translateY(-15px) scale(1.2);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-5px) scale(1.1);
+  }
+  75% {
+    transform: translateX(-50%) translateY(-8px) scale(1.08);
+  }
+}
+
+.wheel {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  position: relative;
+  border: 6px solid #c0c0c0;
+  overflow: hidden;
+  transition: transform 0.1s ease-out;
+  background: transparent;
+  box-sizing: border-box;
+  transform-origin: center center;
+  /* Softer inner shadow for premium look */
+  box-shadow: 
+    inset 0 0 15px rgba(0, 0, 0, 0.08),
+    inset 0 0 30px rgba(0, 0, 0, 0.04);
+}
+
+/* Silver shiny border ring - only outer border */
+.wheel::after {
+  content: '';
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, 
+    #9a9a9a 0%,
+    #b8b8b8 20%,
+    #d8d8d8 40%,
+    #f0f0f0 50%,
+    #d8d8d8 60%,
+    #b8b8b8 80%,
+    #9a9a9a 100%
+  );
+  z-index: -1;
+  pointer-events: none;
+  box-shadow: 
+    inset 0 2px 5px rgba(255, 255, 255, 0.8),
+    inset 0 -2px 5px rgba(0, 0, 0, 0.3),
+    0 0 15px rgba(192, 192, 192, 0.4);
+  /* Mask to show only the border ring */
+  mask: radial-gradient(circle, transparent 134px, black 140px);
+  -webkit-mask: radial-gradient(circle, transparent 134px, black 140px);
+}
+
+/* Softer gloss/shine overlay using pseudo-element */
+.wheel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.25) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    rgba(255, 255, 255, 0.03) 50%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: soft-light;
+  opacity: 0.6;
+}
+
+/* Subtle highlight on each slice */
+.wheel-label {
+  position: relative;
+}
+
+.wheel-label::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 30%,
+    transparent 60%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.wheel-label.winning::before {
+  opacity: 1;
+  animation: sliceGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes sliceGlow {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Spin animation handled via inline style transition */
+
+.wheel:not(.spinning) {
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.wheel.stopped {
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  box-shadow: 
+    0 0 25px rgba(255, 215, 0, 0.6),
+    0 0 50px rgba(255, 215, 0, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.2);
+  animation: winningGlow 2s ease-in-out infinite;
+}
+
+@keyframes winningGlow {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(255, 215, 0, 0.5),
+      0 0 40px rgba(255, 215, 0, 0.3),
+      inset 0 0 25px rgba(255, 255, 255, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 0 35px rgba(255, 215, 0, 0.8),
+      0 0 70px rgba(255, 215, 0, 0.5),
+      inset 0 0 40px rgba(255, 255, 255, 0.3);
+  }
+}
+
+.wheel-label {
+  position: absolute;
+  transform-origin: center center;
+  width: 100px;
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 
+    0 0 3px rgba(0, 0, 0, 0.2),
+    1px 1px 4px rgba(0, 0, 0, 0.9),
+    0 0 6px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  z-index: 10;
+  transition: all 0.3s ease;
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+
+/* Adjust for 6 prizes */
+.wheel[data-prizes-count="6"] .wheel-label {
+  width: 95px;
+  font-size: 0.8rem;
+}
+
+.wheel[data-prizes-count="5"] .wheel-label {
+  width: 100px;
+  font-size: 0.85rem;
+}
+
+.wheel-label.winning {
+  z-index: 20;
+}
+
+.wheel-label.winning .slice-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #FFD700;
+  text-shadow: 
+    0 0 3px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 0 20px rgba(255, 215, 0, 0.6),
+    1px 1px 4px rgba(0, 0, 0, 1);
+  animation: labelPulse 1.5s ease infinite;
+}
+
+@keyframes labelPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+
+
+.prize-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin: 0 auto 4px;
+}
+
+.slice-label {
+  display: block;
+  word-break: break-word;
+  line-height: 1.3;
+  white-space: normal;
+  overflow: visible;
+  max-width: 100%;
+  hyphens: auto;
+}
+
+.spin-button-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.spin-button {
+  background: var(--primary-color, #FF6B6B);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: transform 0.2s, opacity 0.2s;
+  border: none;
+  cursor: pointer;
+}
+
+.spin-button:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.spin-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spin-button.shake {
+  animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(5px);
+  }
+}
+
+.blocked-tooltip {
+  position: absolute;
+  top: 100%;
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  z-index: 1000;
+  animation: tooltipFadeIn 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.blocked-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-bottom-color: rgba(0, 0, 0, 0.85);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.wheel-result {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.wheel-result-winning {
+  animation: fadeInUp 0.5s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.confetti-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: -10px;
+  opacity: 0.8;
+  animation: confettiFall 3s linear forwards;
+  border-radius: 2px;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(400px) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.wheel-result-losing {
+  animation: fadeInShake 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInShake {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+  60% {
+    transform: translateY(5px) rotate(2deg);
+  }
+  70% {
+    transform: translateY(-5px) rotate(-1deg);
+  }
+  80% {
+    transform: translateY(2px) rotate(1deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.sad-emoji {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  animation: sadBounce 1s ease infinite;
+  display: inline-block;
+}
+
+@keyframes sadBounce {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+  }
+}
+
+.losing-title {
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.losing-prize {
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  border: 2px dashed #ccc;
+  opacity: 0.8;
+}
+
+.losing-prize .prize-label {
+  color: #666;
+  font-size: 1.5rem;
+}
+
+.losing-prize .prize-description {
+  color: #888;
+  opacity: 0.9;
+}
+
+.result-title {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+  position: relative;
+  z-index: 1;
+}
+
+.result-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.prize-display {
+  background: linear-gradient(135deg, var(--primary-color, #FF6B6B), var(--secondary-color, #4ECDC4));
+  color: white;
+  padding: 2rem;
+  border-radius: 15px;
+  position: relative;
+  z-index: 1;
+  margin: 1rem 0;
+}
+
+.prize-label {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.prize-description {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.wheel-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.cooldown-message {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #888;
+}
+
+@media (max-width: 480px) {
+  .wheel {
+    width: 240px;
+    height: 240px;
+    border: 4px solid rgba(0, 0, 0, 0.2);
+  }
+
+  .slice-content {
+    font-size: 0.75rem;
+    width: 80px;
+  }
+}
+

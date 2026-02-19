@@ -1,0 +1,56 @@
+{
+  "shops": [
+    {
+      "shopId": "shopname-randomid123",
+      "mode": "Wheel",
+      "branding": {
+        "primaryColor": "#FF6B6B",
+        "secondaryColor": "#4ECDC4",
+        "logoUrl": null,
+        "brandName": "Shop Name"
+      },
+      "text": {
+        "title": "Spin to Win!",
+        "subtitle": "Try your luck and win amazing prizes",
+        "ctaText": "DM us to claim your prize",
+        "resultTitle": "Congratulations!",
+        "resultSubtitle": "You've won a prize!"
+      },
+      "cta": {
+        "url": "https://instagram.com/shopname"
+      },
+      "wheel": {
+        "allowRepeatSpins": false,
+        "prizes": [
+          {
+            "label": "10% Off",
+            "weight": 30,
+            "iconUrl": null,
+            "description": "Get 10% off your next purchase"
+          },
+          {
+            "label": "20% Off",
+            "weight": 20,
+            "description": "Get 20% off your next purchase"
+          },
+          {
+            "label": "Free Shipping",
+            "weight": 25,
+            "description": "Free shipping on your order"
+          },
+          {
+            "label": "50% Off",
+            "weight": 10,
+            "description": "Get 50% off your next purchase"
+          },
+          {
+            "label": "Try Again",
+            "weight": 15,
+            "description": "Better luck next time!"
+          }
+        ]
+      }
+    }
+  ]
+}
+

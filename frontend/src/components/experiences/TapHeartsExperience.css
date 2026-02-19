@@ -1,0 +1,135 @@
+.hearts-container {
+  width: 100%;
+  min-height: 400px;
+  position: relative;
+}
+
+.hearts-progress {
+  margin-bottom: 2rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 12px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.progress-fill {
+  height: 100%;
+  transition: width 0.3s ease;
+  border-radius: 10px;
+}
+
+.progress-text {
+  font-size: 1rem;
+  color: #666;
+  font-weight: 600;
+}
+
+.hearts-area {
+  position: relative;
+  width: 100%;
+  min-height: 350px;
+  border: 2px dashed #ddd;
+  border-radius: 15px;
+  background: #fafafa;
+  overflow: hidden;
+}
+
+.heart {
+  position: absolute;
+  font-size: 2rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.3s;
+  animation: float 3s ease-in-out infinite;
+  padding: 0;
+  line-height: 1;
+}
+
+.heart:hover:not(:disabled) {
+  transform: scale(1.2);
+}
+
+.heart:active:not(:disabled) {
+  transform: scale(0.9);
+}
+
+.heart.tapped {
+  opacity: 0;
+  transform: scale(0) rotate(180deg);
+  pointer-events: none;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-8px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-8px) rotate(2deg);
+  }
+}
+
+.heart:not(.tapped) {
+  animation: float 3s ease-in-out infinite;
+}
+
+.hearts-reveal {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.hearts-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.cooldown-message {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.reveal-title {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.reveal-text {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.reveal-subtitle,
+.result-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .hearts-area {
+    min-height: 300px;
+  }
+
+  .heart {
+    font-size: 1.5rem;
+  }
+}
+

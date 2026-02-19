@@ -1,0 +1,52 @@
+{
+  "common": {
+    "unknownMode": "Unknown experience mode",
+    "logoAlt": "Logo",
+    "goToTwirlaApp": "Go to Twirla app",
+    "poweredBy": "Powered by Twirla"
+  },
+  "wheel": {
+    "title": "Spin to Win!",
+    "subtitle": "Try your luck and win amazing prizes",
+    "spinning": "Spinning...",
+    "spinButton": "Spin the Wheel!",
+    "alreadyPlayed": "You've already played!",
+    "comeBackIn": "Come back in {{hours}} {{hoursText}} to play again. 💕",
+    "hour": "hour",
+    "hours": "hours",
+    "alreadyTried": "You already tried! Screenshot & DM us 💕",
+    "thanksParticipating": "You've already played! Thanks for participating.",
+    "noWinTitle": "Better luck next time!",
+    "noWinMessage": "Don't give up! Try again next time. 💪"
+  },
+  "tapHearts": {
+    "title": "Tap the Hearts!",
+    "subtitle": "Tap all hearts to win",
+    "heartsTapped": "{{count}} / {{total}} hearts tapped"
+  },
+  "scratch": {
+    "title": "Scratch to Win!",
+    "subtitle": "Reveal your prize hidden below",
+    "cardLabel": "Scratch here",
+    "hint": "Reveal your prize 🎁"
+  },
+  "countdown": {
+    "title": "Offer Ending Soon!",
+    "subtitle": "Don't miss this special opportunity",
+    "dontMissOut": "Don't miss out!",
+    "days": "Days",
+    "hours": "Hours",
+    "minutes": "Minutes",
+    "seconds": "Seconds"
+  },
+  "home": {
+    "title": "Twirla",
+    "visit": "Visit /:mode/:shopName/:uniqueId to see an experience",
+    "examples": "Examples:",
+    "comingSoon": "Coming Soon!",
+    "comingSoonSubtitle": "Twirla is coming…",
+    "scratchHint": "✨ Scratch to reveal…",
+    "tagline": "Interactive platform for businesses."
+  }
+}
+

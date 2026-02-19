@@ -1,0 +1,111 @@
+.countdown-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.countdown-timer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.time-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.time-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.time-separator {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 0 0.25rem;
+  line-height: 1;
+  padding-bottom: 1.5rem;
+}
+
+.countdown-hint {
+  font-size: 1rem;
+  color: #666;
+  font-style: italic;
+}
+
+.countdown-ended {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.countdown-message {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.cooldown-message {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  color: #888;
+}
+
+.end-title {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.end-message {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.end-subtitle {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+@media (max-width: 480px) {
+  .time-value {
+    font-size: 2rem;
+  }
+
+  .time-label {
+    font-size: 0.75rem;
+  }
+
+  .time-separator {
+    font-size: 1.5rem;
+    padding-bottom: 1.2rem;
+  }
+
+  .time-unit {
+    min-width: 60px;
+  }
+}
+

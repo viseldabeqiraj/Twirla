@@ -1,0 +1,52 @@
+{
+  "common": {
+    "unknownMode": "Mënyra e panjohur e përvojës",
+    "logoAlt": "Logo",
+    "goToTwirlaApp": "Shko tek Twirla",
+    "poweredBy": "Powered by Twirla"
+  },
+  "wheel": {
+    "title": "Rrotullo për të fituar!",
+    "subtitle": "Provo fatin dhe fiton çmime të mrekullueshme",
+    "spinning": "Po rrotullohet...",
+    "spinButton": "Rrotullo Rrotullën!",
+    "alreadyPlayed": "Ke luajtur tashmë!",
+    "comeBackIn": "Kthehu pas {{hours}} {{hoursText}} për të luajtur përsëri. 💕",
+    "hour": "orë",
+    "hours": "orë",
+    "alreadyTried": "Ke provuar tashmë! Bëj screenshot dhe na shkruaj 💕",
+    "thanksParticipating": "Ke luajtur tashmë! Faleminderit për pjesëmarrjen.",
+    "noWinTitle": "Fat më të mirë herën tjetër!",
+    "noWinMessage": "Mos u dorëzo! Provo përsëri herën tjetër. 💪"
+  },
+  "tapHearts": {
+    "title": "Prek zemrat!",
+    "subtitle": "Prek të gjitha zemrat për të fituar",
+    "heartsTapped": "{{count}} / {{total}} zemra të prekura"
+  },
+  "scratch": {
+    "title": "Gërvisht për të fituar!",
+    "subtitle": "Zbuloni çmimin tuaj të fshehur",
+    "cardLabel": "Gërvisht këtu",
+    "hint": "Zbuloni çmimin tuaj 🎁"
+  },
+  "countdown": {
+    "title": "Oferta po mbaron!",
+    "subtitle": "Mos e humb këtë mundësi të veçantë",
+    "dontMissOut": "Mos e humb!",
+    "days": "Ditë",
+    "hours": "Orë",
+    "minutes": "Minuta",
+    "seconds": "Sekonda"
+  },
+  "home": {
+    "title": "Twirla",
+    "visit": "Vizito /:mode/:shopName/:uniqueId për të parë një përvojë",
+    "examples": "Shembuj:",
+    "comingSoon": "Së shpejti!",
+    "comingSoonSubtitle": "Twirla po vjen…",
+    "scratchHint": "✨ Gërvisht për të zbuluar…",
+    "tagline": "Platformë interaktive për biznese."
+  }
+}
+
