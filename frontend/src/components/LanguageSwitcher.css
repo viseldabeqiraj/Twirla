@@ -1,58 +1,28 @@
 .language-switcher {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  gap: 0.25rem;
+  top: .75rem;
+  right: .75rem;
   z-index: 1100;
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px) saturate(180%);
-  -webkit-backdrop-filter: blur(12px) saturate(180%);
-  padding: 0.25rem;
-  border-radius: 50px;
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.1),
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  gap: .25rem;
+  background: rgba(15, 23, 42, .8);
+  border: 1px solid rgba(148,163,184,.35);
+  border-radius: 999px;
+  padding: .2rem;
+  backdrop-filter: blur(10px);
 }
 
 .lang-button {
-  padding: 0.5rem 1.25rem;
-  border: none;
+  border-radius: 999px;
+  padding: .35rem .65rem;
   background: transparent;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  color: rgba(0, 0, 0, 0.6);
-  position: relative;
+  color: #cbd5e1;
+  font-size: .74rem;
+  font-weight: 700;
 }
-
-.lang-button:hover {
-  color: var(--primary-color, #FF6B6B);
-  transform: scale(1.05);
-}
-
-.lang-button.active {
-  background: linear-gradient(135deg, var(--primary-color, #FF6B6B) 0%, var(--secondary-color, #fff) 100%);
-  color: white;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
+.lang-button.active { background: linear-gradient(120deg, var(--primary-color), var(--secondary-color)); color: #fff; }
+.lang-button:hover { opacity: .92; }
 
 @media (max-width: 768px) {
-  .language-switcher {
-    position: fixed;
-    top: 3.5rem; /* Position below navigation bar (approx height of nav + padding) */
-    right: 0.5rem;
-    padding: 0.25rem;
-    z-index: 1101;
-  }
-
-  .lang-button {
-    padding: 0.35rem 0.7rem;
-    font-size: 0.75rem;
-  }
+  .language-switcher { top: 3.25rem; right: .45rem; }
 }
-

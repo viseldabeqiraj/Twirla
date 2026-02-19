@@ -1,32 +1,16 @@
-.hearts-container { width: 100%; min-height: 380px; }
-.hearts-progress { margin-bottom: 1rem; }
-.progress-bar { width: 100%; height: 12px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
-.progress-fill { height: 100%; transition: width 0.25s ease; border-radius: inherit; }
-.progress-text { margin-top: 0.45rem; color: #475569; font-weight: 600; }
-.progress-percent { opacity: 0.7; }
-
-.hearts-area {
-  position: relative; width: 100%; min-height: 320px;
-  border-radius: 16px; overflow: hidden;
-  background: linear-gradient(180deg, #fff, #f8fafc);
-  border: 1px solid rgba(148, 163, 184, 0.25);
-}
-
-.heart {
-  position: absolute; font-size: 1.9rem; background: none; border: none; padding: 0;
-  transition: transform 0.2s, opacity 0.3s; animation: float 2.8s ease-in-out infinite;
-}
-.heart:hover:not(:disabled) { transform: scale(1.2); }
-.heart.tapped { opacity: 0; transform: scale(0) rotate(180deg); pointer-events: none; }
-
-.tap-burst {
-  position: absolute; transform: translate(-50%, -50%); z-index: 4; font-size: 0.9rem; font-weight: 800;
-  color: #22c55e; animation: burst 0.22s ease forwards;
-}
-@keyframes burst { from { opacity: 0; transform: translate(-50%, -30%) scale(0.6);} to { opacity: 1; transform: translate(-50%, -110%) scale(1);} }
-@keyframes float { 50% { transform: translateY(-10px); } }
-
-.hearts-reveal, .hearts-message { text-align: center; padding: 1rem 0; }
-.reveal-title { font-size: 1.9rem; margin-bottom: 0.6rem; color: var(--primary-color); }
-.reveal-text { font-size: 1.35rem; font-weight: 700; }
+.hearts-container { width: 100%; min-height: 340px; }
+.hearts-progress { margin-bottom: .85rem; }
+.progress-bar { height: 12px; border-radius: 999px; background: rgba(148,163,184,.25); overflow: hidden; }
+.progress-fill { height: 100%; border-radius: inherit; transition: width .22s ease; }
+.progress-text { margin-top: .35rem; color: #64748b; font-weight: 700; font-size: .86rem; }
+.hearts-area { position: relative; min-height: 280px; border-radius: 14px; border: 1px solid rgba(148,163,184,.25); background: radial-gradient(circle at 50% 10%, #fff, #f8fafc 60%); overflow: hidden; }
+.heart { position: absolute; font-size: 1.8rem; background: none; border: none; transition: transform .18s ease, opacity .2s ease; animation: float 2.5s ease-in-out infinite; }
+.heart:hover:not(:disabled) { transform: scale(1.18); }
+.heart.tapped { opacity: 0; transform: scale(0) rotate(160deg); }
+@keyframes float { 50% { transform: translateY(-8px); } }
+.tap-burst { position: absolute; transform: translate(-50%, -50%); color: #16a34a; font-weight: 900; font-size: .82rem; animation: burst .25s ease forwards; }
+@keyframes burst { from { opacity: 0; transform: translate(-50%,-40%) scale(.5);} to { opacity: 1; transform: translate(-50%,-120%) scale(1);} }
+.hearts-reveal, .hearts-message { text-align: center; }
+.reveal-title { font-size: 1.7rem; margin-bottom: .4rem; }
+.reveal-text { font-size: 1.25rem; font-weight: 800; }
 .reveal-subtitle, .result-subtitle, .cooldown-message { color: #64748b; }

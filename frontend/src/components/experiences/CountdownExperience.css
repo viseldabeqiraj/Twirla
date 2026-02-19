@@ -1,14 +1,13 @@
-.countdown-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
-.countdown-progress-track { width: 100%; height: 10px; background: rgba(148,163,184,.25); border-radius: 999px; overflow: hidden; }
-.countdown-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transition: width .35s ease; }
-
-.countdown-timer { display: grid; grid-template-columns: repeat(4, minmax(58px, 1fr)); gap: .55rem; width: 100%; }
-.time-unit { background: rgba(255,255,255,.75); border: 1px solid rgba(148,163,184,.25); border-radius: 12px; padding: .65rem .25rem; text-align: center; }
-.time-value { font-size: 1.65rem; font-weight: 800; line-height: 1; color: var(--primary-color); font-variant-numeric: tabular-nums; }
-.time-label { margin-top: .25rem; font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; color: #64748b; }
+.countdown-container { width: 100%; display: flex; flex-direction: column; gap: .8rem; }
+.countdown-progress-track { width: 100%; height: 10px; border-radius: 999px; background: rgba(148,163,184,.25); overflow: hidden; }
+.countdown-progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transition: width .4s ease; }
+.countdown-timer { display: grid; grid-template-columns: repeat(4, minmax(55px,1fr)); gap: .45rem; }
+.time-unit { border-radius: 12px; text-align: center; padding: .65rem .2rem; background: rgba(255,255,255,.82); border: 1px solid rgba(148,163,184,.24); }
+.time-value { font-size: 1.48rem; font-weight: 900; color: #0f172a; font-variant-numeric: tabular-nums; }
+.time-label { margin-top: .2rem; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: #64748b; }
 .time-separator { display: none; }
-
-.countdown-ended, .countdown-message { text-align: center; padding: 1rem 0; }
-.end-title { font-size: 1.8rem; color: var(--primary-color); }
-.end-message { font-size: 1.25rem; font-weight: 700; }
-.end-subtitle, .cooldown-message, .countdown-hint { color: #64748b; }
+.countdown-hint { color: #64748b; text-align: center; }
+.countdown-ended, .countdown-message { text-align: center; }
+.end-title { font-size: 1.7rem; }
+.end-message { font-size: 1.2rem; font-weight: 800; }
+.end-subtitle, .cooldown-message { color: #64748b; }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { ShopConfig, ExperienceMode } from '../types/ShopConfig';
 import { useTranslation } from '../i18n/i18n';
 import WheelExperience from './experiences/WheelExperience';
@@ -16,7 +17,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   const { t } = useTranslation();
   const [shouldPulse, setShouldPulse] = useState(false);
   const experienceContentRef = useRef<HTMLDivElement>(null);
-
   const theme = branding.theme || {};
 
   const getModeTitle = () => {
@@ -73,36 +73,34 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
         '--secondary-color': branding.secondaryColor,
         '--accent-color': branding.accentColor || branding.primaryColor,
         '--app-font': theme.fontFamily || 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
-        '--card-radius': `${theme.borderRadius ?? 22}px`,
-        '--btn-radius': `${theme.buttonRadius ?? 999}px`,
+        '--card-radius': `${theme.borderRadius ?? 26}px`,
+        '--btn-radius': `${theme.buttonRadius ?? 14}px`,
       } as React.CSSProperties}
     >
-      <div className="experience-container">
-        {branding.logoUrl && (
-          <div className="logo-container">
-            <img src={branding.logoUrl} alt={branding.brandName || t('common.logoAlt')} className="logo" />
-            {branding.brandName && <h2 className="brand-name brand-name-with-logo">{branding.brandName}</h2>}
+      <div className="orb orb-a" />
+      <div className="orb orb-b" />
+      <motion.div className="experience-container" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+        {(branding.logoUrl || branding.brandName) && (
+          <div className="brand-head">
+            {branding.logoUrl && <img src={branding.logoUrl} alt={branding.brandName || t('common.logoAlt')} className="logo" />}
+            {branding.brandName && <h2 className="brand-name">{branding.brandName}</h2>}
           </div>
         )}
-
-        {branding.brandName && !branding.logoUrl && <h2 className="brand-name">{branding.brandName}</h2>}
 
         <h1 className="title">{getModeTitle()}</h1>
         {getModeSubtitle() && <p className="subtitle">{getModeSubtitle()}</p>}
 
-        <div className="experience-content" ref={experienceContentRef}>
-          {renderExperience()}
-        </div>
+        <div className="experience-content" ref={experienceContentRef}>{renderExperience()}</div>
 
-        <a href={cta.url} target="_blank" rel="noopener noreferrer" className={`cta-button ${shouldPulse ? 'pulse' : ''}`}>
+        <motion.a href={cta.url} target="_blank" rel="noopener noreferrer" className={`cta-button ${shouldPulse ? 'pulse' : ''}`} whileTap={{ scale: 0.98 }} whileHover={{ y: -2 }}>
           {text.ctaText}
-        </a>
+        </motion.a>
 
         <a href="/" className="twirla-app-button">
           <img src="/logos/twirla.png" alt="Twirla" className="twirla-app-button-logo" />
           {t('common.goToTwirlaApp')}
         </a>
-      </div>
+      </motion.div>
 
       <div className="twirla-footer">
         <img src="/logos/twirla.png" alt="Twirla" className="twirla-logo" />
