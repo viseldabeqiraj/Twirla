@@ -6,6 +6,7 @@ import { useTranslation } from '../i18n/i18n';
 import ExperienceHost from '../components/ExperienceHost';
 import ModeNavigation from '../components/ModeNavigation';
 import LanguageSwitcher from '../components/LanguageSwitcher';
+import CuteLoader from '../components/CuteLoader';
 
 export default function ExperiencePage() {
   const { shopId, shopName, uniqueId, mode } = useParams<{ 
@@ -58,16 +59,7 @@ export default function ExperiencePage() {
   }, [shopId, shopName, uniqueId, mode, language]);
 
   if (loading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh' 
-      }}>
-        <div style={{ fontSize: '1.2rem' }}>Loading...</div>
-      </div>
-    );
+    return <CuteLoader />;
   }
 
   if (error || !config) {

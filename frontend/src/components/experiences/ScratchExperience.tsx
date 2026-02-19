@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { canUserPlay, recordPlay } from '../../utils/playTracking';
+import { recordPlay } from '../../utils/playTracking';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './ScratchExperience.css';
@@ -10,7 +10,7 @@ interface ScratchExperienceProps {
 }
 
 export default function ScratchExperience({ config }: ScratchExperienceProps) {
-  const { scratch, text, shopId, playCooldownHours = 24 } = config;
+  const { scratch, text, shopId } = config;
   const { t } = useTranslation();
   const [isRevealed, setIsRevealed] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
@@ -20,11 +20,11 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
 
   if (!scratch) return null;
 
-  // Check if user can play (only if we haven't revealed yet)
-  // Once revealed, don't check again to avoid showing "already played" message
-  const playStatus = isRevealed 
-    ? { canPlay: true, lastPlayTime: null, hoursRemaining: null }
-    : canUserPlay(shopId, playCooldownHours);
+  // TEMP (testing): daily cooldown disabled.
+  // const playStatus = isRevealed
+  //   ? { canPlay: true, lastPlayTime: null, hoursRemaining: null }
+  //   : canUserPlay(shopId, playCooldownHours);
+  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -89,9 +89,9 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
     // But don't allow if user can't play (cooldown check)
     if (!canvas || isRevealed) return;
     
-    // Check play status fresh each time to avoid stale state
-    const currentPlayStatus = canUserPlay(shopId, playCooldownHours);
-    if (!currentPlayStatus.canPlay) return;
+    // TEMP (testing): cooldown check removed.
+    // const currentPlayStatus = canUserPlay(shopId, playCooldownHours);
+    // if (!currentPlayStatus.canPlay) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;

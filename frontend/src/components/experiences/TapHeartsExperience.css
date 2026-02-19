@@ -3,6 +3,7 @@
 .progress-bar { height: 12px; border-radius: 999px; background: rgba(148,163,184,.25); overflow: hidden; }
 .progress-fill { height: 100%; border-radius: inherit; transition: width .22s ease; }
 .progress-text { margin-top: .35rem; color: #64748b; font-weight: 700; font-size: .86rem; }
+.shuffle-hearts{margin:0 auto .5rem;background:#fff;border:1px solid rgba(148,163,184,.4);padding:.35rem .7rem;border-radius:10px;font-size:.76rem;font-weight:700;color:#334155}
 .hearts-area { position: relative; min-height: 280px; border-radius: 14px; border: 1px solid rgba(148,163,184,.25); background: radial-gradient(circle at 50% 10%, #fff, #f8fafc 60%); overflow: hidden; }
 .heart { position: absolute; font-size: 1.8rem; background: none; border: none; transition: transform .18s ease, opacity .2s ease; animation: float 2.5s ease-in-out infinite; }
 .heart:hover:not(:disabled) { transform: scale(1.18); }

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { canUserPlay, recordPlay } from '../../utils/playTracking';
+import { recordPlay } from '../../utils/playTracking';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './TapHeartsExperience.css';
@@ -17,7 +17,7 @@ interface Heart {
 }
 
 export default function TapHeartsExperience({ config }: TapHeartsExperienceProps) {
-  const { tapHearts, text, shopId, playCooldownHours = 24 } = config;
+  const { tapHearts, text, shopId } = config;
   const { t } = useTranslation();
   const [hearts, setHearts] = useState<Heart[]>([]);
   const [tapCount, setTapCount] = useState(0);
@@ -26,8 +26,9 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
 
   if (!tapHearts) return null;
 
-  // Check if user can play
-  const playStatus = canUserPlay(shopId, playCooldownHours);
+  // TEMP (testing): daily cooldown disabled.
+  // const playStatus = canUserPlay(shopId, playCooldownHours);
+  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   useEffect(() => {
     // Create enough hearts (at least 1.5x the required amount for better UX)
@@ -45,6 +46,10 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
     
     setHearts(newHearts);
   }, [tapHearts.heartsToTap]);
+
+  const shuffleHearts = () => {
+    setHearts((prev) => prev.map((h) => (h.tapped ? h : { ...h, x: Math.random() * 80 + 10, y: Math.random() * 80 + 10 })));
+  };
 
   const handleHeartTap = (heartId: number) => {
     if (!playStatus.canPlay) return;
@@ -128,6 +133,7 @@ export default function TapHeartsExperience({ config }: TapHeartsExperienceProps
         </p>
       </div>
       
+      <button className="shuffle-hearts" onClick={shuffleHearts}>Shuffle hearts</button>
       <div className="hearts-area">
         {lastTapBurst && (
           <span className="tap-burst" style={{ left: `${lastTapBurst.x}%`, top: `${lastTapBurst.y}%` }}>+1</span>

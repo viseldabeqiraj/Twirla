@@ -4,6 +4,8 @@
 .countdown-timer { display: grid; grid-template-columns: repeat(4, minmax(55px,1fr)); gap: .45rem; }
 .time-unit { border-radius: 12px; text-align: center; padding: .65rem .2rem; background: rgba(255,255,255,.82); border: 1px solid rgba(148,163,184,.24); }
 .time-value { font-size: 1.48rem; font-weight: 900; color: #0f172a; font-variant-numeric: tabular-nums; }
+.time-value.urgent{color:#dc2626;animation:tickPulse .9s ease infinite}
+@keyframes tickPulse{50%{transform:scale(1.12)}}
 .time-label { margin-top: .2rem; font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; color: #64748b; }
 .time-separator { display: none; }
 .countdown-hint { color: #64748b; text-align: center; }

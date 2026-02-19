@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { canUserPlay, recordPlay } from '../../utils/playTracking';
+import { recordPlay } from '../../utils/playTracking';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './WheelExperience.css';
@@ -10,7 +10,7 @@ interface WheelExperienceProps {
 }
 
 export default function WheelExperience({ config }: WheelExperienceProps) {
-  const { wheel, text, shopId, playCooldownHours = 24 } = config;
+  const { wheel, text, shopId } = config;
   const { t } = useTranslation();
   const [hasSpun, setHasSpun] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -23,8 +23,9 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
 
   if (!wheel) return null;
 
-  // Check if user can play
-  const playStatus = canUserPlay(shopId, playCooldownHours);
+  // TEMP (testing): daily cooldown disabled.
+  // const playStatus = canUserPlay(shopId, playCooldownHours);
+  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   const selectPrize = (): { label: string; index: number } => {
     const totalWeight = wheel.prizes.reduce((sum, prize) => sum + prize.weight, 0);
@@ -71,6 +72,13 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     
     // Default to winning (most prizes like discounts, free shipping, etc. are winning)
     return !isLosing;
+  };
+
+  const resetRound = () => {
+    setShowResult(false);
+    setSelectedPrize(null);
+    setSelectedPrizeIndex(null);
+    setWheelRotation(0);
   };
 
   const handleSpin = () => {
@@ -146,6 +154,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
               <p className="prize-description">{prize.description}</p>
             )}
           </div>
+          <button className="play-again-button" onClick={resetRound}>Play again</button>
         </div>
       );
     }
@@ -162,6 +171,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
             <p className="prize-description">{prize.description}</p>
           )}
         </div>
+        <button className="play-again-button" onClick={resetRound}>Spin again</button>
       </div>
     );
   }

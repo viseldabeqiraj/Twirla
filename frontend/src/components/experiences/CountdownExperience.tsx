@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { canUserPlay, recordPlay } from '../../utils/playTracking';
+import { recordPlay } from '../../utils/playTracking';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './CountdownExperience.css';
@@ -17,7 +17,7 @@ interface TimeRemaining {
 }
 
 export default function CountdownExperience({ config }: CountdownExperienceProps) {
-  const { countdown, text, shopId, playCooldownHours = 24 } = config;
+  const { countdown, text, shopId } = config;
   const { t } = useTranslation();
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(null);
   const [hasEnded, setHasEnded] = useState(false);
@@ -27,8 +27,9 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
 
   if (!countdown) return null;
 
-  // Check if user can play
-  const playStatus = canUserPlay(shopId, playCooldownHours);
+  // TEMP (testing): daily cooldown disabled.
+  // const playStatus = canUserPlay(shopId, playCooldownHours);
+  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   useEffect(() => {
     // Check if countdown already ended before component mounted
@@ -120,6 +121,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
     ? (((timeRemaining.days * 24 + timeRemaining.hours) * 60 + timeRemaining.minutes) * 60 + timeRemaining.seconds) * 1000
     : 0;
   const progress = initialDurationMs ? Math.max(0, Math.min(100, ((initialDurationMs - remainingMs) / initialDurationMs) * 100)) : 0;
+  const isFinalSeconds = timeRemaining.days === 0 && timeRemaining.hours === 0 && timeRemaining.minutes === 0 && timeRemaining.seconds <= 10;
 
   return (
     <div className="countdown-container">
@@ -143,7 +145,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
         </div>
         <div className="time-separator">:</div>
         <div className="time-unit">
-          <div className="time-value">{String(timeRemaining.seconds).padStart(2, '0')}</div>
+          <div className={`time-value ${isFinalSeconds ? 'urgent' : ''}`}>{String(timeRemaining.seconds).padStart(2, '0')}</div>
           <div className="time-label">{t('countdown.seconds')}</div>
         </div>
       </div>
