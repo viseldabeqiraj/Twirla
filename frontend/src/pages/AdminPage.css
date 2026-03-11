@@ -1,0 +1,254 @@
+.admin-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  font-family: system-ui, sans-serif;
+}
+
+.admin-loading,
+.admin-error p {
+  color: #555;
+}
+
+.admin-error h1 {
+  margin-bottom: 0.5rem;
+}
+
+.admin-header {
+  margin-bottom: 2rem;
+}
+
+.admin-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.admin-header h1 {
+  margin: 0 0 0.25rem 0;
+  font-size: 1.5rem;
+}
+
+.admin-lang {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.admin-lang-btn {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #333;
+}
+
+.admin-lang-btn:hover {
+  background: #f5f5f5;
+}
+
+.admin-lang-btn.active {
+  background: #333;
+  color: #fff;
+  border-color: #333;
+}
+
+.admin-slug {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.admin-summary h2,
+.admin-redeem h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+}
+
+.admin-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.admin-card {
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-card-value {
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.admin-card-label {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.admin-redeem-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-field label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.admin-field input {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  min-width: 160px;
+}
+
+.admin-submit {
+  padding: 0.5rem 1rem;
+  background: #333;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.admin-submit:hover:not(:disabled) {
+  background: #555;
+}
+
+.admin-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.admin-feedback {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.admin-feedback--success {
+  color: #0a0;
+}
+
+.admin-feedback--error {
+  color: #c00;
+}
+
+/* Charts section */
+.admin-charts {
+  margin-bottom: 2rem;
+}
+
+.admin-chart-block {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-chart-title {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.admin-chart-responsive {
+  min-height: 200px;
+  width: 100%;
+}
+
+.admin-charts-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 700px) {
+  .admin-charts-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Funnel */
+.admin-funnel {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin-funnel-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-funnel-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.admin-funnel-bar {
+  height: 32px;
+  min-width: 40px;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  border-radius: 6px;
+  flex-shrink: 0;
+  transition: width 0.2s ease;
+}
+
+.admin-funnel-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-funnel-value {
+  font-weight: 600;
+  font-size: 1rem;
+  min-width: 2.5rem;
+}
+
+.admin-funnel-name {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Donut */
+.admin-donut-block .admin-donut-percent {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.admin-donut-responsive {
+  margin-top: 0;
+}

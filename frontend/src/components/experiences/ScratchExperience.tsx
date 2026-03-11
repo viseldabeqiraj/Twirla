@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
+import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import confetti from 'canvas-confetti';
@@ -15,6 +16,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const { t } = useTranslation();
   const [isRevealed, setIsRevealed] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
+  const hasTrackedStart = useRef(false);
   const [revealedPercent, setRevealedPercent] = useState(0);
   const [secondsLeft, setSecondsLeft] = useState(10);
   const [failed, setFailed] = useState(false);
@@ -151,9 +153,9 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
           colors: [config.branding.primaryColor, config.branding.secondaryColor, '#ffffff'],
         });
       } catch {}
-      // Set revealed state first
       setIsRevealed(true);
-      // Record play after a delay to ensure reveal UI is shown first
+      trackEvent(shopId, 'game_finish', { mode: 'Scratch' });
+      trackEvent(shopId, 'reward_won', { mode: 'Scratch' });
       setTimeout(() => {
         recordPlay(shopId);
         setHasRecordedPlay(true);
@@ -163,6 +165,10 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
 
   const handleStart = (e: React.TouchEvent | React.MouseEvent) => {
     e.preventDefault();
+    if (!hasTrackedStart.current) {
+      hasTrackedStart.current = true;
+      trackEvent(shopId, 'game_start', { mode: 'Scratch' });
+    }
     isScratchingRef.current = true;
     const pos = getScratchPosition(e);
     if (pos) scratchAt(pos.x, pos.y);

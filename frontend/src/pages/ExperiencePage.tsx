@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { ExperienceMode, ShopConfig } from '../types/ShopConfig';
-import { fetchShopConfig } from '../api/configApi';
+import { fetchShopConfig, fetchShopConfigBySlug } from '../api/configApi';
+import { trackEvent } from '../api/analyticsApi';
 import { useTranslation } from '../i18n/i18n';
 import ExperienceHost from '../components/ExperienceHost';
 import ModeNavigation from '../components/ModeNavigation';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import CuteLoader from '../components/CuteLoader';
+import './ExperiencePage.css';
 
 export default function ExperiencePage() {
   const { shopId, shopName, uniqueId, mode } = useParams<{ 
@@ -36,24 +38,34 @@ export default function ExperiencePage() {
       return;
     }
 
-    console.log('Fetching config for shopId:', finalShopId, 'mode:', mode, 'language:', language);
-    fetchShopConfig(finalShopId, mode, language)
-      .then((config) => {
-        console.log('Config loaded:', config);
-        const normalizeMode = (raw: string) => {
-          const m = raw.toLowerCase();
-          if (m === 'wheel') return 'Wheel';
-          if (m === 'taphearts' || m === 'tap-hearts') return 'TapHearts';
-          if (m === 'scratch') return 'Scratch';
-          if (m === 'countdown') return 'Countdown';
-          return raw;
-        };
+    const fetchMode = mode?.toLowerCase() === 'runner' ? 'wheel' : mode;
+    const normalizeMode = (raw: string) => {
+      const m = raw.toLowerCase();
+      if (m === 'runner') return 'Runner';
+      if (m === 'wheel') return 'Wheel';
+      if (m === 'taphearts' || m === 'tap-hearts') return 'TapHearts';
+      if (m === 'scratch') return 'Scratch';
+      if (m === 'countdown') return 'Countdown';
+      return raw;
+    };
 
-        setConfig({ ...config, mode: normalizeMode(mode) as any });
+    const applyConfig = (config: ShopConfig) => {
+      const finalConfig = { ...config, mode: normalizeMode(mode!) as any };
+      setConfig(finalConfig);
+      setError(null);
+      trackEvent(config.shopId, 'page_view', { mode: finalConfig.mode });
+    };
+
+    fetchShopConfig(finalShopId, fetchMode, language)
+      .then(applyConfig)
+      .catch(() => {
+        if (shopName) {
+          return fetchShopConfigBySlug(shopName, fetchMode, language).then(applyConfig);
+        }
+        throw new Error('Shop not found');
       })
       .catch((err) => {
-        console.error('Error fetching config:', err);
-        setError(err.message);
+        setError(err instanceof Error ? err.message : 'Something went wrong');
       })
       .finally(() => setLoading(false));
   }, [shopId, shopName, uniqueId, mode, language]);
@@ -64,22 +76,25 @@ export default function ExperiencePage() {
 
   if (error || !config) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        minHeight: '100vh',
-        padding: '2rem'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <h1 style={{ marginBottom: '1rem' }}>Error</h1>
-          <p>{error || 'Configuration not found'}</p>
+      <div className="experience-error-page">
+        <div className="experience-error-card">
+          <div className="experience-error-icon" aria-hidden>⚠️</div>
+          <h1 className="experience-error-title">Couldn’t load this experience</h1>
+          <p className="experience-error-message">{error || 'Configuration not found'}</p>
+          <p className="experience-error-hint">Check the link or try the demo shop below.</p>
+          <div className="experience-error-actions">
+            <Link to="/" className="experience-error-btn experience-error-btn-primary">Back to home</Link>
+            <Link to="/wheel/demo/allgames01" className="experience-error-btn">Try demo · Wheel</Link>
+            <Link to="/taphearts/demo/allgames01" className="experience-error-btn">Try demo · Catch the Prize</Link>
+            <Link to="/scratch/demo/allgames01" className="experience-error-btn">Try demo · Scratch</Link>
+          </div>
         </div>
       </div>
     );
   }
 
   const availableModes = [
+    ExperienceMode.Runner,
     config.wheel ? ExperienceMode.Wheel : null,
     config.tapHearts ? ExperienceMode.TapHearts : null,
     config.scratch ? ExperienceMode.Scratch : null,

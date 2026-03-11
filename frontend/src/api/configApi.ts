@@ -25,21 +25,41 @@ async function loadFromStaticJson(shopId: string, mode?: string): Promise<ShopCo
   return target;
 }
 
+/** Fetch config by slug (e.g. "pinkster", "demo") so URLs like /wheel/pinkster/any work. */
+export async function fetchShopConfigBySlug(
+  slug: string,
+  mode?: string,
+  language?: string
+): Promise<ShopConfig> {
+  const baseUrl = mode
+    ? `${API_BASE_URL}/config/by-slug/${encodeURIComponent(slug)}/${mode}`
+    : `${API_BASE_URL}/config/by-slug/${encodeURIComponent(slug)}`;
+  const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
+  const response = await fetch(url);
+  if (!response.ok) {
+    if (response.status === 404) throw new Error('Shop not found');
+    throw new Error(`Request failed: ${response.status}`);
+  }
+  return (await response.json()) as ShopConfig;
+}
+
 export async function fetchShopConfig(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
-  const baseUrl = mode ? `${API_BASE_URL}/config/${shopId}/${mode}` : `${API_BASE_URL}/config/${shopId}`;
+  const baseUrl = mode ? `${API_BASE_URL}/config/${encodeURIComponent(shopId)}/${mode}` : `${API_BASE_URL}/config/${encodeURIComponent(shopId)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
 
   try {
     const response = await fetch(url);
 
     if (!response.ok) {
+      if (response.status === 404) throw new Error('Shop not found');
       throw new Error(`API request failed: ${response.status}`);
     }
 
     const data = await response.json();
     return data as ShopConfig;
-  } catch {
+  } catch (e) {
     // Cloudflare static hosting fallback
+    if (e instanceof Error && e.message !== 'Shop not found') throw e;
     return loadFromStaticJson(shopId, mode);
   }
 }

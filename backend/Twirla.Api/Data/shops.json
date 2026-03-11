@@ -2,6 +2,9 @@
   "shops": [
     {
       "shopId": "pinkster-a7f3b2c9d1e4",
+      "slug": "pinkster",
+      "name": "Pinkster.al",
+      "adminToken": "pinkster-admin-secret",
       "playCooldownHours": 24,
       "branding": {
         "primaryColor": "#F23383",
@@ -140,6 +143,9 @@
     },
     {
       "shopId": "fashionista-x8k2m5n9p3q",
+      "slug": "fashionista",
+      "name": "Fashionista",
+      "adminToken": "fashionista-admin-secret",
       "playCooldownHours": 24,
       "branding": {
         "primaryColor": "#A837D7",
@@ -208,6 +214,55 @@
       "countdown": {
         "endAt": "2024-12-31T23:59:59Z",
         "endMessage": "The sale is now live! Shop now before it ends!",
+        "showCtaBeforeEnd": true
+      }
+    },
+    {
+      "shopId": "demo-allgames01",
+      "slug": "demo",
+      "name": "Demo Shop (all games)",
+      "adminToken": "demo-admin-token",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#0ea5e9",
+        "secondaryColor": "#7dd3fc",
+        "logoUrl": "/logos/twirla.png",
+        "brandName": "Demo Shop"
+      },
+      "text": {
+        "title": "Try all games!",
+        "subtitle": "Wheel, Hearts, Scratch & Countdown",
+        "ctaText": "Visit shop",
+        "resultTitle": "You won!",
+        "resultSubtitle": "Thanks for playing."
+      },
+      "cta": {
+        "url": "https://example.com"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          { "label": "10% Off", "weight": 30, "description": "10% off" },
+          { "label": "20% Off", "weight": 25, "description": "20% off" },
+          { "label": "Free Shipping", "weight": 25, "description": "Free shipping" },
+          { "label": "Try Again", "weight": 20, "isWinning": false, "description": "Try again!" }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 8,
+        "heartColor": "#0ea5e9",
+        "revealText": "You unlocked a discount!",
+        "revealSubtitle": "Use code DEMO20 for 20% off"
+      },
+      "scratch": {
+        "overlayColor": "#94a3b8",
+        "overlayText": "Scratch here!",
+        "revealText": "You won 15% off!",
+        "revealSubtitle": "Use code DEMO15 at checkout"
+      },
+      "countdown": {
+        "endAt": "2030-12-31T23:59:59Z",
+        "endMessage": "Offer ended. Thanks for playing!",
         "showCtaBeforeEnd": true
       }
     }

@@ -1,5 +1,14 @@
 # Twirla API
 
+The backend uses **Clean Architecture** and **API controllers**:
+
+- **Twirla.Domain** – Entities (e.g. `ShopConfig`, `CouponRecord`, `AnalyticsEventRecord`, `AdminAnalyticsSummary`). No dependencies.
+- **Twirla.Application** – Interfaces (`IShopConfigService`, `IAnalyticsService`, `ICouponService`) and DTOs. Depends on Domain.
+- **Twirla.Infrastructure** – Implementations (file-based config, analytics JSONL, coupons JSONL). Depends on Application and Domain.
+- **Twirla.Api** – Controllers and startup. Depends on Application, Domain, and Infrastructure. Registers interfaces with implementation types in `Program.cs`.
+
+Run from the solution: `dotnet run --project Twirla.Api` (or run Twirla.Api from IDE). Admin: `GET /api/admin/shops/{slug}/summary?token=...`, `POST /api/admin/shops/{slug}/redeem-coupon?token=...`.
+
 ## Shop Configuration
 
 Shops are configured in `Data/shops.json`. Each shop has a unique ID in the format: `{shopName}-{uniqueId}`

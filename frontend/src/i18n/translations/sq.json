@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "mainPage": "Faqja kryesore",
+    "runner": "Runner",
+    "wheel": "Rrotulla",
+    "tapHearts": "Kap Çmimin",
+    "scratch": "Gërvisht",
+    "countdown": "Numërimi"
+  },
   "common": {
     "unknownMode": "Mënyra e panjohur e përvojës",
     "logoAlt": "Logo",
@@ -20,15 +28,36 @@
     "noWinMessage": "Mos u dorëzo! Provo përsëri herën tjetër. 💪"
   },
   "tapHearts": {
-    "title": "Prek zemrat!",
-    "subtitle": "Prek të gjitha zemrat për të fituar",
+    "title": "Kap Çmimin",
+    "subtitle": "Prek sende që bien për të fituar pikë—shmang bombat!",
     "heartsTapped": "{{count}} / {{total}} zemra të prekura"
+  },
+  "catchPrize": {
+    "title": "Kap Çmimin",
+    "instruction": "Prek sende që bien para se të zhduken. Zemrat +1, dhuratat +3, bombat -2. Kap yjet për shumëzues 2x!",
+    "score": "Pikët",
+    "timer": "Koha",
+    "start": "Fillo lojën",
+    "go": "Shko!",
+    "tryAgain": "Provo përsëri",
+    "gameOver": "Loja mbaroi",
+    "claimReward": "Merr shpërblimin",
+    "tapToCatch": "Prek sende për t'i kapur",
+    "multiplierActive": "2×",
+    "reward": {
+      "noReward": "Provo përsëri për një shpërblim herën tjetër!",
+      "small": "Shpërblim i vogël i çkyçur!",
+      "medium": "Shpërblim i mesëm i çkyçur!",
+      "top": "Shpërblimi kryesor i çkyçur!"
+    }
   },
   "scratch": {
     "title": "Gërvisht për të fituar!",
     "subtitle": "Zbuloni çmimin tuaj të fshehur",
     "cardLabel": "Gërvisht këtu",
-    "hint": "Zbuloni çmimin tuaj 🎁"
+    "hint": "Zbuloni çmimin tuaj 🎁",
+    "scratchToReveal": "Gërvisht për surprizën",
+    "scratchHere": "Gërvisht këtu"
   },
   "countdown": {
     "title": "Oferta po mbaron!",
@@ -46,7 +75,67 @@
     "comingSoon": "Së shpejti!",
     "comingSoonSubtitle": "Twirla po vjen…",
     "scratchHint": "✨ Gërvisht për të zbuluar…",
-    "tagline": "Platformë interaktive për biznese."
+    "tagline": "Platformë interaktive për biznese.",
+    "scratchRevealTitle": "SË SHPEJTI",
+    "scratchRevealSubtitle": "Lojëra interaktive për dyqanet."
+  },
+  "dashboard": {
+    "title": "Admin i dyqanit",
+    "analyticsSummary": "Përmbledhje analitike",
+    "visitors": "Vizitorë unikë",
+    "impressions": "Ekspozime",
+    "gamesPlayed": "Lojëra të filluara",
+    "finishes": "Lojëra të përfunduara",
+    "rewardsWon": "Shpërblime të fituara",
+    "couponsGenerated": "Kupona të gjeneruara",
+    "couponsRedeemed": "Kupona të shfrytëzuara",
+    "revenueGenerated": "Të ardhura të atribuara",
+    "redemptionRate": "Norma e shfrytëzimit",
+    "funnelTitle": "Gypi i konvertimit",
+    "funnelVisitors": "Vizitorë",
+    "funnelGamesStarted": "Lojëra të filluara",
+    "funnelCouponsGenerated": "Kupona të gjeneruara",
+    "funnelCouponsRedeemed": "Kupona të shfrytëzuara",
+    "revenueOverTime": "Të ardhurat në kohë",
+    "manualRedemption": "Shfrytëzim manual i kuponit",
+    "couponCode": "Kodi i kuponit",
+    "orderValue": "Vlera e porosisë",
+    "redeemButton": "Shfrytëzo kuponin",
+    "redeeming": "Duke shfrytëzuar…",
+    "loading": "Duke u ngarkuar…",
+    "adminAccess": "Akses admin",
+    "invalidToken": "Token i pavlefshëm ose i munguar.",
+    "redeemSuccess": "Kuponi u shfrytëzua me sukses.",
+    "redeemPlaceholder": "p.sh. TWIRLA-XXXX"
+  },
+  "runner": {
+    "title": "Twirla Run",
+    "instruction": "Prek ose shtyp hapësirën për të kërcyer",
+    "rewardHint": "Luaj për të çkyçur shpërblime",
+    "start": "Fillo",
+    "score": "Pikët",
+    "best": "Rekord",
+    "gameOver": "Loja mbaroi",
+    "playAgain": "Luaj përsëri",
+    "claimReward": "Merr shpërblimin",
+    "tapToJump": "Prek për të kërcyer",
+    "back": "Mbrapsht",
+    "reward": {
+      "try_again": "Provo përsëri për një shpërblim",
+      "5_off": "🎁 Fitove 5% Zbritje!",
+      "10_off": "🎁 Fitove 10% Zbritje!",
+      "surprise": "🎁 Fitove një shpërblim surprizë!"
+    },
+    "nextThreshold": "{{points}} pikë → {{reward}}",
+    "nextThresholdProgress": "{{current}} / {{target}} pikë → {{reward}}",
+    "moreFor": "Edhe {{count}} për {{reward}}",
+    "pointsLabel": "pikë",
+    "rewardShort": {
+      "try_again": "shpërblim",
+      "5_off": "5% zbritje",
+      "10_off": "10% zbritje",
+      "surprise": "shpërblim surprizë"
+    }
   }
 }
 

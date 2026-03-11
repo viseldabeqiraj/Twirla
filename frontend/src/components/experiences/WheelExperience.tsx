@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
+import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './WheelExperience.css';
@@ -24,6 +25,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   const [skillDirection, setSkillDirection] = useState(1);
   const [skillLocked, setSkillLocked] = useState(false);
   const [skillLabel, setSkillLabel] = useState('Warm-up');
+  const hasTrackedFinish = useRef(false);
 
   if (!wheel) return null;
 
@@ -146,7 +148,9 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     setSelectedPrizeIndex(null);
     setWheelRotation(0); // Reset to 0 for new spin
     setShowBlockedTooltip(false);
-    
+    hasTrackedFinish.current = false;
+    trackEvent(shopId, 'game_start', { mode: 'Wheel' });
+
     const { label, index } = selectPrize();
     setSelectedPrizeIndex(index); // Set immediately so wheel knows where to stop
     
@@ -169,7 +173,11 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
         setSelectedPrize(label);
         setShowResult(true);
         setHasSpun(true);
-        // Record that user has played
+        if (!hasTrackedFinish.current) {
+          hasTrackedFinish.current = true;
+          trackEvent(shopId, 'game_finish', { mode: 'Wheel' });
+          if (isWinningPrize(label)) trackEvent(shopId, 'reward_won', { mode: 'Wheel' });
+        }
         recordPlay(shopId);
       }, 2000);
     }, 2000);

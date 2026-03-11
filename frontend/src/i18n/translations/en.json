@@ -1,4 +1,12 @@
 {
+  "nav": {
+    "mainPage": "Main page",
+    "runner": "Runner",
+    "wheel": "Wheel",
+    "tapHearts": "Catch the Prize",
+    "scratch": "Scratch",
+    "countdown": "Countdown"
+  },
   "common": {
     "unknownMode": "Unknown experience mode",
     "logoAlt": "Logo",
@@ -20,15 +28,36 @@
     "noWinMessage": "Don't give up! Try again next time. 💪"
   },
   "tapHearts": {
-    "title": "Tap the Hearts!",
-    "subtitle": "Tap all hearts to win",
+    "title": "Catch the Prize",
+    "subtitle": "Tap falling items to score—avoid bombs!",
     "heartsTapped": "{{count}} / {{total}} hearts tapped"
+  },
+  "catchPrize": {
+    "title": "Catch the Prize",
+    "instruction": "Tap the falling items before they disappear. Hearts +1, gifts +3, bombs -2. Catch stars for 2x multiplier!",
+    "score": "Score",
+    "timer": "Time",
+    "start": "Start game",
+    "go": "Go!",
+    "tryAgain": "Try again",
+    "gameOver": "Game Over",
+    "claimReward": "Claim reward",
+    "tapToCatch": "Tap items to catch them",
+    "multiplierActive": "2×",
+    "reward": {
+      "noReward": "Try again for a reward next time!",
+      "small": "Small reward unlocked!",
+      "medium": "Medium reward unlocked!",
+      "top": "Top reward unlocked!"
+    }
   },
   "scratch": {
     "title": "Scratch to Win!",
     "subtitle": "Reveal your prize hidden below",
     "cardLabel": "Scratch here",
-    "hint": "Reveal your prize 🎁"
+    "hint": "Reveal your prize 🎁",
+    "scratchToReveal": "Scratch for the surprise",
+    "scratchHere": "Scratch here"
   },
   "countdown": {
     "title": "Offer Ending Soon!",
@@ -46,7 +75,67 @@
     "comingSoon": "Coming Soon!",
     "comingSoonSubtitle": "Twirla is coming…",
     "scratchHint": "✨ Scratch to reveal…",
-    "tagline": "Interactive platform for businesses."
+    "tagline": "Interactive platform for businesses.",
+    "scratchRevealTitle": "COMING SOON",
+    "scratchRevealSubtitle": "Interactive games for shops."
+  },
+  "dashboard": {
+    "title": "Shop admin",
+    "analyticsSummary": "Analytics summary",
+    "visitors": "Unique visitors",
+    "impressions": "Impressions",
+    "gamesPlayed": "Games started",
+    "finishes": "Games finished",
+    "rewardsWon": "Rewards won",
+    "couponsGenerated": "Coupons generated",
+    "couponsRedeemed": "Coupons redeemed",
+    "revenueGenerated": "Attributed revenue",
+    "redemptionRate": "Redemption rate",
+    "funnelTitle": "Conversion funnel",
+    "funnelVisitors": "Visitors",
+    "funnelGamesStarted": "Games started",
+    "funnelCouponsGenerated": "Coupons generated",
+    "funnelCouponsRedeemed": "Coupons redeemed",
+    "revenueOverTime": "Revenue over time",
+    "manualRedemption": "Manual coupon redemption",
+    "couponCode": "Coupon code",
+    "orderValue": "Order value",
+    "redeemButton": "Redeem coupon",
+    "redeeming": "Redeeming…",
+    "loading": "Loading…",
+    "adminAccess": "Admin access",
+    "invalidToken": "Invalid or missing token.",
+    "redeemSuccess": "Coupon redeemed successfully.",
+    "redeemPlaceholder": "e.g. TWIRLA-XXXX"
+  },
+  "runner": {
+    "title": "Twirla Run",
+    "instruction": "Tap or press space to jump",
+    "rewardHint": "Play to unlock rewards",
+    "start": "Start",
+    "score": "Score",
+    "best": "Best",
+    "gameOver": "Game Over",
+    "playAgain": "Play again",
+    "claimReward": "Claim reward",
+    "tapToJump": "Tap to jump",
+    "back": "Back",
+    "reward": {
+      "try_again": "Try again for a reward",
+      "5_off": "🎁 You unlocked 5% off!",
+      "10_off": "🎁 You unlocked 10% off!",
+      "surprise": "🎁 You unlocked a surprise reward!"
+    },
+    "nextThreshold": "{{points}} pts → {{reward}}",
+    "nextThresholdProgress": "{{current}} / {{target}} pts → {{reward}}",
+    "moreFor": "{{count}} more for {{reward}}",
+    "pointsLabel": "pts",
+    "rewardShort": {
+      "try_again": "a reward",
+      "5_off": "5% off",
+      "10_off": "10% off",
+      "surprise": "surprise reward"
+    }
   }
 }
 

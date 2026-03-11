@@ -1,0 +1,375 @@
+/* Twirla runner game – soft premium styling */
+
+.runner-state-enter {
+  animation: runnerFadeIn 0.3s ease-out;
+}
+
+@keyframes runnerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.runner-game {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  /* Use shop branding when inside experience host (--primary-color, --secondary-color set by host) */
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary-color, #db2777) 10%, #fff) 0%,
+    color-mix(in srgb, var(--secondary-color, #f6c7cd) 22%, #fff) 50%,
+    color-mix(in srgb, var(--primary-color, #db2777) 16%, #fff) 100%
+  );
+}
+
+.runner-game-card {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(251, 207, 232, 0.5);
+  box-shadow:
+    0 25px 60px rgba(219, 39, 119, 0.12),
+    0 8px 24px rgba(0, 0, 0, 0.06);
+  padding: 1.25rem;
+  position: relative;
+}
+
+/* Intro */
+.runner-intro {
+  text-align: center;
+  padding: 0.5rem 0 1rem;
+}
+
+.runner-intro-preview {
+  position: relative;
+  width: 100%;
+  height: 72px;
+  margin-bottom: 0.75rem;
+  border-radius: 12px;
+  background: linear-gradient(180deg, #fef7fb 0%, #fce7f3 100%);
+  overflow: hidden;
+}
+
+.runner-intro-character {
+  position: absolute;
+  left: 28%;
+  bottom: 14px;
+  width: 28px;
+  height: 30px;
+  background: var(--runner-accent, #db2777);
+  border-radius: 10px;
+}
+
+.runner-intro-eye {
+  position: absolute;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  background: #fff;
+  border-radius: 50%;
+  animation: runnerIntroBlink 3.5s ease-in-out infinite;
+}
+
+.runner-intro-eye::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 2px;
+  background: #334155;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.runner-intro-eye-left { left: 5px; }
+.runner-intro-eye-right { right: 5px; }
+
+@keyframes runnerIntroBlink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  94%, 96% { transform: scaleY(0.08); }
+}
+
+.runner-intro-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  background: var(--runner-highlight, #fbcfe8);
+  border-radius: 0 0 12px 12px;
+}
+
+.runner-intro-obstacle {
+  position: absolute;
+  right: 15%;
+  bottom: 14px;
+  width: 18px;
+  height: 24px;
+  background: var(--runner-accent, #be185d);
+  border-radius: 4px;
+  animation: runnerIntroObstacle 2.5s linear infinite;
+}
+
+@keyframes runnerIntroObstacle {
+  0% { transform: translateX(0); opacity: 1; }
+  85% { opacity: 1; }
+  100% { transform: translateX(-280px); opacity: 0; }
+}
+
+.runner-title {
+  font-size: clamp(1.5rem, 4.5vw, 1.85rem);
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.runner-instruction {
+  color: #64748b;
+  font-size: 0.95rem;
+  margin: 0 0 0.35rem;
+}
+
+.runner-reward-hint {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  margin: 0 0 1.25rem;
+}
+
+.runner-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: none;
+  text-decoration: none;
+}
+
+.runner-btn:active {
+  transform: scale(0.98);
+}
+
+.runner-btn-primary {
+  background: linear-gradient(135deg, var(--runner-accent, #db2777), var(--runner-highlight, #be185d));
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(219, 39, 119, 0.35);
+}
+
+.runner-btn-primary:hover {
+  box-shadow: 0 10px 28px rgba(219, 39, 119, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Playing */
+.runner-playing {
+  position: relative;
+}
+
+.runner-score-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 999px;
+  box-shadow: 0 4px 20px rgba(219, 39, 119, 0.18);
+  border: 1px solid rgba(219, 39, 119, 0.2);
+  position: relative;
+}
+
+.runner-score-bubble-label {
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.runner-score-bubble-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--runner-accent, #db2777);
+  min-width: 1.8em;
+  text-align: center;
+}
+
+.runner-score-pop .runner-score-bubble-value {
+  animation: runnerScorePop 0.35s ease-out;
+}
+
+.runner-plus-one {
+  position: absolute;
+  right: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--runner-accent, #db2777);
+  animation: runnerPlusOne 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes runnerScorePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes runnerPlusOne {
+  0% { opacity: 1; transform: translateY(-50%) scale(0.8); }
+  70% { opacity: 1; transform: translateY(-120%) scale(1.1); }
+  100% { opacity: 0; transform: translateY(-140%) scale(1); }
+}
+
+.runner-next-threshold {
+  margin: 0 0 0.4rem;
+  text-align: center;
+}
+
+.runner-threshold-progress {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--runner-accent, #db2777);
+  margin: 0 0 0.2rem;
+}
+
+.runner-threshold-more {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.runner-canvas-wrap {
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--primary-color, #db2777) 8%, #fff) 0%,
+    color-mix(in srgb, var(--secondary-color, #f6c7cd) 20%, #fff) 100%
+  );
+  min-height: 220px;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.runner-canvas {
+  display: block;
+  width: 100%;
+  height: 220px;
+  vertical-align: top;
+}
+
+/* Game over */
+.runner-gameover {
+  text-align: center;
+  padding: 0.5rem 0 0.5rem;
+  position: relative;
+  transition: opacity 0.28s ease-out;
+}
+
+.runner-gameover.runner-replay-fade {
+  opacity: 0;
+}
+
+.runner-gameover.runner-shake {
+  animation: runnerShake 0.4s ease-out;
+}
+
+@keyframes runnerShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+
+.runner-gameover-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 0.75rem;
+}
+
+.runner-gameover-score-main {
+  margin-bottom: 1rem;
+}
+
+.runner-gameover-score-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--runner-accent, #db2777);
+  display: block;
+  line-height: 1;
+}
+
+.runner-reward-unlocked {
+  background: linear-gradient(135deg, rgba(219, 39, 119, 0.12), rgba(244, 114, 182, 0.08));
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  margin-bottom: 1.25rem;
+  border: 1px solid rgba(219, 39, 119, 0.25);
+}
+
+.runner-reward-message {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #831843;
+}
+
+.runner-gameover-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  align-items: center;
+}
+
+.runner-gameover-best {
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.runner-btn-cta {
+  background: #fff;
+  color: var(--runner-accent, #db2777);
+  border: 2px solid var(--runner-accent, #db2777);
+}
+
+.runner-btn-cta:hover {
+  background: rgba(219, 39, 119, 0.06);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 420px) {
+  .runner-game-card {
+    padding: 1rem;
+    border-radius: 20px;
+  }
+
+  .runner-canvas-wrap,
+  .runner-canvas {
+    min-height: 200px;
+    height: 200px;
+  }
+}

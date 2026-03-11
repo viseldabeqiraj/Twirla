@@ -1,11 +1,14 @@
 using System.Linq;
 
-namespace Twirla.Api.Models;
+namespace Twirla.Domain.Entities;
 
 public class ShopConfig
 {
     public string ShopId { get; set; } = string.Empty;
-    public int? PlayCooldownHours { get; set; } = 24; // Default 24 hours between plays
+    public string? Slug { get; set; }
+    public string? Name { get; set; }
+    public string? AdminToken { get; set; }
+    public int? PlayCooldownHours { get; set; } = 24;
     public BrandingConfig Branding { get; set; } = new();
     public TextConfig Text { get; set; } = new();
     public CtaConfig Cta { get; set; } = new();
@@ -13,9 +16,7 @@ public class ShopConfig
     public TapHeartsConfig? TapHearts { get; set; }
     public ScratchConfig? Scratch { get; set; }
     public CountdownConfig? Countdown { get; set; }
-    
-    // Helper method to get the mode based on which configs are available
-    // For backward compatibility
+
     public ExperienceMode? GetDefaultMode()
     {
         if (Wheel != null) return ExperienceMode.Wheel;
@@ -24,22 +25,19 @@ public class ShopConfig
         if (Countdown != null) return ExperienceMode.Countdown;
         return null;
     }
-    
-    // Get translated version of the config
+
     public ShopConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language))
-        {
             return this;
-        }
-        
+
         return new ShopConfig
         {
             ShopId = ShopId,
             PlayCooldownHours = PlayCooldownHours,
-            Branding = Branding, // Branding doesn't need translation
+            Branding = Branding,
             Text = Text.GetForLanguage(language),
-            Cta = Cta, // CTA URL doesn't need translation
+            Cta = Cta,
             Wheel = Wheel != null ? new WheelConfig
             {
                 AllowRepeatSpins = Wheel.AllowRepeatSpins,
@@ -86,20 +84,14 @@ public class TextConfig
     public string CtaText { get; set; } = string.Empty;
     public string ResultTitle { get; set; } = string.Empty;
     public string? ResultSubtitle { get; set; }
-    
-    // Translations - if provided, these override the default text based on language
     public Dictionary<string, TextConfig>? Translations { get; set; }
-    
-    // Helper method to get text for a specific language
+
     public TextConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language) || Translations == null || !Translations.ContainsKey(language))
-        {
             return this;
-        }
-        
+
         var translated = Translations[language];
-        // Merge with base config (translated values override, but fallback to base if missing)
         return new TextConfig
         {
             Title = !string.IsNullOrEmpty(translated.Title) ? translated.Title : Title,
@@ -128,58 +120,33 @@ public class PrizeConfig
     public int Weight { get; set; }
     public string? IconUrl { get; set; }
     public string? Description { get; set; }
-    public bool? IsWinning { get; set; } // null = auto-detect, true = winning, false = losing
-    
-    // Translations
+    public bool? IsWinning { get; set; }
     public Dictionary<string, PrizeConfig>? Translations { get; set; }
-    
+
     public PrizeConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language) || Translations == null || !Translations.ContainsKey(language))
-        {
             return this;
-        }
-        
+
         var translated = Translations[language];
         return new PrizeConfig
         {
             Label = !string.IsNullOrEmpty(translated.Label) ? translated.Label : Label,
-            Weight = Weight, // Weight doesn't change
-            IconUrl = IconUrl, // Icon doesn't change
+            Weight = Weight,
+            IconUrl = IconUrl,
             Description = !string.IsNullOrEmpty(translated.Description) ? translated.Description : Description,
-            IsWinning = IsWinning // Winning status doesn't change with translation
+            IsWinning = IsWinning
         };
     }
-    
-    // Helper to determine if prize is winning (auto-detect if not explicitly set)
+
     public bool GetIsWinning()
     {
-        // If explicitly set, use that value
         if (IsWinning.HasValue)
-        {
             return IsWinning.Value;
-        }
-        
-        // Auto-detect: only mark as losing if label EXACTLY matches losing patterns
-        // This prevents false positives (e.g., "20% Off" should never match "off" in "no prize")
-        var losingPatterns = new[] { 
-            "try again", 
-            "better luck", 
-            "no prize", 
-            "nothing", 
-            "unlucky",
-            "sorry",
-            "no win",
-            "not this time"
-        };
+
+        var losingPatterns = new[] { "try again", "better luck", "no prize", "nothing", "unlucky", "sorry", "no win", "not this time" };
         var labelLower = Label.ToLowerInvariant().Trim();
-        
-        // Only match if label is exactly a losing pattern (case-insensitive)
-        // This is very strict to avoid false positives
-        var isLosing = losingPatterns.Contains(labelLower);
-        
-        // Default to winning (most prizes like discounts, free shipping, etc. are winning)
-        return !isLosing;
+        return !losingPatterns.Contains(labelLower);
     }
 }
 
@@ -189,17 +156,13 @@ public class TapHeartsConfig
     public string HeartColor { get; set; } = "#FF0000";
     public string RevealText { get; set; } = string.Empty;
     public string? RevealSubtitle { get; set; }
-    
-    // Translations
     public Dictionary<string, TapHeartsConfig>? Translations { get; set; }
-    
+
     public TapHeartsConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language) || Translations == null || !Translations.ContainsKey(language))
-        {
             return this;
-        }
-        
+
         var translated = Translations[language];
         return new TapHeartsConfig
         {
@@ -217,17 +180,13 @@ public class ScratchConfig
     public string OverlayText { get; set; } = string.Empty;
     public string RevealText { get; set; } = string.Empty;
     public string? RevealSubtitle { get; set; }
-    
-    // Translations
     public Dictionary<string, ScratchConfig>? Translations { get; set; }
-    
+
     public ScratchConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language) || Translations == null || !Translations.ContainsKey(language))
-        {
             return this;
-        }
-        
+
         var translated = Translations[language];
         return new ScratchConfig
         {
@@ -241,20 +200,16 @@ public class ScratchConfig
 
 public class CountdownConfig
 {
-    public string EndAt { get; set; } = string.Empty; // ISO 8601 string
+    public string EndAt { get; set; } = string.Empty;
     public string EndMessage { get; set; } = string.Empty;
     public bool ShowCtaBeforeEnd { get; set; } = true;
-    
-    // Translations
     public Dictionary<string, CountdownConfig>? Translations { get; set; }
-    
+
     public CountdownConfig GetForLanguage(string? language)
     {
         if (string.IsNullOrEmpty(language) || Translations == null || !Translations.ContainsKey(language))
-        {
             return this;
-        }
-        
+
         var translated = Translations[language];
         return new CountdownConfig
         {
@@ -264,4 +219,3 @@ public class CountdownConfig
         };
     }
 }
-

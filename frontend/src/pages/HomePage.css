@@ -2,25 +2,123 @@
   min-height: 100vh;
   display: grid;
   place-items: center;
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   background: linear-gradient(145deg, #020617, #0f172a);
 }
+
 .home-container {
-  width: 100%; max-width: 520px; text-align: center;
-  background: rgba(255,255,255,.92);
-  border: 1px solid rgba(148,163,184,.28);
+  width: 100%;
+  max-width: 440px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(148, 163, 184, 0.15);
   border-radius: 24px;
-  padding: 1.35rem;
-  box-shadow: 0 30px 70px rgba(0,0,0,.45);
+  padding: 1.75rem 1.5rem;
+  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.35);
 }
-.home-logo { margin-bottom: .8rem; }
-.twirla-logo-large { max-width: 140px; }
-.home-tagline { color: #64748b; font-size: .82rem; margin-top: .4rem; }
-.home-scratch-hint { color: #475569; font-size: .86rem; margin-bottom: .8rem; }
-.home-scratch-card { position: relative; border-radius: 16px; overflow: hidden; height: 220px; background: linear-gradient(120deg, #ec4899, #8b5cf6); padding: 2px; }
-.scratch-card-content { position: absolute; inset: 2px; border-radius: 14px; display: grid; place-items: center; background: linear-gradient(130deg, #334155, #1e293b); }
-.home-scratch-canvas { position: absolute; inset: 2px; width: calc(100% - 4px); height: calc(100% - 4px); border-radius: 14px; }
-.coming-soon { font-size: 1.4rem; color: #fff; }
-.home-reveal { min-height: 220px; display: grid; place-items: center; }
-.coming-soon-big { color: #db2777; font-size: 2rem; }
-.coming-soon-subtitle { color: #64748b; }
+
+.home-hero {
+  margin-bottom: 0.5rem;
+}
+
+.home-hero-logo {
+  max-width: 120px;
+}
+
+.home-hero-tagline {
+  color: #64748b;
+  font-size: 0.82rem;
+  margin: 0.2rem 0 0;
+}
+
+/* Scratch card as main hero element */
+.home-scratch-section {
+  position: relative;
+  margin: 0.25rem 0 0.75rem;
+  padding: 0;
+}
+
+.home-scratch-section .confetti-container {
+  z-index: 10;
+}
+
+/* Reveal panel: title + subtitle on Twirla gradient (pink → purple) */
+.home-scratch-reveal-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 1rem;
+}
+
+.home-scratch-reveal-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+}
+
+.home-scratch-reveal-subtitle {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0.65rem 0 0;
+  line-height: 1.4;
+  max-width: 22ch;
+  font-weight: 500;
+}
+
+/* Demo section */
+.home-demo-section {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.home-demo-title {
+  font-size: 0.9rem;
+  color: #475569;
+  margin: 0 0 0.5rem 0;
+}
+
+.home-demo-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.home-demo-links a {
+  display: inline-block;
+  padding: 0.4rem 0.75rem;
+  background: #e2e8f0;
+  color: #334155;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.home-demo-links a:hover {
+  background: #cbd5e1;
+}
+
+.home-demo-admin {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.home-demo-admin a {
+  color: #0ea5e9;
+  text-decoration: none;
+}
+
+.home-demo-admin a:hover {
+  text-decoration: underline;
+}
+
+.home-demo-section--hidden {
+  display: none;
+}

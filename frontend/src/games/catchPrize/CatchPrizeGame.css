@@ -1,0 +1,266 @@
+/* Catch the Prize – Twirla card layout, mobile-first */
+
+.catch-prize-game {
+  width: 100%;
+  min-height: 320px;
+  position: relative;
+}
+
+.catch-prize-intro {
+  text-align: center;
+  padding: 1rem 0.5rem;
+}
+
+.catch-prize-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+}
+
+.catch-prize-instruction {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin: 0 0 1.25rem;
+  line-height: 1.4;
+  max-width: 28ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.catch-prize-btn-start {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  border: none;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--catch-primary, #db2777), var(--secondary-color, #be185d));
+  color: #fff;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--catch-primary, #db2777) 35%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catch-prize-btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--catch-primary, #db2777) 45%, transparent);
+}
+
+.catch-prize-btn-start:active {
+  transform: translateY(0);
+}
+
+/* Countdown overlay */
+.catch-prize-countdown-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
+}
+
+.catch-prize-countdown-num {
+  font-size: 4rem;
+  font-weight: 800;
+  color: var(--catch-primary, #db2777);
+  animation: catch-pop 0.4s ease-out;
+}
+
+@keyframes catch-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* HUD */
+.catch-prize-hud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0;
+}
+
+.catch-prize-score,
+.catch-prize-timer {
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.catch-prize-score strong,
+.catch-prize-timer strong {
+  color: #1e293b;
+}
+
+.catch-prize-multiplier {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--catch-primary, #db2777);
+  background: color-mix(in srgb, var(--catch-primary, #db2777) 18%, transparent);
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+}
+
+/* Play area */
+.catch-prize-play-area {
+  position: relative;
+  width: 100%;
+  min-height: 280px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--catch-primary, #db2777) 6%, #fff) 0%,
+    color-mix(in srgb, var(--catch-primary, #db2777) 10%, #fff) 100%
+  );
+  border: 1px solid color-mix(in srgb, var(--catch-primary, #db2777) 20%, transparent);
+  touch-action: manipulation;
+  cursor: pointer;
+}
+
+.catch-prize-play-area:focus {
+  outline: 2px solid var(--catch-primary, #db2777);
+  outline-offset: 2px;
+}
+
+.catch-prize-item {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  margin-left: -24px;
+  margin-top: -24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.75rem;
+  pointer-events: none;
+  transition: transform 0.12s ease-out;
+}
+
+.catch-prize-item--heart {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.catch-prize-item--gift {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.12));
+}
+
+.catch-prize-item--bomb {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+}
+
+.catch-prize-item--star {
+  filter: drop-shadow(0 2px 4px rgba(255, 193, 7, 0.3));
+}
+
+.catch-prize-float {
+  position: absolute;
+  margin-left: -20px;
+  margin-top: -12px;
+  font-size: 1rem;
+  font-weight: 800;
+  pointer-events: none;
+  animation: catch-float-up 0.7s ease-out forwards;
+}
+
+.catch-prize-float.positive {
+  color: #16a34a;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+}
+
+.catch-prize-float.negative {
+  color: #dc2626;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.9);
+}
+
+@keyframes catch-float-up {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-40px) scale(1.1);
+  }
+}
+
+/* Ended / result */
+.catch-prize-ended {
+  position: relative;
+  text-align: center;
+  padding: 1.5rem 1rem;
+}
+
+.catch-prize-gameover {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem;
+  color: #1e293b;
+}
+
+.catch-prize-final-score {
+  font-size: 1.1rem;
+  color: #475569;
+  margin: 0 0 0.75rem;
+}
+
+.catch-prize-reward-message {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--catch-primary, #db2777);
+  margin: 0 0 1.25rem;
+  line-height: 1.4;
+}
+
+.catch-prize-ended-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.catch-prize-btn-cta {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--catch-primary, #db2777), var(--secondary-color, #be185d));
+  color: #fff;
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--catch-primary, #db2777) 35%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.catch-prize-btn-cta:hover {
+  transform: translateY(-2px);
+  color: #fff;
+}
+
+.catch-prize-btn-retry {
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  background: #fff;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.catch-prize-btn-retry:hover {
+  background: #f1f5f9;
+  color: #1e293b;
+}

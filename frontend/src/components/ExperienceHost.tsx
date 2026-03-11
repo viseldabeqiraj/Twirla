@@ -3,9 +3,10 @@ import { motion } from 'framer-motion';
 import { ShopConfig, ExperienceMode } from '../types/ShopConfig';
 import { useTranslation } from '../i18n/i18n';
 import WheelExperience from './experiences/WheelExperience';
-import TapHeartsExperience from './experiences/TapHeartsExperience';
+import CatchPrizeExperience from './experiences/CatchPrizeExperience';
 import ScratchExperience from './experiences/ScratchExperience';
 import CountdownExperience from './experiences/CountdownExperience';
+import RunnerGame from '../games/runner/RunnerGame';
 import './ExperienceHost.css';
 
 interface ExperienceHostProps {
@@ -36,7 +37,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   useEffect(() => {
     const checkForResult = () => {
       if (!experienceContentRef.current) return;
-      const hasResult = experienceContentRef.current.querySelector('.wheel-result, .hearts-reveal, .scratch-reveal, .countdown-ended');
+      const hasResult = experienceContentRef.current.querySelector('.wheel-result, .hearts-reveal, .scratch-reveal, .countdown-ended, .runner-gameover, .catch-prize-ended');
       if (hasResult) {
         setShouldPulse(true);
         const timer = setTimeout(() => setShouldPulse(false), 10000);
@@ -52,10 +53,25 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
 
   const renderExperience = () => {
     switch (mode) {
+      case ExperienceMode.Runner:
+        return (
+          <RunnerGame
+            config={{
+              theme: {
+                accent: branding.primaryColor,
+                highlight: branding.accentColor ?? branding.secondaryColor,
+                ground: branding.secondaryColor,
+                obstacleColor: branding.primaryColor,
+              },
+              ctaLabel: text.ctaText,
+              ctaUrl: cta.url,
+            }}
+          />
+        );
       case ExperienceMode.Wheel:
         return config.wheel ? <WheelExperience config={config} /> : null;
       case ExperienceMode.TapHearts:
-        return config.tapHearts ? <TapHeartsExperience config={config} /> : null;
+        return config.tapHearts ? <CatchPrizeExperience config={config} /> : null;
       case ExperienceMode.Scratch:
         return config.scratch ? <ScratchExperience config={config} /> : null;
       case ExperienceMode.Countdown:

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import './i18next'
 import { I18nProvider } from './i18n/i18n'
 import App from './App.tsx'
 import './index.css'

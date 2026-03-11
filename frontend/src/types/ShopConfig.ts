@@ -12,6 +12,7 @@ export interface ShopConfig {
 }
 
 export enum ExperienceMode {
+  Runner = 'Runner',
   Wheel = 'Wheel',
   TapHearts = 'TapHearts',
   Scratch = 'Scratch',

@@ -1,0 +1,82 @@
+/* Experience error page */
+.experience-error-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: linear-gradient(160deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+}
+
+.experience-error-card {
+  max-width: 420px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.experience-error-icon {
+  font-size: 3rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.experience-error-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.experience-error-message {
+  margin: 0 0 0.75rem 0;
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.45;
+}
+
+.experience-error-hint {
+  margin: 0 0 1.5rem 0;
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+.experience-error-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.experience-error-btn {
+  display: inline-block;
+  padding: 0.65rem 1.25rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.experience-error-btn-primary {
+  background: #1e293b;
+  color: #fff;
+}
+
+.experience-error-btn-primary:hover {
+  background: #334155;
+  color: #fff;
+}
+
+.experience-error-btn:not(.experience-error-btn-primary) {
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.experience-error-btn:not(.experience-error-btn-primary):hover {
+  background: #e2e8f0;
+  color: #334155;
+}

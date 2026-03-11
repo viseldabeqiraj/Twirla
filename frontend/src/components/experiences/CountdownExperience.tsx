@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
+import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
 import './CountdownExperience.css';
@@ -25,12 +26,23 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
   const [wasAlreadyEnded, setWasAlreadyEnded] = useState(false);
   const [initialDurationMs, setInitialDurationMs] = useState<number | null>(null);
   const [energy, setEnergy] = useState(0);
+  const hasTrackedStart = useRef(false);
+  const hasTrackedFinish = useRef(false);
 
   if (!countdown) return null;
 
   // TEMP (testing): daily cooldown disabled.
   // const playStatus = canUserPlay(shopId, playCooldownHours);
   const playStatus = { canPlay: true, hoursRemaining: null as number | null };
+
+  useEffect(() => {
+    const endDate = new Date(countdown.endAt);
+    if (endDate.getTime() <= Date.now()) return; // Already ended, don't track start
+    if (!hasTrackedStart.current) {
+      hasTrackedStart.current = true;
+      trackEvent(shopId, 'game_start', { mode: 'Countdown' });
+    }
+  }, [shopId, countdown.endAt]);
 
   useEffect(() => {
     // Check if countdown already ended before component mounted
@@ -78,10 +90,14 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
     return () => clearInterval(interval);
   }, [countdown.endAt]);
   
-  // Record play when countdown ends (only if it ended while user was viewing, not if it was already ended)
+  // Record play and analytics when countdown ends (only if it ended while user was viewing)
   useEffect(() => {
     if (hasEnded && !wasAlreadyEnded && playStatus.canPlay && !hasRecordedPlay) {
-      // Countdown just ended while user was viewing it
+      if (!hasTrackedFinish.current) {
+        hasTrackedFinish.current = true;
+        trackEvent(shopId, 'game_finish', { mode: 'Countdown' });
+        trackEvent(shopId, 'reward_won', { mode: 'Countdown' });
+      }
       recordPlay(shopId);
       setHasRecordedPlay(true);
     }
