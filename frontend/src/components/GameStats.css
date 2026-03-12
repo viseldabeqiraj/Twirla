@@ -1,0 +1,47 @@
+/* Shared score/timer HUD for all games – consistent look */
+
+.game-stats-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0;
+}
+
+.game-stat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: #475569;
+  font-variant-numeric: tabular-nums;
+}
+
+.game-stat-label {
+  font-weight: 500;
+  color: #64748b;
+}
+
+.game-stat-value {
+  font-weight: 700;
+  color: #1e293b;
+  font-size: 1rem;
+}
+
+.game-stat-value.urgent {
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .game-stats-row {
+    gap: 0.6rem 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .game-stat {
+    font-size: 0.85rem;
+  }
+  .game-stat-value {
+    font-size: 0.95rem;
+  }
+}

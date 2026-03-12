@@ -1,6 +1,46 @@
 {
+  "campaign": {
+    "headline": "Play and win a surprise discount",
+    "rewardPromise": "Try your luck and win rewards from this shop.",
+    "playNow": "Play now",
+    "startGame": "Start game",
+    "winReward": "Win a reward",
+    "moreWaysToWin": "More ways to win",
+    "featuredGame": "Featured game",
+    "claimReward": "Claim your reward",
+    "copyCode": "Copy code",
+    "messageShop": "Message the shop",
+    "visitShop": "Visit shop",
+    "visitInstagram": "Visit Instagram",
+    "visitTiktok": "Visit TikTok",
+    "dmToClaim": "DM us to claim your prize",
+    "tryAnotherGame": "Try another game"
+  },
+  "landing": {
+    "loading": "Loading…",
+    "errorMissingShop": "Missing shop",
+    "errorLoadFailed": "Failed to load shop",
+    "goToTwirla": "Go to Twirla",
+    "poweredByTwirla": "Powered by Twirla",
+    "howItWorksTitle": "How it works",
+    "howItWorksPlay": "Play a quick game",
+    "howItWorksWin": "Win a reward",
+    "howItWorksClaim": "Claim with the shop",
+    "testimonialsTitle": "What customers say",
+    "trustBadgesTitle": "Why shop with us",
+    "faqTitle": "Frequently asked questions"
+  },
+  "social": {
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "whatsapp": "WhatsApp",
+    "website": "Website",
+    "call": "Call",
+    "email": "Email"
+  },
   "nav": {
     "mainPage": "Main page",
+    "backToShop": "Back to shop",
     "runner": "Runner",
     "wheel": "Wheel",
     "tapHearts": "Catch the Prize",

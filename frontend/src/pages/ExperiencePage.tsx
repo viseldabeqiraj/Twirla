@@ -102,17 +102,19 @@ export default function ExperiencePage() {
   ].filter(Boolean) as ExperienceMode[];
 
   return (
-    <div 
+    <div
+      className="experience-page-wrap"
       style={{
         '--primary-color': config.branding.primaryColor,
         '--secondary-color': config.branding.secondaryColor,
       } as React.CSSProperties}
     >
-      <ModeNavigation 
-        currentMode={mode!} 
-        shopName={shopName!} 
+      <ModeNavigation
+        currentMode={mode!}
+        shopName={shopName!}
         uniqueId={uniqueId!}
         availableModes={availableModes}
+        hideGameTabs
       />
       <LanguageSwitcher />
       <ExperienceHost config={config} />

@@ -2,7 +2,7 @@
  * Catch the Prize – falling-item micro-game types.
  */
 
-export type FallingItemKind = 'heart' | 'gift' | 'bomb' | 'star';
+export type FallingItemKind = 'heart' | 'gift' | 'bomb' | 'star' | 'gem';
 
 export interface FallingItem {
   id: number;
@@ -44,6 +44,8 @@ export interface CatchPrizeGameState {
   nextItemId: number;
   /** Next id for floating scores. */
   nextFloatId: number;
+  /** Consecutive non-bomb catches for combo bonus. */
+  comboCount: number;
 }
 
 export const GAME_DURATION_MS = 20000;
@@ -66,4 +68,5 @@ export const ITEM_POINTS: Record<FallingItemKind, number> = {
   gift: 3,
   bomb: -2,
   star: 0,
+  gem: 12,
 };

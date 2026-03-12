@@ -2,15 +2,17 @@ import type { FeaturedProductConfig } from '../../types/ShopLandingConfig';
 
 interface FeaturedProductsProps {
   products: FeaturedProductConfig[];
+  /** Optional custom section title (e.g. "Featured", "Best sellers") */
+  sectionTitle?: string;
 }
 
-export default function FeaturedProducts({ products }: FeaturedProductsProps) {
+export default function FeaturedProducts({ products, sectionTitle }: FeaturedProductsProps) {
   if (products.length === 0) return null;
 
   return (
     <section className="shop-section shop-products">
       <div className="shop-section-inner">
-        <h2 className="shop-section-title">Featured</h2>
+        <h2 className="shop-section-title">{sectionTitle ?? 'Featured'}</h2>
         <div className="shop-products-grid">
           {products.map((p) => (
             <article key={p.id} className="shop-product-card">

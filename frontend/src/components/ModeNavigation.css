@@ -134,6 +134,14 @@
   line-height: 1;
 }
 
+/* Minimal nav: only "Back to shop", no game tabs (public campaign experience) */
+.mode-navigation-minimal .mode-nav-buttons {
+  display: none;
+}
+.mode-navigation-minimal .mode-nav-divider {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .mode-nav-container {
     padding: 0 0.75rem;

@@ -1,22 +1,25 @@
 import type { ShopConfig } from '../types/ShopConfig';
 import type { ShopLandingConfig } from '../types/ShopLandingConfig';
+import { PUBLIC_CAMPAIGN_GAMES } from '../types/ShopLandingConfig';
 import { ExperienceMode } from '../types/ShopConfig';
 
 /**
  * Map API ShopConfig + URL slug to ShopLandingConfig so the landing page
  * uses real shop branding (logo, colors, name, CTA) and enabled games.
+ * Only public campaign games (Wheel, Scratch, Runner, Catch the Prize) are included.
  */
 export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string): ShopLandingConfig {
   const { branding, text, cta } = config;
   const shopName = branding.brandName ?? (config as { name?: string }).name ?? formatSlugAsName(shopSlug);
 
-  const enabledGames: ExperienceMode[] = [];
-  if (config.wheel) enabledGames.push(ExperienceMode.Wheel);
-  if (config.tapHearts) enabledGames.push(ExperienceMode.TapHearts);
-  if (config.scratch) enabledGames.push(ExperienceMode.Scratch);
-  if (config.countdown) enabledGames.push(ExperienceMode.Countdown);
-  // Runner is always available as an experience mode
-  enabledGames.unshift(ExperienceMode.Runner);
+  const allEnabled: ExperienceMode[] = [];
+  if (config.wheel) allEnabled.push(ExperienceMode.Wheel);
+  if (config.tapHearts) allEnabled.push(ExperienceMode.TapHearts);
+  if (config.scratch) allEnabled.push(ExperienceMode.Scratch);
+  if (config.countdown) allEnabled.push(ExperienceMode.Countdown);
+  allEnabled.unshift(ExperienceMode.Runner);
+  const enabledGames = allEnabled.filter((m) => PUBLIC_CAMPAIGN_GAMES.includes(m));
+  const featuredGame = enabledGames[0];
 
   return {
     shopSlug,
@@ -27,6 +30,7 @@ export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string):
     hero: {
       logoUrl: branding.logoUrl,
       shopName,
+      headline: undefined,
       tagline: text.subtitle ?? 'Play, win rewards, and shop with us.',
       cta: {
         label: text.ctaText,
@@ -39,6 +43,7 @@ export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string):
     social: {},
     featuredProducts: [],
     enabledGames,
+    featuredGame,
     footer: {
       shopName,
       copyright: `© ${shopName}`,

@@ -1,3 +1,4 @@
+import { useTranslation } from '../../i18n/i18n';
 import type { SocialLinksConfig } from '../../types/ShopLandingConfig';
 
 interface SocialButtonsProps {
@@ -5,25 +6,26 @@ interface SocialButtonsProps {
 }
 
 const LINKS = [
-  { key: 'instagram' as const, label: 'Instagram', emoji: '📷', baseUrl: 'https://instagram.com/' },
-  { key: 'tiktok' as const, label: 'TikTok', emoji: '🎵', baseUrl: 'https://tiktok.com/@' },
-  { key: 'whatsapp' as const, label: 'WhatsApp', emoji: '💬', baseUrl: 'https://wa.me/' },
-  { key: 'website' as const, label: 'Website', emoji: '🌐', baseUrl: '' },
-  { key: 'phone' as const, label: 'Call', emoji: '📞', baseUrl: 'tel:' },
-  { key: 'email' as const, label: 'Email', emoji: '✉️', baseUrl: 'mailto:' },
+  { key: 'instagram' as const, labelKey: 'social.instagram', emoji: '📷', baseUrl: 'https://instagram.com/' },
+  { key: 'tiktok' as const, labelKey: 'social.tiktok', emoji: '🎵', baseUrl: 'https://tiktok.com/@' },
+  { key: 'whatsapp' as const, labelKey: 'social.whatsapp', emoji: '💬', baseUrl: 'https://wa.me/' },
+  { key: 'website' as const, labelKey: 'social.website', emoji: '🌐', baseUrl: '' },
+  { key: 'phone' as const, labelKey: 'social.call', emoji: '📞', baseUrl: 'tel:' },
+  { key: 'email' as const, labelKey: 'social.email', emoji: '✉️', baseUrl: 'mailto:' },
 ] as const;
 
 export default function SocialButtons({ social }: SocialButtonsProps) {
+  const { t } = useTranslation();
   const items = LINKS.filter(({ key }) => {
     const value = social[key];
     if (!value) return false;
     if (key === 'website' || key === 'phone' || key === 'email') return true;
     return value.startsWith('http') || value.length > 0;
-  }).map(({ key, label, emoji, baseUrl }) => {
+  }).map(({ key, labelKey, emoji, baseUrl }) => {
     const value = social[key];
     const href =
       key === 'website' ? value : key === 'phone' ? `tel:${value}` : key === 'email' ? `mailto:${value}` : value?.startsWith('http') ? value : `${baseUrl}${value}`;
-    return { key, label, emoji, href };
+    return { key, label: t(labelKey), emoji, href };
   });
 
   if (items.length === 0) return null;

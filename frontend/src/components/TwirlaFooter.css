@@ -1,0 +1,70 @@
+/* Footer at bottom of viewport – flex child so it’s always visible */
+.twirla-footer-fixed {
+  flex: 0 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem 0.6rem;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  background: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 -2px 14px rgba(0, 0, 0, 0.08);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Mobile: fixed to viewport bottom so it’s always visible (avoids 100dvh/address-bar issues) */
+@media (max-width: 768px) {
+  .twirla-footer-fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    min-height: 48px;
+    padding: 0.55rem 1rem;
+    padding-bottom: max(0.55rem, env(safe-area-inset-bottom));
+    box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.12);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .twirla-footer-fixed-logo {
+    height: 18px;
+  }
+  .twirla-footer-fixed-name {
+    font-size: 0.95rem;
+  }
+  .twirla-footer-fixed-powered {
+    font-size: 0.75rem;
+  }
+}
+.twirla-footer-fixed-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: -0.02em;
+}
+.twirla-footer-fixed-brand:hover {
+  color: #be185d;
+}
+.twirla-footer-fixed-logo {
+  height: 16px;
+  width: auto;
+  flex-shrink: 0;
+  display: block;
+}
+.twirla-footer-fixed-name {
+  font-size: 0.9rem;
+}
+.twirla-footer-fixed-powered {
+  font-size: 0.7rem;
+  color: #64748b;
+  margin-left: 0.15rem;
+}

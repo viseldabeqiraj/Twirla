@@ -20,10 +20,35 @@ async function loadFromStaticJson(shopId: string, mode?: string): Promise<ShopCo
     throw new Error(`Shop configuration not found for: ${shopId}${mode ? ` (mode: ${mode})` : ''}`);
   }
 
-  // For static hosting fallback we keep config as-is.
-  // Language-specific merged values are expected to be pre-resolved by API,
-  // but the frontend translations still cover shared copy.
   return target;
+}
+
+/** Find shop in static JSON by slug (e.g. "pinkster" → shopId "pinkster-a7f3b2c9d1e4"). Used when API returns HTML (SPA fallback). */
+async function loadFromStaticJsonBySlug(slug: string, _mode?: string): Promise<ShopConfig> {
+  const res = await fetch('/shops.json');
+  if (!res.ok) {
+    throw new Error('Shop not found');
+  }
+  const payload = (await res.json()) as ShopsPayload;
+  const prefix = `${slug.toLowerCase()}-`;
+  const target = payload.shops.find((shop) => shop.shopId.toLowerCase().startsWith(prefix));
+  if (!target) {
+    throw new Error(`Shop configuration not found for slug: ${slug}`);
+  }
+  return target;
+}
+
+/** Safe parse JSON; returns null if response is HTML or invalid. */
+async function parseJsonOrNull(response: Response): Promise<ShopConfig | null> {
+  const text = await response.text();
+  if (!text.trim().startsWith('{') && !text.trim().startsWith('[')) {
+    return null; // likely HTML (e.g. SPA index)
+  }
+  try {
+    return JSON.parse(text) as ShopConfig;
+  } catch {
+    return null;
+  }
 }
 
 /** Fetch config by slug (e.g. "pinkster", "demo") so URLs like /wheel/pinkster/any work. */
@@ -37,12 +62,18 @@ export async function fetchShopConfigBySlug(
     ? `${api}/config/by-slug/${encodeURIComponent(slug)}/${mode}`
     : `${api}/config/by-slug/${encodeURIComponent(slug)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
-  const response = await fetch(url);
-  if (!response.ok) {
-    if (response.status === 404) throw new Error('Shop not found');
-    throw new Error(`Request failed: ${response.status}`);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 404) throw new Error('Shop not found');
+      throw new Error(`Request failed: ${response.status}`);
+    }
+    const data = await parseJsonOrNull(response);
+    if (data) return data;
+  } catch {
+    // fall through to static
   }
-  return (await response.json()) as ShopConfig;
+  return loadFromStaticJsonBySlug(slug, mode);
 }
 
 export async function fetchShopConfig(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
@@ -52,17 +83,25 @@ export async function fetchShopConfig(shopId: string, mode?: string, language?: 
 
   try {
     const response = await fetch(url);
-
     if (!response.ok) {
       if (response.status === 404) throw new Error('Shop not found');
       throw new Error(`API request failed: ${response.status}`);
     }
-
-    const data = await response.json();
-    return data as ShopConfig;
+    const data = await parseJsonOrNull(response);
+    if (data) return data;
+    // Response was 200 but not JSON (e.g. SPA index.html when API base not set)
+    throw new Error('Not JSON');
   } catch (e) {
-    // Cloudflare static hosting fallback
-    if (e instanceof Error && e.message !== 'Shop not found') throw e;
-    return loadFromStaticJson(shopId, mode);
+    // Try static JSON by exact shopId first
+    try {
+      return await loadFromStaticJson(shopId, mode);
+    } catch {
+      // Try by slug (e.g. "pinkster-main" → slug "pinkster")
+      const slugMatch = shopId.match(/^([a-z0-9-]+)-([a-z0-9]+)$/i);
+      if (slugMatch) {
+        return loadFromStaticJsonBySlug(slugMatch[1], mode);
+      }
+      throw e instanceof Error ? e : new Error('Shop not found');
+    }
   }
 }

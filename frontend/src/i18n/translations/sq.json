@@ -1,6 +1,46 @@
 {
+  "campaign": {
+    "headline": "Luaj dhe fiton një zbritje surprizë",
+    "rewardPromise": "Provo fatin dhe fiton shpërblime nga ky dyqan.",
+    "playNow": "Luaj tani",
+    "startGame": "Fillo lojën",
+    "winReward": "Fito një shpërblim",
+    "moreWaysToWin": "Më shumë mënyra për të fituar",
+    "featuredGame": "Loja e zgjedhur",
+    "claimReward": "Merr shpërblimin tënd",
+    "copyCode": "Kopjo kodin",
+    "messageShop": "Dërgo mesazh dyqanit",
+    "visitShop": "Vizito dyqanin",
+    "visitInstagram": "Vizito Instagram",
+    "visitTiktok": "Vizito TikTok",
+    "dmToClaim": "Na shkruaj për të marrë çmimin",
+    "tryAnotherGame": "Provo një lojë tjetër"
+  },
+  "landing": {
+    "loading": "Duke u ngarkuar…",
+    "errorMissingShop": "Mungon dyqani",
+    "errorLoadFailed": "Dështoi ngarkimi i dyqanit",
+    "goToTwirla": "Shko tek Twirla",
+    "poweredByTwirla": "Powered by Twirla",
+    "howItWorksTitle": "Si funksionon",
+    "howItWorksPlay": "Luaj një lojë të shpejtë",
+    "howItWorksWin": "Fito një shpërblim",
+    "howItWorksClaim": "Merr me dyqanin",
+    "testimonialsTitle": "Çfarë thonë konsumatorët",
+    "trustBadgesTitle": "Pse të blesh tek ne",
+    "faqTitle": "Pyetjet më të bëra"
+  },
+  "social": {
+    "instagram": "Instagram",
+    "tiktok": "TikTok",
+    "whatsapp": "WhatsApp",
+    "website": "Faqja e internetit",
+    "call": "Telefono",
+    "email": "Email"
+  },
   "nav": {
     "mainPage": "Faqja kryesore",
+    "backToShop": "Mbrapsht te dyqani",
     "runner": "Runner",
     "wheel": "Rrotulla",
     "tapHearts": "Kap Çmimin",

@@ -16,7 +16,8 @@
 }
 
 .runner-game {
-  min-height: 100vh;
+  min-height: 100%;
+  min-height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,6 +43,26 @@
     0 8px 24px rgba(0, 0, 0, 0.06);
   padding: 1.25rem;
   position: relative;
+}
+
+@media (max-width: 768px) {
+  .runner-game {
+    padding: 0.5rem 0;
+    min-height: auto;
+    align-items: flex-start;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .runner-game-card {
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1.25rem;
+    min-height: auto;
+    box-sizing: border-box;
+  }
 }
 
 /* Intro */
@@ -198,11 +219,11 @@
 .runner-score-bubble-label {
   font-size: 0.85rem;
   color: #64748b;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .runner-score-bubble-value {
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   color: var(--runner-accent, #db2777);
   min-width: 1.8em;
@@ -372,4 +393,23 @@
     min-height: 200px;
     height: 200px;
   }
+}
+
+/* Desktop: don't force full viewport height so game fits without scrolling */
+@media (min-width: 769px) {
+  .runner-game {
+    min-height: auto;
+    padding: 0.35rem 0;
+    align-items: flex-start;
+  }
+  .runner-game-card {
+    padding: 0.75rem 1rem;
+  }
+  .runner-intro { padding: 0.35rem 0 0.6rem; }
+  .runner-canvas-wrap,
+  .runner-canvas {
+    min-height: 200px;
+    height: 200px;
+  }
+  .runner-gameover { padding: 0.4rem 0; }
 }

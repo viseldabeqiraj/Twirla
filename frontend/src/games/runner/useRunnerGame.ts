@@ -6,6 +6,7 @@ import {
   JUMP_VELOCITY,
   INITIAL_SPEED,
   MAX_SPEED,
+  WARMUP_SECONDS,
   SPEED_INCREASE_PER_SCORE,
   SPEED_INCREASE_PER_SECOND,
   GROUND_Y_RATIO,
@@ -168,9 +169,13 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
     if (scorePopFramesRef.current > 0) scorePopFramesRef.current--;
 
     const elapsedSec = (performance.now() - gameStartTimeRef.current) / 1000;
-    const baseSpeed =
-      INITIAL_SPEED + score * SPEED_INCREASE_PER_SCORE + elapsedSec * SPEED_INCREASE_PER_SECOND;
-    const tenPointBoost = 1 + 0.05 * Math.floor(score / 10);
+    const inWarmup = elapsedSec < WARMUP_SECONDS;
+    const baseSpeed = inWarmup
+      ? INITIAL_SPEED
+      : INITIAL_SPEED +
+        score * SPEED_INCREASE_PER_SCORE +
+        (elapsedSec - WARMUP_SECONDS) * SPEED_INCREASE_PER_SECOND;
+    const tenPointBoost = inWarmup ? 1 : 1 + 0.05 * Math.floor(score / 10);
     speed = Math.min(MAX_SPEED, baseSpeed * tenPointBoost);
     speedRef.current = speed;
 

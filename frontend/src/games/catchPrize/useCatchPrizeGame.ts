@@ -15,8 +15,9 @@ import {
 import { getRewardTier } from './rewardMapping';
 import type { RewardTier } from './rewardMapping';
 
-const KINDS: FallingItemKind[] = ['heart', 'gift', 'bomb', 'star'];
-const WEIGHTS = [45, 20, 20, 15]; // heart, gift, bomb, star
+const KINDS: FallingItemKind[] = ['heart', 'gift', 'bomb', 'star', 'gem'];
+const WEIGHTS = [38, 18, 18, 14, 12]; // heart, gift, bomb, star, gem (gem = rare prize)
+const COMBO_BONUS = 3;
 
 function weightedRandomKind(): FallingItemKind {
   const total = WEIGHTS.reduce((a, b) => a + b, 0);
@@ -39,6 +40,7 @@ const initialState: CatchPrizeGameState = {
   floatingScores: [],
   nextItemId: 1,
   nextFloatId: 1,
+  comboCount: 0,
 };
 
 const TICK_MS = 50; // ~20 fps for game logic
@@ -202,12 +204,35 @@ export function useCatchPrizeGame() {
           multiplierUntil: now + MULTIPLIER_DURATION_MS,
         }));
         addFloating('2x', item.x, item.y, true);
-      } else {
-        const applied = item.kind === 'bomb' ? points : points * mult;
-        const rounded = Math.round(applied);
-        setState((prev) => ({ ...prev, score: Math.max(0, prev.score + rounded) }));
-        addFloating(rounded >= 0 ? `+${rounded}` : `${rounded}`, item.x, item.y, rounded >= 0);
+        removeItem(item.id);
+        return;
       }
+
+      if (item.kind === 'bomb') {
+        const applied = points;
+        const rounded = Math.round(applied);
+        setState((prev) => ({
+          ...prev,
+          score: Math.max(0, prev.score + rounded),
+          comboCount: 0,
+        }));
+        addFloating(`${rounded}`, item.x, item.y, false);
+        removeItem(item.id);
+        return;
+      }
+
+      // heart, gift, gem: add points and possibly combo bonus
+      const comboCount = current.comboCount + 1;
+      const bonus = comboCount >= 3 ? COMBO_BONUS : 0;
+      const applied = points * mult + bonus;
+      const rounded = Math.round(applied);
+      setState((prev) => ({
+        ...prev,
+        score: Math.max(0, prev.score + rounded),
+        comboCount: bonus ? 0 : comboCount,
+      }));
+      addFloating(rounded >= 0 ? `+${rounded}` : `${rounded}`, item.x, item.y, true);
+      if (bonus) addFloating('Combo!', item.x, item.y - 4, true);
       removeItem(item.id);
     },
     [hitTest, removeItem, addFloating]

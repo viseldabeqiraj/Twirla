@@ -1,3 +1,9 @@
+/* Experience page wrapper – no transform/filter so fixed footer stays viewport-bound */
+.experience-page-wrap {
+  min-height: 100vh;
+  position: relative;
+}
+
 /* Experience error page */
 .experience-error-page {
   min-height: 100vh;

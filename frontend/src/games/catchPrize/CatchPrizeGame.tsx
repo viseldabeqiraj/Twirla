@@ -3,6 +3,7 @@ import { useTranslation } from '../../i18n/i18n';
 import { useCatchPrizeGame } from './useCatchPrizeGame';
 import type { FallingItemKind } from './catchPrize.types';
 import Confetti from '../../components/Confetti';
+import '../../components/GameStats.css';
 import './CatchPrizeGame.css';
 
 const EMOJI: Record<FallingItemKind, string> = {
@@ -10,6 +11,7 @@ const EMOJI: Record<FallingItemKind, string> = {
   gift: '🎁',
   bomb: '💣',
   star: '⭐',
+  gem: '💎',
 };
 
 interface CatchPrizeGameProps {
@@ -82,15 +84,20 @@ export default function CatchPrizeGame({
               </span>
             </div>
           )}
-          <div className="catch-prize-hud">
-            <span className="catch-prize-score">
-              {t('catchPrize.score')}: <strong>{state.score}</strong>
+          <div className="game-stats-row catch-prize-hud">
+            <span className="game-stat">
+              <span className="game-stat-label">{t('catchPrize.score')}</span>
+              <span className="game-stat-value">{state.score}</span>
             </span>
-            <span className="catch-prize-timer">
-              {t('catchPrize.timer')}: <strong>{Math.ceil(state.timeLeft)}s</strong>
+            <span className="game-stat">
+              <span className="game-stat-label">{t('catchPrize.timer')}</span>
+              <span className={`game-stat-value ${state.timeLeft <= 5 ? 'urgent' : ''}`}>{Math.ceil(state.timeLeft)}s</span>
             </span>
             {state.multiplier > 1 && (
               <span className="catch-prize-multiplier">{t('catchPrize.multiplierActive')}</span>
+            )}
+            {state.comboCount > 0 && (
+              <span className="catch-prize-combo">Combo ×{state.comboCount}</span>
             )}
           </div>
           <div
@@ -136,8 +143,9 @@ export default function CatchPrizeGame({
         <div className="catch-prize-ended">
           {rewardTier.key !== 'no_reward' && <Confetti count={30} />}
           <h2 className="catch-prize-gameover">{t('catchPrize.gameOver')}</h2>
-          <p className="catch-prize-final-score">
-            {t('catchPrize.score')}: <strong>{state.score}</strong>
+          <p className="game-stat catch-prize-final-score">
+            <span className="game-stat-label">{t('catchPrize.score')}</span>
+            <span className="game-stat-value">{state.score}</span>
           </p>
           <p className="catch-prize-reward-message">{t(rewardTier.messageKey)}</p>
           <div className="catch-prize-ended-actions">

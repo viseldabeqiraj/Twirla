@@ -11,6 +11,8 @@ interface ModeNavigationProps {
   availableModes?: ExperienceMode[];
   /** When true, we're on the shop landing page; main link is active. */
   isShopLanding?: boolean;
+  /** When true, hide game tabs and only show "Back to shop" (for public campaign experience). */
+  hideGameTabs?: boolean;
 }
 
 const modeMeta: Record<ExperienceMode, { path: string; emoji: string; key: string }> = {
@@ -31,7 +33,7 @@ const normalizeMode = (mode: string): ExperienceMode | null => {
   return null;
 };
 
-export default function ModeNavigation({ currentMode = null, shopName, uniqueId, availableModes, isShopLanding = false }: ModeNavigationProps) {
+export default function ModeNavigation({ currentMode = null, shopName, uniqueId, availableModes, isShopLanding = false, hideGameTabs = false }: ModeNavigationProps) {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const currentNormalized = currentMode ? normalizeMode(currentMode) : null;
@@ -48,7 +50,7 @@ export default function ModeNavigation({ currentMode = null, shopName, uniqueId,
   };
 
   return (
-    <nav className="mode-navigation" aria-label="Experience and shop navigation">
+    <nav className={`mode-navigation ${hideGameTabs ? 'mode-navigation-minimal' : ''}`} aria-label="Experience and shop navigation">
       <div className="mode-nav-container">
         <div className="mode-nav-inner">
           <Link
@@ -56,24 +58,28 @@ export default function ModeNavigation({ currentMode = null, shopName, uniqueId,
             className={`mode-nav-main-link ${isShopLanding ? 'active' : ''}`}
             aria-current={isShopLanding ? 'page' : undefined}
           >
-            <span className="mode-nav-main-icon" aria-hidden>🏠</span>
-            <span>{t('nav.mainPage')}</span>
+            <span className="mode-nav-main-icon" aria-hidden>←</span>
+            <span>{hideGameTabs ? t('nav.backToShop') : t('nav.mainPage')}</span>
           </Link>
-          <div className="mode-nav-divider" aria-hidden />
-          <div className="mode-nav-buttons" role="tablist">
-            {allModes.map((mode) => (
-              <button
-                key={mode}
-                role="tab"
-                aria-selected={currentNormalized === mode}
-                className={`mode-nav-button ${currentNormalized === mode ? 'active' : ''}`}
-                onClick={() => handleModeChange(mode)}
-              >
-                <span className="mode-nav-emoji" aria-hidden>{modeMeta[mode].emoji}</span>
-                <span>{t(modeMeta[mode].key)}</span>
-              </button>
-            ))}
-          </div>
+          {!hideGameTabs && (
+            <>
+              <div className="mode-nav-divider" aria-hidden />
+              <div className="mode-nav-buttons" role="tablist">
+                {allModes.map((mode) => (
+                  <button
+                    key={mode}
+                    role="tab"
+                    aria-selected={currentNormalized === mode}
+                    className={`mode-nav-button ${currentNormalized === mode ? 'active' : ''}`}
+                    onClick={() => handleModeChange(mode)}
+                  >
+                    <span className="mode-nav-emoji" aria-hidden>{modeMeta[mode].emoji}</span>
+                    <span>{t(modeMeta[mode].key)}</span>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </nav>

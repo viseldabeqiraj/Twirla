@@ -5,6 +5,8 @@ export const GRAVITY = 0.58;
 export const JUMP_VELOCITY = -13.2;
 export const INITIAL_SPEED = 3.8;
 export const MAX_SPEED = 14;
+/** Speed stays at INITIAL_SPEED for this many seconds before ramping. */
+export const WARMUP_SECONDS = 12;
 export const SPEED_INCREASE_PER_SCORE = 0.014;
 export const SPEED_INCREASE_PER_SECOND = 0.28;
 export const OBSTACLE_MIN_GAP = 280;

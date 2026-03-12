@@ -6,6 +6,7 @@ import { useRunnerGame, type RunnerFrameState } from './useRunnerGame';
 import { drawRunnerFrame } from './runnerDraw';
 import { getNextThreshold } from './runnerRewards';
 import Confetti from '../../components/Confetti';
+import '../../components/GameStats.css';
 import './RunnerGame.css';
 
 export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }) {
@@ -183,8 +184,8 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
         {state.uiState === 'playing' && (
           <div className="runner-playing runner-state-enter">
             <div className={`runner-score-bubble ${scorePop ? 'runner-score-pop' : ''}`}>
-              <span className="runner-score-bubble-label">{t('runner.score')}</span>
-              <span className="runner-score-bubble-value">{state.score}</span>
+              <span className="game-stat-label runner-score-bubble-label">{t('runner.score')}</span>
+              <span className="game-stat-value runner-score-bubble-value">{state.score}</span>
               {scorePop && <span className="runner-plus-one">+1</span>}
             </div>
             {nextThreshold && (

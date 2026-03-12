@@ -1,9 +1,9 @@
-import { ShopLandingConfig } from '../types/ShopLandingConfig';
+import { ShopLandingConfig, PUBLIC_CAMPAIGN_GAMES } from '../types/ShopLandingConfig';
 import { ExperienceMode } from '../types/ShopConfig';
 
 /**
  * Placeholder landing config for MVP.
- * Later: replace with API fetch by shopSlug (e.g. /api/shop/:shopSlug/landing).
+ * Only public campaign games (Wheel, Scratch, Runner, Catch the Prize); no Countdown.
  */
 export const PLACEHOLDER_SHOP_LANDING: ShopLandingConfig = {
   shopSlug: 'demo-shop',
@@ -60,13 +60,8 @@ export const PLACEHOLDER_SHOP_LANDING: ShopLandingConfig = {
       ctaUrl: 'https://instagram.com/demoshop',
     },
   ],
-  enabledGames: [
-    ExperienceMode.Runner,
-    ExperienceMode.Wheel,
-    ExperienceMode.Scratch,
-    ExperienceMode.TapHearts,
-    ExperienceMode.Countdown,
-  ],
+  enabledGames: [...PUBLIC_CAMPAIGN_GAMES],
+  featuredGame: ExperienceMode.Runner,
   footer: {
     shopName: 'Demo Shop',
     copyright: '© Demo Shop',
@@ -74,6 +69,21 @@ export const PLACEHOLDER_SHOP_LANDING: ShopLandingConfig = {
   },
   primaryColor: '#db2777',
   secondaryColor: '#be185d',
+  featuredSectionTitle: 'Featured',
+  gamesSectionTitle: 'Play & Win',
+  testimonials: [
+    { quote: 'So much fun! Won a discount and the order arrived super fast.', author: 'Ana M.', role: 'Customer' },
+    { quote: 'Love the games and the shop. Will definitely come back.', author: 'Ermal K.', role: 'Customer' },
+  ],
+  trustBadges: [
+    { label: 'Fast delivery', icon: '🚚' },
+    { label: 'Secure payment', icon: '🔒' },
+    { label: 'Easy returns', icon: '↩️' },
+  ],
+  faq: [
+    { question: 'How do I claim my prize?', answer: 'After playing, use the "DM us to claim" button or message the shop with your code. They will confirm and apply your reward.' },
+    { question: 'Can I play more than once?', answer: 'You can play one game per day. Come back tomorrow for another chance to win!' },
+  ],
 };
 
 const slugToConfig: Record<string, ShopLandingConfig> = {

@@ -110,7 +110,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
         <div className="experience-content" ref={experienceContentRef}>{renderExperience()}</div>
 
         <motion.a href={cta.url} target="_blank" rel="noopener noreferrer" className={`cta-button ${shouldPulse ? 'pulse' : ''}`} whileTap={{ scale: 0.98 }} whileHover={{ y: -2 }}>
-          {text.ctaText}
+          {shouldPulse ? t('campaign.dmToClaim') : text.ctaText}
         </motion.a>
 
         <a href="/" className="twirla-app-button">
@@ -118,11 +118,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
           {t('common.goToTwirlaApp')}
         </a>
       </motion.div>
-
-      <div className="twirla-footer">
-        <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-logo" />
-        <span className="powered-by">{t('common.poweredBy')}</span>
-      </div>
     </div>
   );
 }

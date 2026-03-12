@@ -1,5 +1,10 @@
 export { default as HeroSection } from './HeroSection';
+export { default as AboutSection } from './AboutSection';
 export { default as SocialButtons } from './SocialButtons';
 export { default as FeaturedProducts } from './FeaturedProducts';
 export { default as GamesSection } from './GamesSection';
+export { default as HowItWorksSection } from './HowItWorksSection';
+export { default as TestimonialsSection } from './TestimonialsSection';
+export { default as TrustBadgesSection } from './TrustBadgesSection';
+export { default as FAQSection } from './FAQSection';
 export { default as FooterSection } from './FooterSection';

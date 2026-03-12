@@ -20,6 +20,8 @@ export interface ScratchCardProps {
   instruction?: React.ReactNode;
   /** Aspect ratio of the card e.g. "16/10" */
   aspectRatio?: string;
+  /** Called once when the user first touches/scratches (e.g. for analytics) */
+  onFirstTouch?: () => void;
 }
 
 export default function ScratchCard({
@@ -29,6 +31,7 @@ export default function ScratchCard({
   instructionText,
   instruction,
   aspectRatio = '16/10',
+  onFirstTouch,
 }: ScratchCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,6 +42,7 @@ export default function ScratchCard({
   const lastRef = useRef<{ x: number; y: number } | null>(null);
   const overlayDrawnRef = useRef(false);
   const hasScratchedRef = useRef(false);
+  const hasFiredFirstTouchRef = useRef(false);
   const [showInstructionPulse, setShowInstructionPulse] = useState(true);
 
   const drawOverlay = useCallback(() => {
@@ -258,6 +262,10 @@ export default function ScratchCard({
     (e: React.TouchEvent | React.MouseEvent) => {
       e.preventDefault();
       setShowInstructionPulse(false);
+      if (!hasFiredFirstTouchRef.current) {
+        hasFiredFirstTouchRef.current = true;
+        onFirstTouch?.();
+      }
       const pos = getScratchPosition(e);
       if (pos) {
         isScratchingRef.current = true;
@@ -265,7 +273,7 @@ export default function ScratchCard({
         scratchAt(pos.x, pos.y, 'touches' in e);
       }
     },
-    [getScratchPosition, scratchAt]
+    [getScratchPosition, scratchAt, onFirstTouch]
   );
 
   const handleMove = useCallback(
@@ -284,6 +292,35 @@ export default function ScratchCard({
   const handleEnd = useCallback(() => {
     isScratchingRef.current = false;
     lastRef.current = null;
+    document.body.style.overflow = '';
+  }, []);
+
+  // Prevent page scroll when touching the scratch canvas (passive: false so preventDefault works)
+  const canvasWrapRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const wrap = canvasWrapRef.current;
+    if (!wrap) return;
+    const onTouchStart = (e: TouchEvent) => {
+      e.preventDefault();
+      document.body.style.overflow = 'hidden';
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (isScratchingRef.current) e.preventDefault();
+    };
+    const onTouchEnd = () => {
+      document.body.style.overflow = '';
+    };
+    wrap.addEventListener('touchstart', onTouchStart, { passive: false, capture: true });
+    wrap.addEventListener('touchmove', onTouchMove, { passive: false, capture: true });
+    wrap.addEventListener('touchend', onTouchEnd, { capture: true });
+    wrap.addEventListener('touchcancel', onTouchEnd, { capture: true });
+    return () => {
+      wrap.removeEventListener('touchstart', onTouchStart, { capture: true });
+      wrap.removeEventListener('touchmove', onTouchMove, { capture: true });
+      wrap.removeEventListener('touchend', onTouchEnd, { capture: true });
+      wrap.removeEventListener('touchcancel', onTouchEnd, { capture: true });
+      document.body.style.overflow = '';
+    };
   }, []);
 
   // Reveal sequence: suspense -> fade foil -> reveal complete -> onReveal (confetti)
@@ -311,7 +348,7 @@ export default function ScratchCard({
             {hiddenContent}
           </div>
           {!isRevealed && (
-            <div className="scratch-card-canvas-wrap">
+            <div className="scratch-card-canvas-wrap" ref={canvasWrapRef}>
               {instructionText && showInstructionPulse && (
                 <span className="scratch-card-instruction-pulse" aria-hidden="true">
                   {instructionText}
