@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+import { getApiBase } from '../config/api';
+const getApiUrl = () => `${getApiBase()}/api`;
 
 export type AnalyticsEventType =
   | 'page_view'
@@ -35,7 +36,7 @@ export async function trackEvent(
   options: TrackEventOptions = {}
 ): Promise<void> {
   const visitorId = options.visitorId ?? getOrCreateVisitorId();
-  const url = `${API_BASE}/shops/${encodeURIComponent(shopId)}/analytics/event`;
+  const url = `${getApiUrl()}/shops/${encodeURIComponent(shopId)}/analytics/event`;
   try {
     await fetch(url, {
       method: 'POST',

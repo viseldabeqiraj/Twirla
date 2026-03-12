@@ -19,16 +19,18 @@ Deploy the Twirla frontend on **Cloudflare Pages** so it’s fast and reliable f
 | **Root directory**  | `frontend`       |
 | **Production branch** | `master` (or `main`) |
 
-**Option B – If root directory can’t be set** (e.g. UI doesn’t apply it):
+**Option B – Build from repo root** (if “Root directory” doesn’t work or stays empty):
 
-Leave **Root directory** blank. The repo has a root `package.json` that runs the frontend build. Use:
+Leave **Root directory** blank and run the build from the repo root with an explicit command:
 
 | Setting            | Value             |
 |--------------------|-------------------|
-| **Build command**   | `npm run build` |
+| **Build command**   | `cd frontend && npm ci && npm run build` |
 | **Build output directory** | `frontend/dist` |
 | **Root directory**  | *(leave empty)*   |
 | **Production branch** | `master` (or `main`) |
+
+This works even when there is no `package.json` at the repo root.
 
 SPA routing works automatically: Pages serves `index.html` for all paths so React Router works.
 
@@ -84,17 +86,51 @@ You’ll see the exact URLs in **Workers & Pages** → your Twirla project → *
 
 ---
 
-## Backend / API
+## Connecting frontend (Cloudflare) to backend (Azure)
 
-The frontend is static. It expects:
+When the frontend is on **Cloudflare Pages** and the backend is on **Azure App Service** (or another URL), set the backend URL at build time so the app calls the right API and loads logos from the backend.
 
-- **`/api`** – backend API (shop config, analytics).
-- **`/logos`** – logo images.
+### 1. Set the API base URL in Cloudflare Pages
 
-For production you can:
+1. Open your **Twirla** project in Cloudflare → **Settings** → **Environment variables**.
+2. Add a variable:
+   - **Variable name:** `VITE_API_BASE`
+   - **Value:** your backend root URL **with no trailing slash**, e.g.  
+     `https://twirla-bphcfdgqdmd8d5gg.westeurope-01.azurewebsites.net`
+   - **Environment:** Production (and Preview if you use it).
+3. Save, then **redeploy** (new build required for env vars to apply).
 
-- Deploy the .NET backend elsewhere (e.g. Azure, Railway) and point the frontend at that API, or  
-- Run a **teaser-only** site (landing/scratch card) with no API; the current build is enough for that.
+The frontend uses `VITE_API_BASE` for all `/api` requests and for asset paths like `/logos/...`. If `VITE_API_BASE` is not set (e.g. local dev with Vite proxy), it uses the same origin.
+
+### 2. Backend CORS
+
+The .NET backend must allow requests from your frontend origin. It already uses:
+
+```csharp
+policy.WithOrigins("*")
+      .AllowAnyMethod()
+      .AllowAnyHeader();
+```
+
+So **https://twirla.pages.dev** is allowed. For stricter security you can change to `WithOrigins("https://twirla.pages.dev")` (and add other domains if needed).
+
+### 3. Summary
+
+| Where        | What to set |
+|-------------|-------------|
+| **Cloudflare** | Environment variable `VITE_API_BASE` = `https://your-backend.azurewebsites.net` (no trailing slash), then redeploy. |
+| **Backend**    | CORS already allows all origins; optionally restrict to your frontend domain. |
+
+---
+
+## Backend / API (reference)
+
+The frontend expects:
+
+- **`/api`** – backend API (shop config, analytics, admin).
+- **`/logos`** – logo images (served by the backend).
+
+With `VITE_API_BASE` set, both are requested from the backend URL. Without it (e.g. local dev), the Vite proxy forwards `/api` and `/logos` to your local backend.
 
 ---
 
@@ -123,7 +159,7 @@ If the build fails on Cloudflare, check the following in your **Pages** project 
 **Fix (choose one):**
 
 - **Preferred:** In the Pages project → **Settings** → **Builds & deployments** → **Build configuration**, set **Root directory** to **`frontend`** (no leading slash). Set **Build output directory** to **`dist`**. Save and redeploy.
-- **Alternative:** Leave Root directory **empty**. Set **Build command** to **`npm run build`** and **Build output directory** to **`frontend/dist`**. The repo root has a `package.json` that runs the frontend build, so the build will succeed from the repo root. Save and redeploy.
+- **Alternative:** Leave Root directory **empty**. Set **Build command** to **`cd frontend && npm ci && npm run build`** and **Build output directory** to **`frontend/dist`**. Save and redeploy.
 
 ### 2. Use a supported Node version
 

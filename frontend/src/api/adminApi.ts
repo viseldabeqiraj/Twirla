@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+import { getApiBase } from '../config/api';
+const getApiUrl = () => `${getApiBase()}/api`;
 
 export interface AdminSummary {
   uniqueVisitors: number;
@@ -12,7 +13,7 @@ export interface AdminSummary {
 }
 
 export async function getAdminSummary(slug: string, token: string): Promise<AdminSummary> {
-  const url = `${API_BASE}/admin/shops/${encodeURIComponent(slug)}/summary?token=${encodeURIComponent(token)}`;
+  const url = `${getApiUrl()}/admin/shops/${encodeURIComponent(slug)}/summary?token=${encodeURIComponent(token)}`;
   const res = await fetch(url);
   if (res.status === 401 || res.status === 403) {
     const data = await res.json().catch(() => ({}));
@@ -28,7 +29,7 @@ export interface DailyRevenuePoint {
 }
 
 export async function getDailyRevenue(slug: string, token: string): Promise<DailyRevenuePoint[]> {
-  const url = `${API_BASE}/admin/shops/${encodeURIComponent(slug)}/analytics/daily-revenue?token=${encodeURIComponent(token)}`;
+  const url = `${getApiUrl()}/admin/shops/${encodeURIComponent(slug)}/analytics/daily-revenue?token=${encodeURIComponent(token)}`;
   const res = await fetch(url);
   if (res.status === 401 || res.status === 403) {
     const data = await res.json().catch(() => ({}));
@@ -44,7 +45,7 @@ export async function redeemCoupon(
   couponCode: string,
   orderValue: number
 ): Promise<void> {
-  const url = `${API_BASE}/admin/shops/${encodeURIComponent(slug)}/redeem-coupon?token=${encodeURIComponent(token)}`;
+  const url = `${getApiUrl()}/admin/shops/${encodeURIComponent(slug)}/redeem-coupon?token=${encodeURIComponent(token)}`;
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },

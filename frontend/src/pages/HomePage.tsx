@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Confetti from '../components/Confetti';
 import ScratchCard from '../components/ScratchCard';
+import { resolveAssetUrl } from '../config/api';
 import './HomePage.css';
 
 export default function HomePage() {
@@ -18,7 +19,7 @@ export default function HomePage() {
       <div className="home-container">
         <div className="home-hero">
           <img
-            src="/logos/twirla.png"
+            src={resolveAssetUrl('/logos/twirla.png')}
             alt="Twirla"
             className="home-hero-logo"
             onError={(e) => {

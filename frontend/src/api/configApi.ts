@@ -1,6 +1,7 @@
 import { ShopConfig } from '../types/ShopConfig';
+import { getApiBase } from '../config/api';
 
-const API_BASE_URL = '/api';
+const getApiUrl = () => `${getApiBase()}/api`;
 
 interface ShopsPayload {
   shops: ShopConfig[];
@@ -31,9 +32,10 @@ export async function fetchShopConfigBySlug(
   mode?: string,
   language?: string
 ): Promise<ShopConfig> {
+  const api = getApiUrl();
   const baseUrl = mode
-    ? `${API_BASE_URL}/config/by-slug/${encodeURIComponent(slug)}/${mode}`
-    : `${API_BASE_URL}/config/by-slug/${encodeURIComponent(slug)}`;
+    ? `${api}/config/by-slug/${encodeURIComponent(slug)}/${mode}`
+    : `${api}/config/by-slug/${encodeURIComponent(slug)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
   const response = await fetch(url);
   if (!response.ok) {
@@ -44,7 +46,8 @@ export async function fetchShopConfigBySlug(
 }
 
 export async function fetchShopConfig(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
-  const baseUrl = mode ? `${API_BASE_URL}/config/${encodeURIComponent(shopId)}/${mode}` : `${API_BASE_URL}/config/${encodeURIComponent(shopId)}`;
+  const api = getApiUrl();
+  const baseUrl = mode ? `${api}/config/${encodeURIComponent(shopId)}/${mode}` : `${api}/config/${encodeURIComponent(shopId)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
 
   try {

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { ShopConfig, ExperienceMode } from '../types/ShopConfig';
 import { useTranslation } from '../i18n/i18n';
+import { resolveAssetUrl } from '../config/api';
 import WheelExperience from './experiences/WheelExperience';
 import CatchPrizeExperience from './experiences/CatchPrizeExperience';
 import ScratchExperience from './experiences/ScratchExperience';
@@ -98,7 +99,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       <motion.div className="experience-container" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
         {(branding.logoUrl || branding.brandName) && (
           <div className="brand-head">
-            {branding.logoUrl && <img src={branding.logoUrl} alt={branding.brandName || t('common.logoAlt')} className="logo" />}
+            {branding.logoUrl && <img src={resolveAssetUrl(branding.logoUrl)} alt={branding.brandName || t('common.logoAlt')} className="logo" />}
             {branding.brandName && <h2 className="brand-name">{branding.brandName}</h2>}
           </div>
         )}
@@ -113,13 +114,13 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
         </motion.a>
 
         <a href="/" className="twirla-app-button">
-          <img src="/logos/twirla.png" alt="Twirla" className="twirla-app-button-logo" />
+          <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-app-button-logo" />
           {t('common.goToTwirlaApp')}
         </a>
       </motion.div>
 
       <div className="twirla-footer">
-        <img src="/logos/twirla.png" alt="Twirla" className="twirla-logo" />
+        <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-logo" />
         <span className="powered-by">{t('common.poweredBy')}</span>
       </div>
     </div>

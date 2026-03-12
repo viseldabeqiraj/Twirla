@@ -1,4 +1,5 @@
 import type { HeroConfig } from '../../types/ShopLandingConfig';
+import { resolveAssetUrl } from '../../config/api';
 
 interface HeroSectionProps {
   hero: HeroConfig;
@@ -23,7 +24,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
       <div className="shop-hero-bar">
         <div className="shop-hero-bar-logo">
           {hero.logoUrl ? (
-            <img src={hero.logoUrl} alt="" className="shop-hero-bar-logo-img" />
+            <img src={resolveAssetUrl(hero.logoUrl)} alt="" className="shop-hero-bar-logo-img" />
           ) : (
             <span className="shop-hero-bar-logo-placeholder" aria-hidden>{initial}</span>
           )}
@@ -33,7 +34,7 @@ export default function HeroSection({ hero }: HeroSectionProps) {
       <div className={`shop-hero-inner ${isGradient ? 'shop-hero-gradient' : 'shop-hero-solid'}`}>
         <div className="shop-hero-logo-wrap">
           {hero.logoUrl ? (
-            <img src={hero.logoUrl} alt={hero.shopName} className="shop-hero-logo" />
+            <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} className="shop-hero-logo" />
           ) : (
             <span className="shop-hero-logo-placeholder" aria-hidden>{initial}</span>
           )}
