@@ -9,12 +9,25 @@ Deploy the Twirla frontend on **Cloudflare Pages** so it’s fast and reliable f
 
 ## Build settings (use these in the dashboard)
 
+**Option A – Recommended (root directory set):**
+
 | Setting            | Value             |
 |--------------------|-------------------|
 | **Framework preset** | React (Vite)   |
 | **Build command**   | `npm run build` |
 | **Build output directory** | `dist`   |
 | **Root directory**  | `frontend`       |
+| **Production branch** | `master` (or `main`) |
+
+**Option B – If root directory can’t be set** (e.g. UI doesn’t apply it):
+
+Leave **Root directory** blank. The repo has a root `package.json` that runs the frontend build. Use:
+
+| Setting            | Value             |
+|--------------------|-------------------|
+| **Build command**   | `npm run build` |
+| **Build output directory** | `frontend/dist` |
+| **Root directory**  | *(leave empty)*   |
 | **Production branch** | `master` (or `main`) |
 
 SPA routing works automatically: Pages serves `index.html` for all paths so React Router works.
@@ -96,3 +109,53 @@ npx wrangler pages deploy dist --project-name=twirla
 ```
 
 You’ll need a Cloudflare account and `wrangler login` once.
+
+---
+
+## Troubleshooting build errors
+
+If the build fails on Cloudflare, check the following in your **Pages** project (Settings → Builds & deployments → Build configuration).
+
+### 1. `ENOENT: no such file or directory, open '.../repo/package.json'`
+
+**Symptom:** Build runs from repo root and can’t find `package.json` (the app lives in `frontend/`).
+
+**Fix (choose one):**
+
+- **Preferred:** In the Pages project → **Settings** → **Builds & deployments** → **Build configuration**, set **Root directory** to **`frontend`** (no leading slash). Set **Build output directory** to **`dist`**. Save and redeploy.
+- **Alternative:** Leave Root directory **empty**. Set **Build command** to **`npm run build`** and **Build output directory** to **`frontend/dist`**. The repo root has a `package.json` that runs the frontend build, so the build will succeed from the repo root. Save and redeploy.
+
+### 2. Use a supported Node version
+
+**Symptom:** Errors about `engine`, `node version`, or modules not found.
+
+**Fix:** In the Pages project go to **Settings** → **Environment variables**. Add:
+
+- **Variable name:** `NODE_VERSION`  
+- **Value:** `20`  
+- **Environment:** Production (and Preview if you use it)
+
+Save and **retry the deployment** (Redeploy from the Deployments tab).
+
+### 3. Build settings checklist
+
+| Field | Must be |
+|--------|--------|
+| **Build command** | `npm run build` |
+| **Build output directory** | `dist` |
+| **Root directory** | `frontend` |
+| **Framework preset** | React (Vite) or None |
+
+If you use **None**, you must fill in Build command and Build output directory yourself.
+
+### 4. Make sure it’s a Pages project
+
+If the project URL is `*.workers.dev`, it’s a **Worker**, not **Pages**. Workers will not serve this static app correctly. Create a new project, choose **Pages** → **Connect to Git**, and use the settings above. Your live URL should be `*.pages.dev`.
+
+### 5. Still failing?
+
+Open the failed deployment in the dashboard and copy the **build log** (the red error lines). The message usually says whether the failure is:
+
+- missing `package.json` → wrong root directory  
+- Node/engine error → set `NODE_VERSION` to `20`  
+- `tsc` or TypeScript error → fix the reported file/line locally, then push again

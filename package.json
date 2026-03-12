@@ -1,0 +1,8 @@
+{
+  "name": "twirla",
+  "private": true,
+  "scripts": {
+    "build": "cd frontend && npm ci && npm run build"
+  },
+  "description": "Twirla monorepo – build runs from frontend/"
+}
