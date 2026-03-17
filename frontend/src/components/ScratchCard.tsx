@@ -62,41 +62,41 @@ export default function ScratchCard({
     const w = rect.width;
     const h = rect.height;
 
-    // Metallic foil base – stronger silver/pearl
+    // Metallic foil base – high contrast (darker darks, brighter brights)
     const base = ctx.createLinearGradient(0, 0, w, h);
-    base.addColorStop(0, '#9fa2a8');
-    base.addColorStop(0.12, '#d8dae0');
-    base.addColorStop(0.28, '#8c8f96');
-    base.addColorStop(0.5, '#c2c5cc');
-    base.addColorStop(0.62, '#7d8088');
-    base.addColorStop(0.78, '#d0d3da');
-    base.addColorStop(1, '#9a9da4');
+    base.addColorStop(0, '#7a7d84');
+    base.addColorStop(0.12, '#e8eaef');
+    base.addColorStop(0.28, '#6e7179');
+    base.addColorStop(0.5, '#d0d4db');
+    base.addColorStop(0.62, '#5c5f67');
+    base.addColorStop(0.78, '#e0e4eb');
+    base.addColorStop(1, '#787b82');
     ctx.fillStyle = base;
     ctx.fillRect(0, 0, w, h);
 
-    // Second pass – diagonal metallic shift
+    // Diagonal metallic shift – stronger light and shadow
     const shift = ctx.createLinearGradient(0, 0, w * 0.7, h * 0.8);
-    shift.addColorStop(0, 'rgba(255,255,255,0.2)');
-    shift.addColorStop(0.5, 'rgba(255,255,255,0.02)');
-    shift.addColorStop(1, 'rgba(0,0,0,0.06)');
+    shift.addColorStop(0, 'rgba(255,255,255,0.32)');
+    shift.addColorStop(0.5, 'rgba(255,255,255,0.04)');
+    shift.addColorStop(1, 'rgba(0,0,0,0.14)');
     ctx.fillStyle = shift;
     ctx.fillRect(0, 0, w, h);
 
-    // Pearl sheen (soft radial highlight)
+    // Pearl sheen – stronger highlight for metallic pop
     const sheen = ctx.createRadialGradient(w * 0.3, h * 0.25, 0, w * 0.5, h * 0.5, w * 0.9);
-    sheen.addColorStop(0, 'rgba(255,255,255,0.4)');
-    sheen.addColorStop(0.45, 'rgba(255,255,255,0.06)');
+    sheen.addColorStop(0, 'rgba(255,255,255,0.55)');
+    sheen.addColorStop(0.4, 'rgba(255,255,255,0.1)');
     sheen.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = sheen;
     ctx.fillRect(0, 0, w, h);
 
-    // Subtle diagonal texture (fine lines)
+    // Diagonal texture – more visible for brushed-metal look
     const rnd = (seed: number) => {
       const x = Math.sin(seed * 12.9898) * 43758.5453;
       return x - Math.floor(x);
     };
     ctx.save();
-    ctx.globalAlpha = 0.04;
+    ctx.globalAlpha = 0.08;
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 1;
     const step = 6;
@@ -109,15 +109,15 @@ export default function ScratchCard({
     }
     ctx.restore();
 
-    // Subtle noise texture (denser grain for metallic feel)
+    // Noise texture – higher contrast grain for metallic feel
     ctx.save();
-    ctx.globalAlpha = 0.08;
+    ctx.globalAlpha = 0.12;
     const noiseCount = Math.min(1200, Math.floor((w * h) / 80));
     for (let i = 0; i < noiseCount; i++) {
       const x = rnd(i) * w;
       const y = rnd(i + 200) * h;
-      const v = rnd(i + 400) > 0.5 ? 60 : 220;
-      ctx.fillStyle = `rgb(${v},${v},${v + 8})`;
+      const v = rnd(i + 400) > 0.5 ? 45 : 240;
+      ctx.fillStyle = `rgb(${v},${v},${v + 6})`;
       ctx.fillRect(x, y, 1, 1);
     }
     ctx.restore();

@@ -295,3 +295,7 @@
 {"event":"reward_won","timestampUtc":"2026-03-12T22:36:10.2049172Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Scratch","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-03-12T22:36:13.3260341Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-03-12T22:36:13.3260915Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-03-12T22:38:37.7419808Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-03-12T22:38:37.8224323Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-03-17T20:22:18.9507795Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-03-17T20:22:18.9513615Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Runner","couponCode":null}

@@ -16,43 +16,47 @@ export default function HomePage() {
 
   return (
     <div className="home-page">
-      <div className="home-container">
-        <div className="home-hero">
-          <img
-            src={resolveAssetUrl('/logos/twirla.png')}
-            alt="Twirla"
-            className="home-hero-logo"
-            onError={(e) => {
-              (e.target as HTMLImageElement).style.display = 'none';
-            }}
-          />
-          <p className="home-hero-tagline">Platformë interaktive për biznese.</p>
-        </div>
+      <header className="home-hero">
+        <img
+          src={resolveAssetUrl('/logos/twirla-transparent.png')}
+          alt="Twirla"
+          className="home-hero-logo"
+          onError={(e) => {
+            const img = e.target as HTMLImageElement;
+            if (img.src && !img.src.includes('twirla.png')) {
+              img.src = resolveAssetUrl('/logos/twirla.png');
+              img.onerror = () => { img.style.display = 'none'; };
+            } else {
+              img.style.display = 'none';
+            }
+          }}
+        />
+        <p className="home-hero-tagline">Platformë interaktive për biznese.</p>
+      </header>
 
-        <div className="home-scratch-section">
-          <ScratchCard
-            instructionText="Gërvisht këtu"
-            hiddenContent={hiddenContent}
-            revealThreshold={50}
-            onReveal={() => setShowConfetti(true)}
-            aspectRatio="16/10"
-          />
-          {showConfetti && <Confetti count={40} />}
-        </div>
+      <div className="home-scratch-section">
+        <ScratchCard
+          instructionText="Gërvisht këtu"
+          hiddenContent={hiddenContent}
+          revealThreshold={50}
+          onReveal={() => setShowConfetti(true)}
+          aspectRatio="16/10"
+        />
+        {showConfetti && <Confetti count={40} />}
+      </div>
 
-        {/* Demo section hidden for launch teaser */}
-        <div className="home-demo-section home-demo-section--hidden" aria-hidden="true">
-          <p className="home-demo-title">Try the demo shop (all games)</p>
-          <div className="home-demo-links">
-            <a href="/wheel/demo/allgames01">Wheel</a>
-            <a href="/taphearts/demo/allgames01">Catch the Prize</a>
-            <a href="/scratch/demo/allgames01">Scratch</a>
-            <a href="/countdown/demo/allgames01">Countdown</a>
-          </div>
-          <p className="home-demo-admin">
-            <a href="/admin/demo?token=demo-admin-token">Open demo admin dashboard</a>
-          </p>
+      {/* Demo section hidden for launch teaser */}
+      <div className="home-demo-section home-demo-section--hidden" aria-hidden="true">
+        <p className="home-demo-title">Try the demo shop (all games)</p>
+        <div className="home-demo-links">
+          <a href="/wheel/demo/allgames01">Wheel</a>
+          <a href="/taphearts/demo/allgames01">Catch the Prize</a>
+          <a href="/scratch/demo/allgames01">Scratch</a>
+          <a href="/countdown/demo/allgames01">Countdown</a>
         </div>
+        <p className="home-demo-admin">
+          <a href="/admin/demo?token=demo-admin-token">Open demo admin dashboard</a>
+        </p>
       </div>
     </div>
   );

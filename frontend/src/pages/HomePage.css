@@ -1,48 +1,65 @@
 .home-page {
   min-height: 100vh;
-  display: grid;
-  place-items: center;
-  padding: 1.5rem 1rem;
-  background: linear-gradient(145deg, #020617, #0f172a);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.5rem 1rem 2rem;
+  background: linear-gradient(180deg, #fff5f8 0%, #debacb 100%);; /*linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);*/
 }
 
-.home-container {
-  width: 100%;
-  max-width: 440px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.98);
-  border: 1px solid rgba(148, 163, 184, 0.15);
-  border-radius: 24px;
-  padding: 1.75rem 1.5rem;
-  box-shadow: 0 24px 56px rgba(0, 0, 0, 0.35);
-}
-
+/* Twirla logo at top */
 .home-hero {
-  margin-bottom: 0.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  flex-shrink: 0;
 }
 
 .home-hero-logo {
-  max-width: 120px;
+  max-width: 140px;
+  display: block;
+  margin: 0 auto;
 }
 
 .home-hero-tagline {
-  color: #64748b;
+  color: #8b5a6b;
   font-size: 0.82rem;
-  margin: 0.2rem 0 0;
+  margin: 0.4rem 0 0;
+  font-weight: 500;
 }
 
-/* Scratch card as main hero element */
+/* Scratch card: more prominent (larger, centered) */
 .home-scratch-section {
   position: relative;
-  margin: 0.25rem 0 0.75rem;
+  margin: 0;
   padding: 0;
+  width: 100%;
+  max-width: 480px;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .home-scratch-section .confetti-container {
   z-index: 10;
 }
 
-/* Reveal panel: title + subtitle on Twirla gradient (pink → purple) */
+/* Larger card on home (no container): fill section width */
+.home-scratch-section .scratch-card-wrap {
+  max-width: 100%;
+}
+
+/* Card: gradient + prominent box shadow (coming soon page) */
+.home-scratch-section .scratch-card-container {
+  background: linear-gradient(135deg, #FD79A7 0%, #e93b8f 40%, #DC0066 100%);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.12),
+    0 16px 36px rgba(0, 0, 0, 0.22),
+    0 32px 64px rgba(0, 0, 0, 0.28),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* Reveal panel: brighter colors, higher-contrast text */
 .home-scratch-reveal-panel {
   display: flex;
   flex-direction: column;
@@ -55,19 +72,20 @@
 .home-scratch-reveal-title {
   font-size: 1.75rem;
   font-weight: 800;
-  color: #fff;
+  color: #ffffff;
   margin: 0;
   letter-spacing: 0.12em;
-  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.28);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 16px rgba(0, 0, 0, 0.35);
 }
 
 .home-scratch-reveal-subtitle {
-  font-size: 0.8125rem;
-  color: rgba(255, 255, 255, 0.95);
+  font-size: 0.875rem;
+  color: #ffffff;
   margin: 0.65rem 0 0;
   line-height: 1.4;
   max-width: 22ch;
-  font-weight: 500;
+  font-weight: 600;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* Demo section */

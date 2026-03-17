@@ -19,8 +19,9 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 20px 45px rgba(0, 0, 0, 0.18),
-    0 8px 20px rgba(0, 0, 0, 0.1),
+    0 4px 6px rgba(0, 0, 0, 0.08),
+    0 12px 28px rgba(0, 0, 0, 0.15),
+    0 24px 56px rgba(0, 0, 0, 0.2),
     0 0 0 1px rgba(0, 0, 0, 0.06);
   background: linear-gradient(135deg, #ff4fa3 0%, #7b5cff 100%);
 }
@@ -109,7 +110,7 @@
   pointer-events: none;
 }
 
-/* Soft animated light sweep across the foil (every 2–3 s) */
+/* Prominent shine sweep across foil (more metallic) */
 .scratch-card-shine {
   position: absolute;
   inset: 0;
@@ -117,11 +118,11 @@
   background: linear-gradient(
     105deg,
     transparent 0%,
-    transparent 38%,
-    rgba(255, 255, 255, 0.1) 46%,
-    rgba(255, 255, 255, 0.22) 50%,
-    rgba(255, 255, 255, 0.1) 54%,
-    transparent 62%,
+    transparent 36%,
+    rgba(255, 255, 255, 0.12) 44%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.12) 56%,
+    transparent 64%,
     transparent 100%
   );
   background-size: 200% 100%;
