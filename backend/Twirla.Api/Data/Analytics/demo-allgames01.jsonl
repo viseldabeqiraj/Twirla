@@ -31,3 +31,4 @@
 {"event":"game_start","timestampUtc":"2026-03-08T22:48:42.5144282Z","visitorId":"v_1773008903629_x5c4t5cgc","value":null,"mode":"Countdown","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-03-08T22:48:45.3868648Z","visitorId":"v_1773008903629_x5c4t5cgc","value":null,"mode":"Scratch","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-03-08T22:48:51.3033741Z","visitorId":"v_1773008903629_x5c4t5cgc","value":null,"mode":"Runner","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-04-10T21:52:22.5559824Z","visitorId":"v_1773346233109_95xe448uv","value":null,"mode":"Wheel","couponCode":null}

@@ -2,46 +2,80 @@ import type { ShopConfig } from '../types/ShopConfig';
 import type { ShopLandingConfig } from '../types/ShopLandingConfig';
 import { PUBLIC_CAMPAIGN_GAMES } from '../types/ShopLandingConfig';
 import { ExperienceMode } from '../types/ShopConfig';
+import type { CampaignExperienceMode } from '../types/ShopCampaign';
+
+function parseCampaignMode(m?: CampaignExperienceMode): ExperienceMode | undefined {
+  if (!m) return undefined;
+  return ExperienceMode[m as keyof typeof ExperienceMode];
+}
 
 /**
- * Map API ShopConfig + URL slug to ShopLandingConfig so the landing page
- * uses real shop branding (logo, colors, name, CTA) and enabled games.
- * Only public campaign games (Wheel, Scratch, Runner, Catch the Prize) are included.
+ * Map a shop row from shops.json + URL slug to ShopLandingConfig.
+ * Landing copy and layout come from `shop.campaign` when present; otherwise sensible defaults from branding/text.
  */
 export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string): ShopLandingConfig {
+  const campaign = config.campaign;
   const { branding, text, cta } = config;
-  const shopName = branding.brandName ?? (config as { name?: string }).name ?? formatSlugAsName(shopSlug);
+  const shopName = branding.brandName ?? config.name ?? formatSlugAsName(shopSlug);
+  const ch = campaign?.hero;
 
-  const allEnabled: ExperienceMode[] = [];
-  if (config.wheel) allEnabled.push(ExperienceMode.Wheel);
-  if (config.tapHearts) allEnabled.push(ExperienceMode.TapHearts);
-  if (config.scratch) allEnabled.push(ExperienceMode.Scratch);
-  if (config.countdown) allEnabled.push(ExperienceMode.Countdown);
-  allEnabled.unshift(ExperienceMode.Runner);
-  const enabledGames = allEnabled.filter((m) => PUBLIC_CAMPAIGN_GAMES.includes(m));
-  const featuredGame = enabledGames[0];
+  const allFromConfig: ExperienceMode[] = [];
+  if (config.wheel) allFromConfig.push(ExperienceMode.Wheel);
+  if (config.tapHearts) allFromConfig.push(ExperienceMode.TapHearts);
+  if (config.scratch) allFromConfig.push(ExperienceMode.Scratch);
+  if (config.countdown) allFromConfig.push(ExperienceMode.Countdown);
+  if (config.memory) allFromConfig.push(ExperienceMode.MemoryMatch);
+  allFromConfig.unshift(ExperienceMode.Runner);
+
+  let enabledGames = allFromConfig.filter((m) => PUBLIC_CAMPAIGN_GAMES.includes(m));
+  if (campaign?.enabledGameModes?.length) {
+    const allowed = new Set(
+      campaign.enabledGameModes
+        .map((x) => parseCampaignMode(x))
+        .filter((x): x is ExperienceMode => x !== undefined)
+    );
+    enabledGames = enabledGames.filter((m) => allowed.has(m));
+  }
+
+  const fg = parseCampaignMode(campaign?.featuredGame);
+  const featuredGame =
+    fg && enabledGames.includes(fg) ? fg : enabledGames[0];
+
+  const expSlug = (campaign?.experiencesSlug ?? config.slug ?? shopSlug).trim();
+  const expId = campaign?.experiencesUniqueId?.trim() || 'main';
 
   return {
     shopSlug,
-    experiencePath: {
-      shopName: shopSlug,
-      uniqueId: 'main',
-    },
+    experiencePath: { shopName: expSlug, uniqueId: expId },
+    layoutTemplate: campaign?.layoutTemplate,
+    fontPairId: campaign?.fontPairId,
+    accentColor: campaign?.accentColor ?? branding.accentColor,
+    valueProposition: campaign?.valueProposition,
+    howToOrder: campaign?.howToOrder,
+    about: campaign?.about,
+    social: { ...(campaign?.social ?? {}) },
+    featuredProducts: campaign?.featuredProducts ?? [],
+    testimonials: campaign?.testimonials,
+    trustBadges: campaign?.trustBadges,
+    faq: campaign?.faq,
+    featuredSectionTitle: campaign?.featuredSectionTitle,
+    gamesSectionTitle: campaign?.gamesSectionTitle,
     hero: {
       logoUrl: branding.logoUrl,
       shopName,
-      headline: undefined,
-      tagline: text.subtitle ?? 'Play, win rewards, and shop with us.',
+      headline: ch?.headline,
+      tagline: ch?.tagline ?? text.subtitle ?? '',
       cta: {
-        label: text.ctaText,
-        url: cta.url,
+        label: ch?.ctaLabel ?? text.ctaText,
+        url: ch?.ctaUrl ?? cta.url,
       },
-      backgroundStyle: 'gradient',
+      backgroundStyle: ch?.backgroundStyle ?? 'gradient',
       primaryColor: branding.primaryColor,
       secondaryColor: branding.secondaryColor,
+      backgroundImageUrl: ch?.backgroundImageUrl,
+      backgroundImageOverlay: ch?.backgroundImageOverlay,
+      backgroundPattern: ch?.backgroundPattern,
     },
-    social: {},
-    featuredProducts: [],
     enabledGames,
     featuredGame,
     footer: {

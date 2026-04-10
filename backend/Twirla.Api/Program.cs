@@ -10,6 +10,7 @@ builder.Services.AddSingleton<IAnalyticsService>(sp =>
     new AnalyticsService(sp.GetRequiredService<IWebHostEnvironment>()));
 builder.Services.AddSingleton<ICouponService>(sp =>
     new CouponService(sp.GetRequiredService<IWebHostEnvironment>(), sp.GetRequiredService<IAnalyticsService>()));
+builder.Services.AddSingleton<CampaignSetupTokenService>();
 
 builder.Services.AddControllers();
 

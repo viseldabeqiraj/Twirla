@@ -109,6 +109,27 @@
   max-width: 100%;
 }
 
+.experience-loss-footer {
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  text-align: center;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #64748b;
+  border-radius: var(--btn-radius);
+  background: rgba(148, 163, 184, 0.14);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-sizing: border-box;
+}
+
+.surface-neon .experience-loss-footer {
+  color: #cbd5e1;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 .cta-button {
   width: 100%; display: block; text-align: center;
   background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
@@ -154,7 +175,10 @@
   .brand-head { margin-bottom: 1rem; }
   .title { margin-top: 0.4rem; font-size: 1.35rem; }
   .subtitle { margin: 0.35rem 0 0.5rem; font-size: 0.9rem; }
-  .cta-button { margin-top: 0.5rem; }
+  .cta-button,
+  .experience-loss-footer {
+    margin-top: 0.5rem;
+  }
 }
 
 @media (max-width: 520px) {
@@ -165,4 +189,69 @@
     margin: 0 0.5rem;
   }
   .experience-content { padding: 0.5rem 0; }
+}
+
+/* Optional per-shop background motion (ThemeConfig.ambientMotion) */
+.experience-host.ambient-drift .orb-a {
+  animation: mmOrbDriftA 22s ease-in-out infinite alternate;
+}
+.experience-host.ambient-drift .orb-b {
+  animation: mmOrbDriftB 26s ease-in-out infinite alternate;
+}
+@keyframes mmOrbDriftA {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(40px, 24px) scale(1.08); }
+}
+@keyframes mmOrbDriftB {
+  0% { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(-36px, -28px) scale(1.06); }
+}
+
+.experience-host.ambient-pulse .orb-a,
+.experience-host.ambient-pulse .orb-b {
+  animation: mmOrbPulse 5.5s ease-in-out infinite;
+}
+@keyframes mmOrbPulse {
+  0%, 100% { opacity: 0.28; filter: blur(36px); }
+  50% { opacity: 0.52; filter: blur(28px); }
+}
+
+.experience-host.ambient-shimmer {
+  position: relative;
+}
+.experience-host.ambient-shimmer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    color-mix(in srgb, var(--accent-color) 18%, transparent) 42%,
+    color-mix(in srgb, #fff 12%, transparent) 50%,
+    color-mix(in srgb, var(--accent-color) 18%, transparent) 58%,
+    transparent 100%
+  );
+  background-size: 200% 200%;
+  animation: mmShimmer 14s ease-in-out infinite;
+  opacity: 0.55;
+  z-index: 0;
+}
+.experience-host.ambient-shimmer .experience-container {
+  z-index: 1;
+}
+@keyframes mmShimmer {
+  0% { background-position: 0% 40%; }
+  50% { background-position: 100% 60%; }
+  100% { background-position: 0% 40%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .experience-host.ambient-drift .orb-a,
+  .experience-host.ambient-drift .orb-b,
+  .experience-host.ambient-pulse .orb-a,
+  .experience-host.ambient-pulse .orb-b,
+  .experience-host.ambient-shimmer::before {
+    animation: none !important;
+  }
 }

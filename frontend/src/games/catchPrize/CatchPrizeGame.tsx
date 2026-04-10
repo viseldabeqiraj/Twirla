@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useRef } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import { useCatchPrizeGame } from './useCatchPrizeGame';
 import type { FallingItemKind } from './catchPrize.types';
+import type { TapHeartsOutcome } from '../../types/ShopConfig';
 import Confetti from '../../components/Confetti';
 import '../../components/GameStats.css';
 import './CatchPrizeGame.css';
@@ -15,17 +16,19 @@ const EMOJI: Record<FallingItemKind, string> = {
 };
 
 interface CatchPrizeGameProps {
+  outcomes?: TapHeartsOutcome[];
   ctaLabel?: string;
   ctaUrl?: string;
   /** Primary color for accents */
   primaryColor?: string;
   /** Called when the user starts the game (after clicking Start). */
   onGameStart?: () => void;
-  /** Called when the game ends with the final score. */
-  onGameEnd?: (score: number) => void;
+  /** Called when the round ends; `won` reflects the weighted outcome, not the score. */
+  onGameEnd?: (payload: { score: number; won: boolean }) => void;
 }
 
 export default function CatchPrizeGame({
+  outcomes,
   ctaLabel,
   ctaUrl = '#',
   primaryColor = 'var(--primary-color, #db2777)',
@@ -34,7 +37,7 @@ export default function CatchPrizeGame({
 }: CatchPrizeGameProps) {
   const { t } = useTranslation();
   const playAreaRef = useRef<HTMLDivElement>(null);
-  const { state, startCountdown, handleTap, rewardTier, tryAgain } = useCatchPrizeGame();
+  const { state, startCountdown, handleTap, tryAgain } = useCatchPrizeGame(outcomes);
   const hasFiredStart = useRef(false);
   const hasFiredEnd = useRef(false);
 
@@ -46,11 +49,14 @@ export default function CatchPrizeGame({
   }, [state.phase, onGameStart]);
 
   useEffect(() => {
-    if (state.phase === 'ended' && rewardTier && !hasFiredEnd.current) {
+    if (state.phase === 'ended' && state.endOutcome && !hasFiredEnd.current) {
       hasFiredEnd.current = true;
-      onGameEnd?.(state.score);
+      onGameEnd?.({
+        score: state.score,
+        won: !state.endOutcome.isNoWin,
+      });
     }
-  }, [state.phase, state.score, rewardTier, onGameEnd]);
+  }, [state.phase, state.score, state.endOutcome, onGameEnd]);
 
   const onPlayAreaPointer = useCallback(
     (e: React.PointerEvent) => {
@@ -139,24 +145,27 @@ export default function CatchPrizeGame({
         </>
       )}
 
-      {state.phase === 'ended' && rewardTier && (
-        <div className="catch-prize-ended">
-          {rewardTier.key !== 'no_reward' && <Confetti count={30} />}
+      {state.phase === 'ended' && state.endOutcome && (
+        <div
+          className={`catch-prize-ended ${state.endOutcome.isNoWin ? 'catch-prize-ended--nowin' : ''}`}
+        >
+          {!state.endOutcome.isNoWin && <Confetti count={30} />}
           <h2 className="catch-prize-gameover">{t('catchPrize.gameOver')}</h2>
-          <p className="game-stat catch-prize-final-score">
-            <span className="game-stat-label">{t('catchPrize.score')}</span>
-            <span className="game-stat-value">{state.score}</span>
-          </p>
-          <p className="catch-prize-reward-message">{t(rewardTier.messageKey)}</p>
+          <p className="catch-prize-outcome-headline">{state.endOutcome.headline}</p>
+          {state.endOutcome.description && (
+            <p className="catch-prize-outcome-desc">{state.endOutcome.description}</p>
+          )}
           <div className="catch-prize-ended-actions">
-            <a
-              href={ctaUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="catch-prize-btn-cta"
-            >
-              {ctaLabel ?? t('catchPrize.claimReward')}
-            </a>
+            {!state.endOutcome.isNoWin && (
+              <a
+                href={ctaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="catch-prize-btn-cta"
+              >
+                {ctaLabel ?? t('catchPrize.claimReward')}
+              </a>
+            )}
             <button
             type="button"
             className="catch-prize-btn-retry"

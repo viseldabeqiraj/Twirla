@@ -3,12 +3,34 @@
 .shop-landing {
   display: flex;
   flex-direction: column;
+  --shop-font-headline: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --shop-font-body: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--shop-font-body);
   background: linear-gradient(
     180deg,
     color-mix(in srgb, var(--shop-primary, #db2777) 6%, #fff) 0%,
     color-mix(in srgb, var(--shop-secondary, #be185d) 12%, #fff) 30%,
     color-mix(in srgb, var(--shop-primary, #db2777) 5%, #fff) 100%
   );
+}
+
+.shop-landing[data-font-pair="editorial"] {
+  --shop-font-headline: "Fraunces", Georgia, "Times New Roman", serif;
+  --shop-font-body: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+.shop-landing[data-font-pair="modern-tech"] {
+  --shop-font-headline: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --shop-font-body: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+.shop-landing .shop-section-title,
+.shop-landing .shop-hero-title,
+.shop-landing .shop-product-title,
+.shop-landing .shop-featured-game-title,
+.shop-landing .shop-faq-question,
+.shop-landing .shop-value-prop-title {
+  font-family: var(--shop-font-headline);
 }
 
 /* Content ends after last section; footer is outside this (in app flex layout) */
@@ -66,6 +88,10 @@
   .shop-faq .shop-section-title { margin-bottom: 0.75rem; }
   .shop-faq-question { padding: 0.75rem 0; }
   .shop-faq-answer { padding: 0 0 0.75rem; }
+  .shop-value-prop-body { max-width: 48ch; }
+  .shop-featured-game-intro { max-width: 44ch; }
+  .shop-how-order-body { font-size: 0.98rem; }
+  .shop-contact-grid { gap: 0.75rem; }
 }
 
 .shop-landing-loading,
@@ -115,7 +141,7 @@
   height: 44px;
   border-radius: 12px;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+  background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-accent, var(--shop-secondary, #be185d)));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -446,6 +472,196 @@
   line-height: 1.45;
 }
 
+.shop-value-prop {
+  text-align: center;
+}
+.shop-value-prop-title {
+  margin-bottom: 0.35rem;
+}
+.shop-value-prop-body {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 40ch;
+}
+
+.shop-featured-game-intro {
+  font-size: 0.88rem;
+  color: #64748b;
+  text-align: center;
+  margin: -0.25rem 0 1rem;
+  max-width: 38ch;
+  line-height: 1.45;
+}
+
+.shop-products-subtitle {
+  text-align: center;
+  margin-top: -0.15rem;
+}
+
+.shop-products-showcase {
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .shop-products-showcase {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    overscroll-behavior-x: contain;
+    margin-left: -0.35rem;
+    margin-right: -0.35rem;
+    padding-bottom: 0.35rem;
+  }
+  .shop-products-showcase .shop-products-grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.85rem;
+    margin-top: 0;
+    padding: 0 0.35rem 0.25rem;
+  }
+  .shop-products-showcase .shop-product-card {
+    flex: 0 0 min(272px, 86vw);
+    max-width: 300px;
+    scroll-snap-align: start;
+  }
+}
+
+.shop-how-order {
+  text-align: center;
+}
+.shop-how-order-body {
+  font-size: 0.95rem;
+  color: #475569;
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  text-align: left;
+}
+.shop-how-order-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.25rem;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  color: #fff;
+  background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-accent, var(--shop-secondary, #be185d)));
+  box-shadow: 0 6px 20px rgba(219, 39, 119, 0.28);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.shop-how-order-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(219, 39, 119, 0.3);
+  color: #fff;
+}
+
+.shop-contact-intro {
+  font-size: 0.9rem;
+  color: #64748b;
+  text-align: center;
+  margin: 0 0 1rem;
+  line-height: 1.45;
+  max-width: 42ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+.shop-contact-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+}
+@media (min-width: 400px) {
+  .shop-contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.shop-contact-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  min-height: 100%;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--shop-primary, #db2777) 18%, transparent);
+  text-decoration: none;
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.92rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  box-sizing: border-box;
+}
+.shop-contact-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(219, 39, 119, 0.12);
+  border-color: color-mix(in srgb, var(--shop-primary, #db2777) 35%, transparent);
+  color: #1e293b;
+}
+.shop-contact-emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+.shop-contact-sublabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+.shop-contact-address {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+  text-align: center;
+}
+.shop-contact-address-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+  margin-bottom: 0.35rem;
+}
+.shop-contact-address-text {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.45;
+}
+.shop-contact-address-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.shop-about-heading {
+  text-align: center;
+  margin-bottom: 0.75rem;
+}
+.shop-about-photo-wrap {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 1rem;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--shop-primary, #db2777) 15%, transparent);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
+  aspect-ratio: 4 / 3;
+  background: color-mix(in srgb, var(--shop-primary, #db2777) 8%, #fff);
+}
+.shop-about-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* How it works – landing page value section */
 .shop-how-it-works {
   padding: 1rem 1.25rem 1.5rem;
@@ -737,15 +953,25 @@
 }
 
 .shop-product-cta {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.35rem;
+  padding: 0.55rem 1rem;
+  border-radius: 12px;
   font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--shop-primary, #db2777);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-accent, var(--shop-secondary, #be185d)));
   text-decoration: none;
+  box-shadow: 0 4px 14px rgba(219, 39, 119, 0.28);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .shop-product-cta:hover {
-  text-decoration: underline;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(219, 39, 119, 0.32);
+  color: #fff;
 }
 
 /* Games section – centered, extra bottom space after game cards, cards with space from background */
@@ -908,4 +1134,86 @@
   .shop-footer-inner {
     max-width: none;
   }
+}
+
+/* Hero: optional photo + overlay (ShopLandingConfig.hero.backgroundImageUrl) */
+.shop-hero-with-image {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+}
+
+.shop-hero-with-image.shop-hero-img-dark .shop-hero-shop-name,
+.shop-hero-with-image.shop-hero-img-dark .shop-hero-title,
+.shop-hero-with-image.shop-hero-img-dark .shop-hero-tagline {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.shop-hero-img-dark .shop-hero-logo {
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.shop-hero-img-dark .shop-hero-logo-placeholder {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.shop-hero-img-dark .shop-hero-cta-button {
+  background: #fff;
+  color: var(--shop-primary, #db2777);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
+}
+
+.shop-hero-with-image.shop-hero-img-light .shop-hero-title,
+.shop-hero-with-image.shop-hero-img-light .shop-hero-shop-name {
+  color: #0f172a;
+}
+
+.shop-hero-with-image.shop-hero-img-light .shop-hero-tagline {
+  color: #475569;
+}
+
+.shop-hero-img-light .shop-hero-logo-placeholder {
+  background: color-mix(in srgb, var(--shop-primary, #db2777) 18%, #fff);
+  color: var(--shop-primary, #db2777);
+}
+
+.shop-hero-img-light .shop-hero-cta-button {
+  background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-accent, var(--shop-secondary, #be185d)));
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+}
+
+/* Hero: subtle patterns on gradient/solid (skipped when photo hero is used) */
+.shop-hero-gradient.shop-hero-pattern-dots {
+  background: radial-gradient(rgba(255, 255, 255, 0.2) 1.1px, transparent 1.1px),
+    linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+  background-size: 15px 15px, 100% 100%;
+}
+
+.shop-hero-gradient.shop-hero-pattern-mesh {
+  background: radial-gradient(ellipse 85% 55% at 12% 18%, rgba(255, 255, 255, 0.2), transparent 52%),
+    radial-gradient(ellipse 70% 50% at 88% 82%, rgba(255, 255, 255, 0.16), transparent 48%),
+    linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+}
+
+.shop-hero-gradient.shop-hero-pattern-grain {
+  background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.05) 2px,
+      rgba(255, 255, 255, 0.05) 3px
+    ),
+    linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+}
+
+.shop-hero-solid.shop-hero-pattern-dots {
+  background: radial-gradient(color-mix(in srgb, var(--shop-primary, #db2777) 22%, transparent) 1.1px, transparent 1.1px),
+    rgba(255, 255, 255, 0.96);
+  background-size: 14px 14px, 100% 100%;
+}
+
+/* Game-first template: slightly tighter gap before first game block */
+.shop-landing[data-layout="game-first"] .shop-hero {
+  padding-bottom: 1.25rem;
 }

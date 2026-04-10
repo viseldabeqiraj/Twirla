@@ -4,6 +4,8 @@ import ExperiencePage from './pages/ExperiencePage';
 import HomePage from './pages/HomePage';
 import RunnerPage from './pages/RunnerPage';
 import ShopLandingPage from './pages/ShopLandingPage';
+import ShopCampaignSetupPage from './pages/ShopCampaignSetupPage';
+import CampaignSetupGatePage from './pages/CampaignSetupGatePage';
 import TwirlaFooter from './components/TwirlaFooter';
 
 function App() {
@@ -12,6 +14,8 @@ function App() {
       <div className="app-content">
         <Routes>
           <Route path="/admin/:slug" element={<AdminPage />} />
+          <Route path="/setup/campaign" element={<CampaignSetupGatePage />} />
+          <Route path="/setup/campaign/form" element={<ShopCampaignSetupPage />} />
           <Route path="/shop/:shopSlug" element={<ShopLandingPage />} />
           <Route path="/:mode/:shopName/:uniqueId" element={<ExperiencePage />} />
           <Route path="/runner" element={<RunnerPage />} />

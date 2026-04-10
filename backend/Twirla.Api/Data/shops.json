@@ -139,6 +139,40 @@
             "endMessage": "Shitja është tani aktive! Bli tani para se të përfundojë!"
           }
         }
+      },
+      "memory": {
+        "pairCount": 6,
+        "revealText": "PINK-MEM-10",
+        "revealSubtitle": "10% off — DM Pinkster with this code."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "default",
+        "accentColor": "#f472b6",
+        "featuredSectionTitle": "Featured",
+        "gamesSectionTitle": "Play & Win",
+        "featuredGame": "Runner",
+        "experiencesSlug": "pinkster",
+        "hero": {
+          "backgroundPattern": "dots"
+        },
+        "social": {
+          "instagram": "https://instagram.com/pinkster.al",
+          "website": "https://pinkster.al"
+        },
+        "featuredProducts": [],
+        "testimonials": [],
+        "trustBadges": [
+          {
+            "label": "Fast delivery",
+            "icon": "🚚"
+          },
+          {
+            "label": "Secure checkout",
+            "icon": "🔒"
+          }
+        ],
+        "faq": []
       }
     },
     {
@@ -215,24 +249,58 @@
         "endAt": "2024-12-31T23:59:59Z",
         "endMessage": "The sale is now live! Shop now before it ends!",
         "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "revealText": "FASH-MEM-12",
+        "revealSubtitle": "12% off — message Fashionista with this code."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "default",
+        "accentColor": "#f59e0b",
+        "featuredGame": "TapHearts",
+        "experiencesSlug": "fashionista",
+        "social": {
+          "instagram": "https://instagram.com/fashionista",
+          "website": "https://instagram.com/fashionista"
+        },
+        "featuredProducts": [],
+        "testimonials": [],
+        "trustBadges": [],
+        "faq": []
       }
     },
     {
       "shopId": "demo-allgames01",
       "slug": "demo",
-      "name": "Demo Shop (all games)",
+      "name": "Twirla playground",
       "adminToken": "demo-admin-token",
       "playCooldownHours": 24,
       "branding": {
         "primaryColor": "#0ea5e9",
         "secondaryColor": "#7dd3fc",
         "logoUrl": "/logos/twirla.png",
-        "brandName": "Demo Shop"
+        "brandName": "Twirla playground",
+        "theme": {
+          "backgroundPattern": "gradient",
+          "surfaceStyle": "glass",
+          "ambientMotion": "drift",
+          "borderRadius": 22,
+          "buttonRadius": 14,
+          "ambientParticles": {
+            "enabled": true,
+            "shape": "orb",
+            "density": "few",
+            "color": "#0ea5e9",
+            "accentColor": "#bae6fd"
+          }
+        }
       },
       "text": {
-        "title": "Try all games!",
-        "subtitle": "Wheel, Hearts, Scratch & Countdown",
-        "ctaText": "Visit shop",
+        "title": "Try every Twirla game",
+        "subtitle": "Wheel, catch the prize, scratch, countdown & memory — same flows as real shop links.",
+        "ctaText": "Visit Twirla",
         "resultTitle": "You won!",
         "resultSubtitle": "Thanks for playing."
       },
@@ -242,10 +310,27 @@
       "wheel": {
         "allowRepeatSpins": true,
         "prizes": [
-          { "label": "10% Off", "weight": 30, "description": "10% off" },
-          { "label": "20% Off", "weight": 25, "description": "20% off" },
-          { "label": "Free Shipping", "weight": 25, "description": "Free shipping" },
-          { "label": "Try Again", "weight": 20, "isWinning": false, "description": "Try again!" }
+          {
+            "label": "10% Off",
+            "weight": 30,
+            "description": "10% off"
+          },
+          {
+            "label": "20% Off",
+            "weight": 25,
+            "description": "20% off"
+          },
+          {
+            "label": "Free Shipping",
+            "weight": 25,
+            "description": "Free shipping"
+          },
+          {
+            "label": "Try Again",
+            "weight": 20,
+            "isWinning": false,
+            "description": "Try again!"
+          }
         ]
       },
       "tapHearts": {
@@ -264,6 +349,563 @@
         "endAt": "2030-12-31T23:59:59Z",
         "endMessage": "Offer ended. Thanks for playing!",
         "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": ["⭐", "🎁", "💎", "🎯", "✨", "🏆"],
+        "timeLimitSeconds": 180,
+        "maxMistakes": 24,
+        "revealText": "MEM-DEMO-15",
+        "revealSubtitle": "15% off your next order — DM this code to the shop."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "default",
+        "accentColor": "#38bdf8",
+        "featuredGame": "Runner",
+        "experiencesSlug": "demo",
+        "hero": {
+          "tagline": "Wheel, hearts, scratch, countdown & memory — try every game."
+        },
+        "social": {
+          "website": "https://example.com"
+        },
+        "featuredProducts": [],
+        "faq": []
+      }
+    },
+    {
+      "shopId": "demo-shop-main01",
+      "slug": "demo-shop",
+      "name": "Thread & Fold",
+      "enabled": true,
+      "adminToken": "demo-admin-token",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#4c1d95",
+        "secondaryColor": "#6d28d9",
+        "accentColor": "#c4b5fd",
+        "brandName": "Thread & Fold",
+        "theme": {
+          "backgroundPattern": "aurora",
+          "surfaceStyle": "glass",
+          "ambientMotion": "drift",
+          "borderRadius": 22,
+          "buttonRadius": 14
+        }
+      },
+      "text": {
+        "title": "Memory match — win a wardrobe perk",
+        "subtitle": "Flip two cards at a time. Beat the clock and keep your mistakes low.",
+        "ctaText": "DM us on Instagram",
+        "resultTitle": "Perfect memory!",
+        "resultSubtitle": "Your discount code is ready below."
+      },
+      "cta": {
+        "url": "https://instagram.com/threadandfold.demo"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          {
+            "label": "10% off knitwear",
+            "weight": 35,
+            "description": "Applies to sweaters & cardigans"
+          },
+          {
+            "label": "Free scrunchie",
+            "weight": 35,
+            "description": "In-store or with online order"
+          },
+          {
+            "label": "Try again",
+            "weight": 30,
+            "isWinning": false,
+            "description": "Come back tomorrow"
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 8,
+        "heartColor": "#a78bfa",
+        "revealText": "You caught the prize!",
+        "revealSubtitle": "Code THREAD-HEARTS-8 — 8% off accessories",
+        "outcomes": [
+          {
+            "headline": "No prize this round",
+            "description": "Thanks for playing — visit us again soon.",
+            "weight": 35,
+            "isNoWin": true
+          },
+          {
+            "headline": "5% off accessories",
+            "description": "DM us with a screenshot; code THREAD-5 while stocks last.",
+            "weight": 25
+          },
+          {
+            "headline": "10% off your next order",
+            "description": "Full-price items only; we will confirm in DMs.",
+            "weight": 22
+          },
+          {
+            "headline": "Free scrunchie with purchase",
+            "description": "Pick one in-store or note it in your DM order.",
+            "weight": 18
+          }
+        ]
+      },
+      "scratch": {
+        "overlayColor": "#64748b",
+        "overlayText": "Scratch for your perk",
+        "revealText": "15% off your first order",
+        "revealSubtitle": "Use code THREAD-SCRATCH-15 at checkout"
+      },
+      "countdown": {
+        "endAt": "2030-12-31T23:59:59Z",
+        "endMessage": "Winter drop is live — shop limited coats now.",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": [
+          "👗",
+          "👔",
+          "👜",
+          "👠",
+          "🧥",
+          "👒"
+        ],
+        "timeLimitSeconds": 90,
+        "maxMistakes": 14,
+        "revealText": "THREAD-MEM-12",
+        "revealSubtitle": "12% off full-price clothing — DM this code with a screenshot of your win."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "editorial",
+        "accentColor": "#c4b5fd",
+        "featuredSectionTitle": "This week in store",
+        "gamesSectionTitle": "Play & unlock a perk",
+        "featuredGame": "MemoryMatch",
+        "experiencesSlug": "demo-shop",
+        "hero": {
+          "headline": "Capsule pieces for real wardrobes.",
+          "tagline": "Natural fibres, honest prices, sizes XS–XL.",
+          "ctaLabel": "See new arrivals",
+          "ctaUrl": "https://instagram.com/threadandfold.demo",
+          "backgroundPattern": "dots"
+        },
+        "valueProposition": {
+          "headline": "We buy small batches so nothing sits in a warehouse for months.",
+          "body": "Thread & Fold is built for people who want quality basics and a few statement pieces — without the markup of fast fashion."
+        },
+        "howToOrder": {
+          "heading": "How to order",
+          "body": "1) Browse highlights below or our Instagram highlights. 2) DM with the item and size. 3) We confirm stock and ship within 48h (Tirana) or send tracking EU-wide.",
+          "primaryCtaLabel": "Message on Instagram",
+          "primaryCtaUrl": "https://instagram.com/threadandfold.demo"
+        },
+        "about": {
+          "whatWeSell": "Linen shirts, wool coats, denim, and small-run accessories.",
+          "aboutUs": "Two friends started Thread & Fold after years in retail buying — we only stock what we would wear ourselves.",
+          "city": "Tirana",
+          "country": "Albania",
+          "physicalAddress": "Rruga Ismail Qemali 8 (studio visits Fri–Sat by appointment)",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/threadandfold.demo",
+          "tiktok": "https://tiktok.com/@threadandfold.demo",
+          "whatsapp": "https://wa.me/355691234567",
+          "website": "https://example.com/thread-fold",
+          "email": "hello@threadfold.example",
+          "phone": "+355 69 123 4567"
+        },
+        "featuredProducts": [
+          {
+            "id": "tf-1",
+            "title": "Merino crewneck — oat",
+            "description": "Mid-weight, machine wash cold. Unisex fit.",
+            "price": "4,200 L",
+            "imageUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
+            "ctaLabel": "DM to reserve",
+            "ctaUrl": "https://instagram.com/threadandfold.demo"
+          },
+          {
+            "id": "tf-2",
+            "title": "Wide-leg wool trousers",
+            "description": "High rise, lined. Limited restock.",
+            "price": "6,800 L",
+            "imageUrl": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&q=80",
+            "ctaLabel": "DM to reserve",
+            "ctaUrl": "https://instagram.com/threadandfold.demo"
+          },
+          {
+            "id": "tf-3",
+            "title": "Linen overshirt — ink",
+            "description": "Breathable layer for spring evenings.",
+            "price": "5,100 L",
+            "ctaLabel": "DM to reserve",
+            "ctaUrl": "https://instagram.com/threadandfold.demo"
+          }
+        ],
+        "testimonials": [
+          {
+            "quote": "Quality is obvious when you touch the fabric. The memory game discount was a nice surprise!",
+            "author": "Elira K.",
+            "role": "Customer"
+          }
+        ],
+        "trustBadges": [
+          {
+            "label": "EU-sourced yarns",
+            "icon": "🧵"
+          },
+          {
+            "label": "14-day exchanges",
+            "icon": "↩️"
+          },
+          {
+            "label": "Studio pickup",
+            "icon": "📍"
+          }
+        ],
+        "faq": [
+          {
+            "question": "How do I use my game code?",
+            "answer": "DM us on Instagram with the code from your win screen within 7 days."
+          },
+          {
+            "question": "Do you ship outside Albania?",
+            "answer": "Yes — we ship to EU addresses with tracked post. Rates depend on weight."
+          }
+        ]
+      }
+    },
+    {
+      "shopId": "demo-bakery-luna-main01",
+      "slug": "demo-bakery-luna",
+      "name": "Rose & Crumb",
+      "enabled": true,
+      "adminToken": "demo-admin-token",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#92400e",
+        "secondaryColor": "#78350f",
+        "accentColor": "#fbbf24",
+        "brandName": "Rose & Crumb",
+        "theme": {
+          "backgroundPattern": "mesh",
+          "surfaceStyle": "glass",
+          "ambientMotion": "shimmer",
+          "borderRadius": 24,
+          "buttonRadius": 16
+        }
+      },
+      "text": {
+        "title": "Match the pastries — win a bakery treat",
+        "subtitle": "Find every pair before time runs out. Wrong guesses cost you!",
+        "ctaText": "WhatsApp to pre-order",
+        "resultTitle": "Fresh win!",
+        "resultSubtitle": "Show this screen or your code at pickup."
+      },
+      "cta": {
+        "url": "https://wa.me/35599111222"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          {
+            "label": "Free cortado",
+            "weight": 40,
+            "description": "With any pastry box"
+          },
+          {
+            "label": "€1 off viennoiserie",
+            "weight": 35,
+            "description": "Same day only"
+          },
+          {
+            "label": "Try again",
+            "weight": 25,
+            "isWinning": false,
+            "description": "Next visit"
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 8,
+        "heartColor": "#f59e0b",
+        "revealText": "Morning basket unlocked!",
+        "revealSubtitle": "Code ROSE-HEARTS — free butter cookie with loaf"
+      },
+      "scratch": {
+        "overlayColor": "#78716c",
+        "overlayText": "Scratch the loaf",
+        "revealText": "You won a weekend perk",
+        "revealSubtitle": "BOGO croissants Saturday — say ROSE-SCRATCH at the counter"
+      },
+      "countdown": {
+        "endAt": "2030-12-31T23:59:59Z",
+        "endMessage": "Weekend sourdough pre-orders close Friday 6pm!",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": [
+          "🥐",
+          "🍞",
+          "🥖",
+          "🧁",
+          "☕",
+          "🫐"
+        ],
+        "timeLimitSeconds": 120,
+        "maxMistakes": 16,
+        "revealText": "ROSE-MEM-8",
+        "revealSubtitle": "8% off your next bread or pastry order — WhatsApp us this code before you pay."
+      },
+      "campaign": {
+        "layoutTemplate": "story-driven",
+        "fontPairId": "editorial",
+        "accentColor": "#fbbf24",
+        "featuredGame": "Scratch",
+        "experiencesSlug": "demo-bakery-luna",
+        "hero": {
+          "headline": "Slow dough. Real butter. Same-day pickup in Tirana.",
+          "tagline": "Sourdough, viennoiserie, and celebration cakes by pre-order.",
+          "ctaLabel": "See this week’s menu",
+          "ctaUrl": "https://example.com/rose-crumb-menu",
+          "backgroundStyle": "solid",
+          "backgroundImageUrl": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=1200&q=80",
+          "backgroundImageOverlay": "dark"
+        },
+        "valueProposition": {
+          "headline": "We ferment 24–36 hours and bake in small batches.",
+          "body": "Rose & Crumb is the bakery you message when you need something warm for breakfast or a cake that actually tastes homemade."
+        },
+        "howToOrder": {
+          "heading": "How to order",
+          "body": "1) WhatsApp or Instagram DM with date & items. 2) We confirm pickup window. 3) Pay by link or at pickup.",
+          "primaryCtaLabel": "WhatsApp the bakery",
+          "primaryCtaUrl": "https://wa.me/35599111222"
+        },
+        "about": {
+          "whatWeSell": "Country sourdough, butter croissants, seasonal tarts, custom cakes.",
+          "aboutUs": "Opened in 2019 — our head baker trained in Lyon; our front-of-house is family-run.",
+          "city": "Tirana",
+          "country": "Albania",
+          "physicalAddress": "Rruga e Kafeterive 4 (side entrance, look for the bread lamp)",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1556910103-1c02745a30bf?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/roseandcrumb.demo",
+          "whatsapp": "https://wa.me/35599111222",
+          "website": "https://example.com/rose-crumb",
+          "email": "hello@roseandcrumb.example",
+          "phone": "+355 99 111 222"
+        },
+        "featuredProducts": [
+          {
+            "id": "rc-1",
+            "title": "Country sourdough (750g)",
+            "description": "24h cold ferment, dark crust.",
+            "price": "350 L",
+            "imageUrl": "https://images.unsplash.com/photo-1586444538942-0a8ea3fe0eaa?w=600&q=80",
+            "ctaLabel": "Reserve for Saturday",
+            "ctaUrl": "https://wa.me/35599111222"
+          },
+          {
+            "id": "rc-2",
+            "title": "Almond croissant (box of 4)",
+            "description": "Baked morning of pickup.",
+            "price": "800 L",
+            "imageUrl": "https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&q=80",
+            "ctaLabel": "Reserve",
+            "ctaUrl": "https://wa.me/35599111222"
+          }
+        ],
+        "testimonials": [
+          {
+            "quote": "The viennoiserie rivals anything I had in Paris. Pre-ordering on WhatsApp is easy.",
+            "author": "Dorina M.",
+            "role": "Regular"
+          }
+        ],
+        "trustBadges": [
+          {
+            "label": "Baked same day",
+            "icon": "🌅"
+          },
+          {
+            "label": "Local flour where possible",
+            "icon": "🌾"
+          }
+        ],
+        "faq": [
+          {
+            "question": "Can I freeze the sourdough?",
+            "answer": "Yes — slice first, then freeze up to 2 months. Reheat from frozen at 180°C for 8 minutes."
+          }
+        ]
+      }
+    },
+    {
+      "shopId": "demo-arcade-night-main01",
+      "slug": "demo-arcade-night",
+      "name": "Aurelia & Co.",
+      "enabled": true,
+      "adminToken": "demo-admin-token",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#0f172a",
+        "secondaryColor": "#1e3a5f",
+        "accentColor": "#d4af37",
+        "brandName": "Aurelia & Co.",
+        "theme": {
+          "backgroundPattern": "dark",
+          "surfaceStyle": "neon",
+          "ambientMotion": "pulse",
+          "borderRadius": 20,
+          "buttonRadius": 12
+        }
+      },
+      "text": {
+        "title": "Memory match — reveal your jewel perk",
+        "subtitle": "Match pairs of icons from our collections. Sharp focus wins.",
+        "ctaText": "Book a private viewing",
+        "resultTitle": "Flawless recall",
+        "resultSubtitle": "Your exclusive code is below — treat it like a jewel."
+      },
+      "cta": {
+        "url": "https://instagram.com/aureliajewellery.demo"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          {
+            "label": "Complimentary sizing",
+            "weight": 45,
+            "description": "On any ring purchase"
+          },
+          {
+            "label": "10% off chains",
+            "weight": 35,
+            "description": "Gold vermeil collection"
+          },
+          {
+            "label": "Try again",
+            "weight": 20,
+            "isWinning": false,
+            "description": "Another day"
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 8,
+        "heartColor": "#d4af37",
+        "revealText": "You have a jewellery perk!",
+        "revealSubtitle": "Code AURELIA-HEARTS — polishing cloth & pouch on your next order"
+      },
+      "scratch": {
+        "overlayColor": "#1e293b",
+        "overlayText": "Scratch to reveal",
+        "revealText": "Private styling session",
+        "revealSubtitle": "Redeem AURELIA-SCRATCH via DM — 30 min, weekday slots"
+      },
+      "countdown": {
+        "endAt": "2030-12-31T23:59:59Z",
+        "endMessage": "Trunk show appointments open — DM to book.",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": [
+          "💎",
+          "💍",
+          "✨",
+          "🪙",
+          "👑",
+          "🔮"
+        ],
+        "timeLimitSeconds": 75,
+        "maxMistakes": 10,
+        "revealText": "AURELIA-MEM-15",
+        "revealSubtitle": "15% off fine jewellery repairs or resizing — include this code in your Instagram DM."
+      },
+      "campaign": {
+        "layoutTemplate": "game-first",
+        "fontPairId": "modern-tech",
+        "accentColor": "#d4af37",
+        "featuredGame": "Wheel",
+        "experiencesSlug": "demo-arcade-night",
+        "hero": {
+          "headline": "Hand-set pieces. Quiet luxury.",
+          "tagline": "Engagement rings, stackable bands, and one-of-a-kind stones — by appointment.",
+          "backgroundPattern": "mesh"
+        },
+        "valueProposition": {
+          "headline": "We source stones with paperwork you can trust.",
+          "body": "Aurelia & Co. works with certified suppliers; every piece can be appraised and insured before you leave."
+        },
+        "howToOrder": {
+          "heading": "Book a consult",
+          "body": "1) DM Instagram with what you are looking for. 2) We suggest stones within budget. 3) Deposit secures the piece; balance on delivery.",
+          "primaryCtaLabel": "Instagram DM",
+          "primaryCtaUrl": "https://instagram.com/aureliajewellery.demo"
+        },
+        "about": {
+          "whatWeSell": "Engagement rings, wedding bands, gold chains, and bespoke resets.",
+          "aboutUs": "Founded by a gemologist and a goldsmith — one studio, no franchise markup.",
+          "city": "Tirana",
+          "country": "Albania",
+          "physicalAddress": "Blloku — exact address shared when appointment is confirmed",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/aureliajewellery.demo",
+          "tiktok": "https://tiktok.com/@aureliajewellery.demo",
+          "whatsapp": "https://wa.me/4917012345678",
+          "website": "https://example.com/aurelia",
+          "email": "concierge@aurelia.example"
+        },
+        "featuredProducts": [
+          {
+            "id": "au-1",
+            "title": "Signet ring — 14k gold",
+            "description": "Engravable, made to order in 3 weeks.",
+            "price": "€420",
+            "imageUrl": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80",
+            "ctaLabel": "DM for sizing",
+            "ctaUrl": "https://instagram.com/aureliajewellery.demo"
+          },
+          {
+            "id": "au-2",
+            "title": "Lab diamond studs (0.5ctw)",
+            "description": "F-G colour, VS clarity, 18k posts.",
+            "price": "€890",
+            "imageUrl": "https://images.unsplash.com/photo-1535632066927-ab7c9ab0b335?w=600&q=80",
+            "ctaLabel": "Request certificate",
+            "ctaUrl": "https://instagram.com/aureliajewellery.demo"
+          }
+        ],
+        "testimonials": [],
+        "trustBadges": [
+          {
+            "label": "Certified stones",
+            "icon": "📜"
+          },
+          {
+            "label": "Insured shipping",
+            "icon": "📦"
+          }
+        ],
+        "faq": [
+          {
+            "question": "Do you resize rings bought elsewhere?",
+            "answer": "Often yes — send photos and hallmarks by DM; we quote before you visit."
+          }
+        ]
       }
     }
   ]

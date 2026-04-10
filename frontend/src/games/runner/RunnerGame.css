@@ -330,31 +330,45 @@
   margin: 0 0 0.75rem;
 }
 
-.runner-gameover-score-main {
-  margin-bottom: 1rem;
-}
-
-.runner-gameover-score-value {
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: var(--runner-accent, #db2777);
-  display: block;
-  line-height: 1;
-}
-
-.runner-reward-unlocked {
+.runner-outcome {
   background: linear-gradient(135deg, rgba(219, 39, 119, 0.12), rgba(244, 114, 182, 0.08));
   border-radius: 14px;
   padding: 0.9rem 1rem;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
   border: 1px solid rgba(219, 39, 119, 0.25);
+  text-align: center;
 }
 
-.runner-reward-message {
+.runner-outcome--nowin {
+  background: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+.runner-outcome-headline {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 800;
   color: #831843;
+  line-height: 1.35;
+}
+
+.runner-outcome--nowin .runner-outcome-headline {
+  color: #475569;
+}
+
+.runner-outcome-body {
+  margin: 0.45rem 0 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.runner-gameover-run-score {
+  margin: 0 0 1rem;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  font-weight: 600;
 }
 
 .runner-gameover-actions {

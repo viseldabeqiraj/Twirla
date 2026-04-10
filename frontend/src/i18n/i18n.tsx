@@ -50,12 +50,16 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
     
     if (value === undefined) {
-      // Fallback to English if translation not found
-      let fallbackValue: any = translations.en;
-      for (const k of keys) {
-        fallbackValue = fallbackValue?.[k];
+      // Avoid mixing English into Albanian UI; English still falls back from key to en file.
+      if (language === 'sq') {
+        value = key;
+      } else {
+        let fallbackValue: any = translations.en;
+        for (const k of keys) {
+          fallbackValue = fallbackValue?.[k];
+        }
+        value = fallbackValue || key;
       }
-      value = fallbackValue || key;
     }
     
     // Replace parameters

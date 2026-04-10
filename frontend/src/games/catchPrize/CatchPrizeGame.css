@@ -207,18 +207,23 @@
   color: #1e293b;
 }
 
-.catch-prize-final-score {
-  font-size: 1.1rem;
-  color: #475569;
-  margin: 0 0 0.75rem;
+.catch-prize-outcome-headline {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 0.5rem;
+  line-height: 1.35;
 }
 
-.catch-prize-reward-message {
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--catch-primary, #db2777);
+.catch-prize-outcome-desc {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #64748b;
   margin: 0 0 1.25rem;
-  line-height: 1.4;
+  line-height: 1.45;
+  max-width: 32ch;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .catch-prize-ended-actions {

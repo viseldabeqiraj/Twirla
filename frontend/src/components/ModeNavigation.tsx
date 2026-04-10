@@ -21,6 +21,7 @@ const modeMeta: Record<ExperienceMode, { path: string; emoji: string; key: strin
   [ExperienceMode.TapHearts]: { path: 'taphearts', emoji: '🎁', key: 'nav.tapHearts' },
   [ExperienceMode.Scratch]: { path: 'scratch', emoji: '✨', key: 'nav.scratch' },
   [ExperienceMode.Countdown]: { path: 'countdown', emoji: '⏳', key: 'nav.countdown' },
+  [ExperienceMode.MemoryMatch]: { path: 'memory', emoji: '🃏', key: 'memoryMatch.title' },
 };
 
 const normalizeMode = (mode: string): ExperienceMode | null => {
@@ -30,6 +31,7 @@ const normalizeMode = (mode: string): ExperienceMode | null => {
   if (m === 'taphearts' || m === 'tap-hearts') return ExperienceMode.TapHearts;
   if (m === 'scratch') return ExperienceMode.Scratch;
   if (m === 'countdown') return ExperienceMode.Countdown;
+  if (m === 'memory' || m === 'memorymatch') return ExperienceMode.MemoryMatch;
   return null;
 };
 

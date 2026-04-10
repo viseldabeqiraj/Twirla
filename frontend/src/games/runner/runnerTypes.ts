@@ -1,22 +1,34 @@
 /**
- * Runner game types and configurable reward tiers for Twirla.
- * Reward tiers can be customized per shop later.
+ * Runner game types and shop-configurable random outcomes for Twirla.
  */
 
-export interface RunnerRewardTier {
-  minScore: number;
-  maxScore: number; // use Infinity for "and above"
-  message: string;
-  /** Optional key for analytics or shop-specific handling */
-  tierKey?: string;
-}
+import type { RunnerGameOutcome } from '../../types/ShopConfig';
 
-/** Default reward tiers – configurable per shop (tougher thresholds) */
-export const DEFAULT_REWARD_TIERS: RunnerRewardTier[] = [
-  { minScore: 0, maxScore: 79, message: 'Try again for a reward', tierKey: 'try_again' },
-  { minScore: 80, maxScore: 159, message: 'You unlocked 5% off', tierKey: '5_off' },
-  { minScore: 160, maxScore: 279, message: 'You unlocked 10% off', tierKey: '10_off' },
-  { minScore: 280, maxScore: Infinity, message: 'You unlocked a surprise reward', tierKey: 'surprise' },
+export type { RunnerGameOutcome };
+
+/** Default outcomes when `runnerGame.outcomes` is omitted from shops.json. */
+export const DEFAULT_RUNNER_OUTCOMES: RunnerGameOutcome[] = [
+  {
+    headline: 'No prize this run',
+    body: 'Thanks for playing — try again another time.',
+    weight: 40,
+    isNoWin: true,
+  },
+  {
+    headline: 'You won: 5% off',
+    body: 'Message the shop to get your code.',
+    weight: 28,
+  },
+  {
+    headline: 'You won: 10% off',
+    body: 'Use at checkout (the shop will confirm).',
+    weight: 22,
+  },
+  {
+    headline: 'You won: a small perk',
+    body: 'DM the shop with a screenshot of this screen.',
+    weight: 10,
+  },
 ];
 
 export interface RunnerTheme {
@@ -42,7 +54,8 @@ export const DEFAULT_RUNNER_THEME: RunnerTheme = {
 };
 
 export interface RunnerGameConfig {
-  rewardTiers?: RunnerRewardTier[];
+  /** Weighted random rows when the run ends (from `runnerGame.outcomes` in shops.json). */
+  outcomes?: RunnerGameOutcome[];
   theme?: RunnerTheme;
   /** CTA label after game over (e.g. "Claim reward" or "DM us") */
   ctaLabel?: string;
@@ -53,5 +66,3 @@ export interface RunnerGameConfig {
   /** Instruction text */
   instruction?: string;
 }
-
-export type RunnerGameState = 'intro' | 'playing' | 'gameover';

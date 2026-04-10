@@ -24,13 +24,14 @@ export default function CatchPrizeExperience({ config }: CatchPrizeExperiencePro
     trackEvent(shopId, 'game_start', { mode: 'TapHearts' });
   };
 
-  const handleGameEnd = (score: number) => {
+  const handleGameEnd = (payload: { score: number; won: boolean }) => {
     trackEvent(shopId, 'game_finish', { mode: 'TapHearts' });
-    if (score >= 8) trackEvent(shopId, 'reward_won', { mode: 'TapHearts' });
+    if (payload.won) trackEvent(shopId, 'reward_won', { mode: 'TapHearts' });
   };
 
   return (
     <CatchPrizeGame
+      outcomes={tapHearts.outcomes}
       ctaLabel={text.ctaText}
       ctaUrl={cta.url}
       primaryColor={branding.primaryColor}

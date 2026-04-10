@@ -12,8 +12,8 @@ import {
   SPAWN_INTERVAL_START_MS,
   SPAWN_INTERVAL_END_MS,
 } from './catchPrize.types';
-import { getRewardTier } from './rewardMapping';
-import type { RewardTier } from './rewardMapping';
+import { pickCatchPrizeOutcome } from './rewardMapping';
+import type { TapHeartsOutcome } from '../../types/ShopConfig';
 
 const KINDS: FallingItemKind[] = ['heart', 'gift', 'bomb', 'star', 'gem'];
 const WEIGHTS = [38, 18, 18, 14, 12]; // heart, gift, bomb, star, gem (gem = rare prize)
@@ -41,14 +41,17 @@ const initialState: CatchPrizeGameState = {
   nextItemId: 1,
   nextFloatId: 1,
   comboCount: 0,
+  endOutcome: null,
 };
 
 const TICK_MS = 50; // ~20 fps for game logic
 
-export function useCatchPrizeGame() {
+export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
   const [state, setState] = useState<CatchPrizeGameState>(initialState);
   const stateRef = useRef(state);
   stateRef.current = state;
+  const outcomesRef = useRef(outcomes);
+  outcomesRef.current = outcomes;
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastTickRef = useRef<number>(0);
   const spawnAtRef = useRef<number>(0);
@@ -108,7 +111,12 @@ export function useCatchPrizeGame() {
           const elapsed = now - playStartRef.current;
           const timeLeft = Math.max(0, GAME_DURATION_MS / 1000 - elapsed / 1000);
           if (timeLeft <= 0) {
-            setState((prev) => ({ ...prev, phase: 'ended', timeLeft: 0 }));
+            setState((prev) => ({
+              ...prev,
+              phase: 'ended',
+              timeLeft: 0,
+              endOutcome: pickCatchPrizeOutcome(outcomesRef.current),
+            }));
             return;
           }
           const dt = now - lastTickRef.current;
@@ -249,9 +257,6 @@ export function useCatchPrizeGame() {
     };
   }, []);
 
-  const rewardTier: RewardTier | null =
-    state.phase === 'ended' ? getRewardTier(state.score) : null;
-
   const tryAgain = useCallback(() => {
     startCountdown();
   }, [startCountdown]);
@@ -260,7 +265,6 @@ export function useCatchPrizeGame() {
     state,
     startCountdown,
     handleTap,
-    rewardTier,
     tryAgain,
   };
 }

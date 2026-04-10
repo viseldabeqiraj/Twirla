@@ -2,6 +2,8 @@
  * Catch the Prize – falling-item micro-game types.
  */
 
+import type { TapHeartsOutcome } from '../../types/ShopConfig';
+
 export type FallingItemKind = 'heart' | 'gift' | 'bomb' | 'star' | 'gem';
 
 export interface FallingItem {
@@ -46,6 +48,8 @@ export interface CatchPrizeGameState {
   nextFloatId: number;
   /** Consecutive non-bomb catches for combo bonus. */
   comboCount: number;
+  /** Weighted random result when `phase === 'ended'`. */
+  endOutcome: TapHeartsOutcome | null;
 }
 
 export const GAME_DURATION_MS = 20000;

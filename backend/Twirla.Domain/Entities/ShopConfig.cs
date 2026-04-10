@@ -5,6 +5,8 @@ namespace Twirla.Domain.Entities;
 public class ShopConfig
 {
     public string ShopId { get; set; } = string.Empty;
+    /// <summary>When false, API does not serve this shop (landing/games). Omitted or null defaults to on.</summary>
+    public bool? Enabled { get; set; }
     public string? Slug { get; set; }
     public string? Name { get; set; }
     public string? AdminToken { get; set; }
@@ -34,6 +36,7 @@ public class ShopConfig
         return new ShopConfig
         {
             ShopId = ShopId,
+            Enabled = Enabled,
             PlayCooldownHours = PlayCooldownHours,
             Branding = Branding,
             Text = Text.GetForLanguage(language),
@@ -72,6 +75,8 @@ public class ThemeConfig
 {
     public string? BackgroundPattern { get; set; }
     public string? SurfaceStyle { get; set; }
+    /// <summary>Optional motion layer on experience backgrounds (none, drift, pulse, shimmer).</summary>
+    public string? AmbientMotion { get; set; }
     public string? FontFamily { get; set; }
     public int? BorderRadius { get; set; }
     public int? ButtonRadius { get; set; }

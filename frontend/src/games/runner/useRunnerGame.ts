@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
-import type { RunnerRewardTier } from './runnerTypes';
-import { getRewardForScore } from './runnerRewards';
+import type { RunnerGameOutcome } from '../../types/ShopConfig';
+import { pickWeighted } from '../pickWeighted';
 import {
   GRAVITY,
   JUMP_VELOCITY,
@@ -18,7 +18,7 @@ import {
 } from './runnerConstants';
 import { checkCollision, type Box } from './runnerCollision';
 import { createObstacle, type Obstacle } from './runnerObstacles';
-import { DEFAULT_REWARD_TIERS } from './runnerTypes';
+import { DEFAULT_RUNNER_OUTCOMES } from './runnerTypes';
 
 export interface RunnerFrameState {
   characterY: number;
@@ -39,16 +39,20 @@ export interface RunnerGameState {
   uiState: RunnerUIState;
   score: number;
   bestScore: number;
-  reward: RunnerRewardTier | null;
+  reward: RunnerGameOutcome | null;
 }
 
 export interface UseRunnerGameOptions {
-  rewardTiers?: RunnerRewardTier[];
-  onGameOver?: (score: number, bestScore: number, reward: RunnerRewardTier) => void;
+  outcomes?: RunnerGameOutcome[];
+  onGameOver?: (score: number, bestScore: number, reward: RunnerGameOutcome) => void;
 }
 
 export function useRunnerGame(options: UseRunnerGameOptions = {}) {
-  const tiers = options.rewardTiers ?? DEFAULT_REWARD_TIERS;
+  const outcomesRef = useRef(options.outcomes);
+  outcomesRef.current = options.outcomes;
+  const onGameOverRef = useRef(options.onGameOver);
+  onGameOverRef.current = options.onGameOver;
+
   const [state, setState] = useState<RunnerGameState>({
     uiState: 'intro',
     score: 0,
@@ -70,6 +74,8 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
   const gameStartTimeRef = useRef<number>(0);
   const scorePopFramesRef = useRef(0);
   const lastScoreIntRef = useRef(0);
+  /** Cumulative score at the moment warmup ends — speed ramp only counts points after this */
+  const postWarmupScoreBaselineRef = useRef<number | null>(null);
 
   const startGame = useCallback(() => {
     runningRef.current = true;
@@ -88,6 +94,7 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
     gameStartTimeRef.current = performance.now();
     scorePopFramesRef.current = 0;
     lastScoreIntRef.current = 0;
+    postWarmupScoreBaselineRef.current = null;
     setState((s) => ({
       ...s,
       uiState: 'playing',
@@ -117,8 +124,12 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
     const score = Math.floor(scoreRef.current);
     const best = Math.max(score, state.bestScore);
     localStorage.setItem(BEST_SCORE_KEY, String(best));
-    const reward = getRewardForScore(score, tiers);
-    options.onGameOver?.(score, best, reward);
+    const list =
+      outcomesRef.current && outcomesRef.current.length > 0
+        ? outcomesRef.current
+        : DEFAULT_RUNNER_OUTCOMES;
+    const reward = pickWeighted(list);
+    onGameOverRef.current?.(score, best, reward);
     setState((s) => ({
       ...s,
       uiState: 'gameover',
@@ -126,7 +137,7 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
       bestScore: best,
       reward,
     }));
-  }, [state.bestScore, tiers, options.onGameOver]);
+  }, [state.bestScore]);
 
   const setDrawCallback = useCallback((cb: ((frame: RunnerFrameState) => void) | null) => {
     onFrameRef.current = cb;
@@ -170,13 +181,20 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
 
     const elapsedSec = (performance.now() - gameStartTimeRef.current) / 1000;
     const inWarmup = elapsedSec < WARMUP_SECONDS;
+    if (!inWarmup && postWarmupScoreBaselineRef.current === null) {
+      postWarmupScoreBaselineRef.current = score;
+    }
+    const warmElapsed = Math.max(0, elapsedSec - WARMUP_SECONDS);
+    const scoreSinceWarmup =
+      postWarmupScoreBaselineRef.current !== null
+        ? Math.max(0, score - postWarmupScoreBaselineRef.current)
+        : 0;
     const baseSpeed = inWarmup
       ? INITIAL_SPEED
       : INITIAL_SPEED +
-        score * SPEED_INCREASE_PER_SCORE +
-        (elapsedSec - WARMUP_SECONDS) * SPEED_INCREASE_PER_SECOND;
-    const tenPointBoost = inWarmup ? 1 : 1 + 0.05 * Math.floor(score / 10);
-    speed = Math.min(MAX_SPEED, baseSpeed * tenPointBoost);
+        scoreSinceWarmup * SPEED_INCREASE_PER_SCORE +
+        warmElapsed * SPEED_INCREASE_PER_SECOND;
+    speed = Math.min(MAX_SPEED, baseSpeed);
     speedRef.current = speed;
 
     const charBox: Box = {

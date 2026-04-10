@@ -1,6 +1,9 @@
 export { default as HeroSection } from './HeroSection';
+export { default as ValuePropositionSection } from './ValuePropositionSection';
 export { default as AboutSection } from './AboutSection';
 export { default as SocialButtons } from './SocialButtons';
+export { default as HowToOrderSection } from './HowToOrderSection';
+export { default as ContactSection } from './ContactSection';
 export { default as FeaturedProducts } from './FeaturedProducts';
 export { default as GamesSection } from './GamesSection';
 export { default as HowItWorksSection } from './HowItWorksSection';

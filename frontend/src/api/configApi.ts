@@ -1,5 +1,6 @@
 import { ShopConfig } from '../types/ShopConfig';
 import { getApiBase } from '../config/api';
+import { fetchShopsFromJson, findEnabledShopByUrlSlug, findShopByUrlSlug, isShopEnabled } from '../data/shopsJson';
 
 const getApiUrl = () => `${getApiBase()}/api`;
 
@@ -20,19 +21,22 @@ async function loadFromStaticJson(shopId: string, mode?: string): Promise<ShopCo
     throw new Error(`Shop configuration not found for: ${shopId}${mode ? ` (mode: ${mode})` : ''}`);
   }
 
+  if (!isShopEnabled(target)) {
+    throw new Error('SHOP_DISABLED');
+  }
+
   return target;
 }
 
-/** Find shop in static JSON by slug (e.g. "pinkster" → shopId "pinkster-a7f3b2c9d1e4"). Used when API returns HTML (SPA fallback). */
+/** Find shop in static JSON by slug (explicit `slug` field or shopId prefix). */
 async function loadFromStaticJsonBySlug(slug: string, _mode?: string): Promise<ShopConfig> {
-  const res = await fetch('/shops.json');
-  if (!res.ok) {
-    throw new Error('Shop not found');
-  }
-  const payload = (await res.json()) as ShopsPayload;
-  const prefix = `${slug.toLowerCase()}-`;
-  const target = payload.shops.find((shop) => shop.shopId.toLowerCase().startsWith(prefix));
+  const shops = await fetchShopsFromJson();
+  const target = findEnabledShopByUrlSlug(slug, shops);
   if (!target) {
+    const exists = findShopByUrlSlug(slug, shops);
+    if (exists && !isShopEnabled(exists)) {
+      throw new Error('SHOP_DISABLED');
+    }
     throw new Error(`Shop configuration not found for slug: ${slug}`);
   }
   return target;
@@ -69,7 +73,12 @@ export async function fetchShopConfigBySlug(
       throw new Error(`Request failed: ${response.status}`);
     }
     const data = await parseJsonOrNull(response);
-    if (data) return data;
+    if (data) {
+      if (!isShopEnabled(data)) {
+        throw new Error('SHOP_DISABLED');
+      }
+      return data;
+    }
   } catch {
     // fall through to static
   }
@@ -88,7 +97,12 @@ export async function fetchShopConfig(shopId: string, mode?: string, language?: 
       throw new Error(`API request failed: ${response.status}`);
     }
     const data = await parseJsonOrNull(response);
-    if (data) return data;
+    if (data) {
+      if (!isShopEnabled(data)) {
+        throw new Error('SHOP_DISABLED');
+      }
+      return data;
+    }
     // Response was 200 but not JSON (e.g. SPA index.html when API base not set)
     throw new Error('Not JSON');
   } catch (e) {

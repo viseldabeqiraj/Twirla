@@ -17,7 +17,7 @@ export default function ExperiencePage() {
     uniqueId?: string; 
     mode?: string 
   }>();
-  const { language } = useTranslation();
+  const { language, t } = useTranslation();
   const [config, setConfig] = useState<ShopConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,13 +27,13 @@ export default function ExperiencePage() {
     const finalShopId = shopId || (shopName && uniqueId ? `${shopName}-${uniqueId}` : null);
     
     if (!finalShopId) {
-      setError('Shop ID is required');
+      setError(t('experience.shopIdRequired'));
       setLoading(false);
       return;
     }
 
     if (!mode) {
-      setError('Mode is required');
+      setError(t('experience.modeRequired'));
       setLoading(false);
       return;
     }
@@ -46,6 +46,7 @@ export default function ExperiencePage() {
       if (m === 'taphearts' || m === 'tap-hearts') return 'TapHearts';
       if (m === 'scratch') return 'Scratch';
       if (m === 'countdown') return 'Countdown';
+      if (m === 'memory' || m === 'memorymatch') return 'MemoryMatch';
       return raw;
     };
 
@@ -62,13 +63,14 @@ export default function ExperiencePage() {
         if (shopName) {
           return fetchShopConfigBySlug(shopName, fetchMode, language).then(applyConfig);
         }
-        throw new Error('Shop not found');
+        throw new Error(t('experience.shopNotFound'));
       })
       .catch((err) => {
-        setError(err instanceof Error ? err.message : 'Something went wrong');
+        const raw = err instanceof Error ? err.message : t('experience.genericError');
+        setError(raw === 'SHOP_DISABLED' ? t('experience.shopDisabled') : raw);
       })
       .finally(() => setLoading(false));
-  }, [shopId, shopName, uniqueId, mode, language]);
+  }, [shopId, shopName, uniqueId, mode, language, t]);
 
   if (loading) {
     return <CuteLoader />;
@@ -99,6 +101,7 @@ export default function ExperiencePage() {
     config.tapHearts ? ExperienceMode.TapHearts : null,
     config.scratch ? ExperienceMode.Scratch : null,
     config.countdown ? ExperienceMode.Countdown : null,
+    config.memory ? ExperienceMode.MemoryMatch : null,
   ].filter(Boolean) as ExperienceMode[];
 
   return (

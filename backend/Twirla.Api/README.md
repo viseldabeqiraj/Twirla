@@ -9,9 +9,33 @@ The backend uses **Clean Architecture** and **API controllers**:
 
 Run from the solution: `dotnet run --project Twirla.Api` (or run Twirla.Api from IDE). Admin: `GET /api/admin/shops/{slug}/summary?token=...`, `POST /api/admin/shops/{slug}/redeem-coupon?token=...`.
 
+## Campaign setup access (shop owner form)
+
+The SPA gate at `/setup/campaign` calls the API to verify a code; the actual form lives at `/setup/campaign/form` and requires a valid session token from the API.
+
+Set **one** of the following (environment variables are preferred in production):
+
+| Setting | Example |
+|--------|---------|
+| `TWIRLA_CAMPAIGN_SETUP_ACCESS_CODE` | Long random string you share with shop owners |
+| `CampaignSetup:AccessCode` in `appsettings` / Azure config | Same |
+
+Optional **session signing key** (if omitted, a key is derived from the access code; set this when you want to rotate the shop-facing code without invalidating signing material immediately):
+
+| Setting | Example |
+|--------|---------|
+| `TWIRLA_CAMPAIGN_SETUP_SESSION_KEY` | Separate long secret |
+| `CampaignSetup:SessionSigningKey` | Same |
+
+Endpoints: `POST /api/setup/campaign/unlock` with body `{"code":"..."}` returns `{ "token", "expiresInSeconds" }`; `GET /api/setup/campaign/session` with header `Authorization: Bearer <token>` returns `200` when the token is still valid.
+
+For local development, `Properties/launchSettings.json` sets a placeholder `TWIRLA_CAMPAIGN_SETUP_ACCESS_CODE` (change or remove it before sharing the repo or deploying).
+
 ## Shop Configuration
 
 Shops are configured in `Data/shops.json`. Each shop has a unique ID in the format: `{shopName}-{uniqueId}`
+
+Set `"enabled": false` on a shop row to turn off that shop everywhere the API and static `shops.json` are used (game URLs and public landing resolution). Omit `enabled` or use `true` for active shops.
 
 ### URL Format
 

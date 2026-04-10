@@ -19,10 +19,12 @@ public class ShopConfigService : IShopConfigService
     }
 
     public ShopConfig? GetByShopId(string shopId) =>
-        _configsByShopId.TryGetValue(shopId, out var config) ? config : null;
+        _configsByShopId.TryGetValue(shopId, out var config) && IsShopEnabled(config) ? config : null;
 
     public ShopConfig? GetBySlug(string slug) =>
-        _configsBySlug.TryGetValue(slug ?? "", out var config) ? config : null;
+        _configsBySlug.TryGetValue(slug ?? "", out var config) && IsShopEnabled(config) ? config : null;
+
+    private static bool IsShopEnabled(ShopConfig shop) => shop.Enabled != false;
 
     public ShopConfig? ValidateAdminToken(string? slug, string? token)
     {

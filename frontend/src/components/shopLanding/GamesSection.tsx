@@ -17,12 +17,14 @@ const GAME_META: Record<string, { key: string; path: string; emoji: string }> = 
   TapHearts: { key: 'nav.tapHearts', path: 'taphearts', emoji: '🎁' },
   Scratch: { key: 'nav.scratch', path: 'scratch', emoji: '✨' },
   Countdown: { key: 'nav.countdown', path: 'countdown', emoji: '⏳' },
+  MemoryMatch: { key: 'memoryMatch.title', path: 'memory', emoji: '🃏' },
 };
 
 export default function GamesSection({
   enabledGames,
   featuredGame,
   experiencePath,
+  sectionTitle,
 }: GamesSectionProps) {
   const { t } = useTranslation();
   if (enabledGames.length === 0) return null;
@@ -47,8 +49,9 @@ export default function GamesSection({
       >
         <div className="shop-section-inner">
           <h2 id="featured-game-title" className="shop-featured-game-title">
-            {t('campaign.featuredGame')}
+            {sectionTitle?.trim() || t('campaign.featuredGame')}
           </h2>
+          <p className="shop-featured-game-intro">{t('landing.gamesIntro')}</p>
           <Link to={featuredTo} className="shop-featured-game-card">
             <span className="shop-featured-game-emoji" aria-hidden>{featuredMeta.emoji}</span>
             <span className="shop-featured-game-label">{t(featuredMeta.key)}</span>

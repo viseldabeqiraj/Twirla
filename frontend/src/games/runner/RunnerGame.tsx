@@ -1,10 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import type { RunnerGameConfig } from './runnerTypes';
-import { DEFAULT_REWARD_TIERS, DEFAULT_RUNNER_THEME } from './runnerTypes';
+import { DEFAULT_RUNNER_OUTCOMES, DEFAULT_RUNNER_THEME } from './runnerTypes';
 import { useRunnerGame, type RunnerFrameState } from './useRunnerGame';
 import { drawRunnerFrame } from './runnerDraw';
-import { getNextThreshold } from './runnerRewards';
 import Confetti from '../../components/Confetti';
 import '../../components/GameStats.css';
 import './RunnerGame.css';
@@ -12,7 +11,7 @@ import './RunnerGame.css';
 export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }) {
   const { t } = useTranslation();
   const defaultConfig: RunnerGameConfig = {
-    rewardTiers: DEFAULT_REWARD_TIERS,
+    outcomes: DEFAULT_RUNNER_OUTCOMES,
     theme: DEFAULT_RUNNER_THEME,
     ctaLabel: t('runner.claimReward'),
     ctaUrl: '#',
@@ -21,7 +20,7 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
   };
   const config = { ...defaultConfig, ...props.config };
   const theme = config.theme ?? DEFAULT_RUNNER_THEME;
-  const rewardTiers = config.rewardTiers ?? DEFAULT_REWARD_TIERS;
+  const outcomes = config.outcomes ?? DEFAULT_RUNNER_OUTCOMES;
 
   const {
     state,
@@ -32,7 +31,7 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
     setDrawCallback,
     runningRef,
   } = useRunnerGame({
-    rewardTiers,
+    outcomes,
   });
 
   const rafRef = useRef<number>(0);
@@ -40,8 +39,6 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
   const [isShaking, setIsShaking] = useState(false);
   const prevScoreRef = useRef(0);
   const [scorePop, setScorePop] = useState(false);
-  const nextThreshold = getNextThreshold(state.score, rewardTiers);
-
   useEffect(() => {
     if (state.uiState === 'gameover') {
       setIsShaking(true);
@@ -188,23 +185,6 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
               <span className="game-stat-value runner-score-bubble-value">{state.score}</span>
               {scorePop && <span className="runner-plus-one">+1</span>}
             </div>
-            {nextThreshold && (
-              <div className="runner-next-threshold">
-                <p className="runner-threshold-progress">
-                  {t('runner.nextThresholdProgress', {
-                    current: state.score,
-                    target: nextThreshold.points,
-                    reward: t(`runner.rewardShort.${nextThreshold.tierKey}`),
-                  })}
-                </p>
-                <p className="runner-threshold-more">
-                  {t('runner.moreFor', {
-                    count: nextThreshold.points - state.score,
-                    reward: t(`runner.rewardShort.${nextThreshold.tierKey}`),
-                  })}
-                </p>
-              </div>
-            )}
             <div
               className="runner-canvas-wrap"
               role="button"
@@ -221,22 +201,21 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
 
         {state.uiState === 'gameover' && (
           <div
-            className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''}`}
+            className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''} ${state.reward?.isNoWin ? 'runner-gameover--nowin' : ''}`}
           >
-            {state.reward && state.score >= 80 && <Confetti count={24} />}
+            {state.reward && !state.reward.isNoWin && <Confetti count={24} />}
             <h2 className="runner-gameover-title">{t('runner.gameOver')}</h2>
-            <div className="runner-gameover-score-main">
-              <span className="runner-gameover-score-value">{state.score}</span>
-            </div>
             {state.reward && (
-              <div className="runner-reward-unlocked">
-                <p className="runner-reward-message">
-                  {state.reward.tierKey
-                    ? t(`runner.reward.${state.reward.tierKey}`)
-                    : state.reward.message}
-                </p>
+              <div
+                className={`runner-outcome ${state.reward.isNoWin ? 'runner-outcome--nowin' : ''}`}
+              >
+                <p className="runner-outcome-headline">{state.reward.headline}</p>
+                {state.reward.body && (
+                  <p className="runner-outcome-body">{state.reward.body}</p>
+                )}
               </div>
             )}
+            <p className="runner-gameover-run-score">{t('runner.runScore', { n: state.score })}</p>
             <div className="runner-gameover-actions">
               <button
                 type="button"
@@ -245,7 +224,7 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
               >
                 {t('runner.playAgain')}
               </button>
-              {config.ctaUrl && (
+              {config.ctaUrl && state.reward && !state.reward.isNoWin && (
                 <a
                   href={config.ctaUrl}
                   className="runner-btn runner-btn-cta"

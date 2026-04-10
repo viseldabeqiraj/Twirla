@@ -11,7 +11,7 @@ interface WheelExperienceProps {
 }
 
 export default function WheelExperience({ config }: WheelExperienceProps) {
-  const { wheel, text, shopId } = config;
+  const { wheel, shopId } = config;
   const { t } = useTranslation();
   const [hasSpun, setHasSpun] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
@@ -205,12 +205,10 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
       );
     }
     
-    // Winning result - show celebration
+    // Winning result: prize label + description only (no generic resultTitle / "high score" copy).
     return (
       <div className="wheel-result wheel-result-winning">
         <Confetti />
-        <h2 className="result-title">{text.resultTitle}</h2>
-        {text.resultSubtitle && <p className="result-subtitle">{text.resultSubtitle}</p>}
         <div className="prize-display">
           <div className="prize-label">{selectedPrize}</div>
           {prize?.description && (

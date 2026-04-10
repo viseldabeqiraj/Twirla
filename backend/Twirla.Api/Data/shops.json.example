@@ -2,12 +2,23 @@
   "shops": [
     {
       "shopId": "shopname-randomid123",
+      "enabled": true,
       "mode": "Wheel",
       "branding": {
         "primaryColor": "#FF6B6B",
         "secondaryColor": "#4ECDC4",
         "logoUrl": null,
-        "brandName": "Shop Name"
+        "brandName": "Shop Name",
+        "theme": {
+          "backgroundPattern": "gradient",
+          "surfaceStyle": "glass",
+          "ambientMotion": "none",
+          "ambientParticles": {
+            "enabled": true,
+            "shape": "orb",
+            "density": "few"
+          }
+        }
       },
       "text": {
         "title": "Spin to Win!",
@@ -49,6 +60,57 @@
             "description": "Better luck next time!"
           }
         ]
+      },
+      "tapHearts": {
+        "heartsToTap": 10,
+        "heartColor": "#db2777",
+        "revealText": "Round complete",
+        "revealSubtitle": "Optional subtitle shown elsewhere in the product",
+        "outcomes": [
+          {
+            "headline": "No prize this round",
+            "description": "Thanks for playing.",
+            "weight": 40,
+            "isNoWin": true
+          },
+          {
+            "headline": "10% off your order",
+            "description": "DM the shop with a screenshot.",
+            "weight": 35
+          },
+          {
+            "headline": "Code SAVE-15 at checkout",
+            "description": "One use per customer.",
+            "weight": 25
+          }
+        ]
+      },
+      "runnerGame": {
+        "outcomes": [
+          {
+            "headline": "No prize this run",
+            "body": "Thanks for playing.",
+            "weight": 45,
+            "isNoWin": true
+          },
+          {
+            "headline": "5% off",
+            "body": "Show this screen in-store.",
+            "weight": 35
+          },
+          {
+            "headline": "Free sticker pack",
+            "body": "Mention Twirla when you DM.",
+            "weight": 20
+          }
+        ]
+      },
+      "memory": {
+        "pairCount": 6,
+        "revealText": "WIN-CODE-10",
+        "revealSubtitle": "10% off — DM this code to the shop.",
+        "timeLimitSeconds": 120,
+        "maxMistakes": 18
       }
     }
   ]

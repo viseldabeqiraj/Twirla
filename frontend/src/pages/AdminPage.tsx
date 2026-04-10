@@ -70,7 +70,7 @@ export default function AdminPage() {
     } catch (err) {
       setRedeemMessage({
         type: 'error',
-        text: err instanceof Error ? err.message : 'Redemption failed.',
+        text: err instanceof Error ? err.message : t('dashboard.redeemFailedGeneric'),
       });
     } finally {
       setRedeeming(false);

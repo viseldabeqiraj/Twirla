@@ -7,8 +7,10 @@ export const INITIAL_SPEED = 3.8;
 export const MAX_SPEED = 14;
 /** Speed stays at INITIAL_SPEED for this many seconds before ramping. */
 export const WARMUP_SECONDS = 12;
-export const SPEED_INCREASE_PER_SCORE = 0.014;
-export const SPEED_INCREASE_PER_SECOND = 0.28;
+/** Applied only to score gained after warmup — keeps ramp linear */
+export const SPEED_INCREASE_PER_SCORE = 0.01;
+/** Time-based ramp after warmup (gentle, steady) */
+export const SPEED_INCREASE_PER_SECOND = 0.1;
 export const OBSTACLE_MIN_GAP = 280;
 export const OBSTACLE_MAX_GAP = 420;
 export const OBSTACLE_WIDTH = 28;
