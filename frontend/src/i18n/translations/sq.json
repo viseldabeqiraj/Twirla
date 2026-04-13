@@ -15,7 +15,18 @@
     "visitTiktok": "Vizito TikTok",
     "dmToClaim": "Na shkruaj për të marrë çmimin",
     "noPrizeFooter": "Nuk ka çmim për të marrë këtë herë — fat më të mirë herën tjetër.",
-    "tryAnotherGame": "Provo një lojë tjetër"
+    "tryAnotherGame": "Provo një lojë tjetër",
+    "ctaPlayWin": "Luaj dhe fito 🎁",
+    "ctaTryLuck": "Provo fatin"
+  },
+  "games": {
+    "prePlayDiscount": "Luaj për të fituar deri në {{pct}}% zbritje 🎁"
+  },
+  "reward": {
+    "copied": "U kopjua!",
+    "consolationHeadline": "Fat më i mirë herën tjetër — ja {{pct}}% për sot 🎉",
+    "consolationSub": "Shkruaj dyqanit me këtë ekran për të marrë {{pct}}%.",
+    "consolationWheel": "Dole te “{{label}}”. Ende merr një zbritje falënderimi — prek më poshtë për ta marrë."
   },
   "landing": {
     "loading": "Duke u ngarkuar…",
@@ -55,7 +66,7 @@
   },
   "nav": {
     "mainPage": "Faqja kryesore",
-    "backToShop": "Mbrapsht te dyqani",
+    "backToShop": "Pas",
     "runner": "Runner",
     "wheel": "Rrotulla",
     "tapHearts": "Kap Çmimin",
@@ -81,7 +92,8 @@
     "alreadyTried": "Ke provuar tashmë! Bëj screenshot dhe na shkruaj 💕",
     "thanksParticipating": "Ke luajtur tashmë! Faleminderit për pjesëmarrjen.",
     "noWinTitle": "Fat më të mirë herën tjetër!",
-    "noWinMessage": "Mos u dorëzo! Provo përsëri herën tjetër. 💪"
+    "noWinMessage": "Mos u dorëzo! Provo përsëri herën tjetër. 💪",
+    "spinAgain": "Rrotullo përsëri"
   },
   "tapHearts": {
     "title": "Kap Çmimin",
@@ -113,7 +125,9 @@
     "cardLabel": "Gërvisht këtu",
     "hint": "Zbuloni çmimin tuaj 🎁",
     "scratchToReveal": "Gërvisht për surprizën",
-    "scratchHere": "Gërvisht këtu"
+    "scratchHere": "Gërvisht këtu",
+    "revealedTitle": "Çmimi yt u zbulua!",
+    "rewardPanelTitle": "Ja shpërblimi yt"
   },
   "countdown": {
     "title": "Oferta po mbaron!",
@@ -131,9 +145,11 @@
     "comingSoon": "Së shpejti!",
     "comingSoonSubtitle": "Twirla po vjen…",
     "scratchHint": "✨ Gërvisht për të zbuluar…",
-    "tagline": "Platformë interaktive për biznese.",
+    "hookHeadline": "Platformë interaktive për biznese",
+    "tagline": "Mini-website + lojëra që sjellin klientë të rinj.",
     "scratchRevealTitle": "SË SHPEJTI",
-    "scratchRevealSubtitle": "Lojëra interaktive për dyqanet."
+    "scratchInstruction": "Gërvisht këtu",
+    "scratchRevealSubtitle": "Më shumë shitje dhe aktivitet në biznesin tënd."
   },
   "dashboard": {
     "title": "Admin i dyqanit",
@@ -163,7 +179,12 @@
     "invalidToken": "Token i pavlefshëm ose i munguar.",
     "redeemSuccess": "Kuponi u shfrytëzua me sukses.",
     "redeemPlaceholder": "p.sh. TWIRLA-XXXX",
-    "redeemFailedGeneric": "Shfrytëzimi i kuponit dështoi."
+    "redeemFailedGeneric": "Shfrytëzimi i kuponit dështoi.",
+    "rewardsGenerated": "Kode shpërblimi të gjeneruara",
+    "codesCopied": "Kopje kodesh",
+    "ctaClicks": "Klikime CTA / DM",
+    "funnelRewardsGenerated": "Shpërblime të gjeneruara",
+    "funnelCtaClicks": "Klikime te dyqani"
   },
   "runner": {
     "title": "Twirla Run",
@@ -175,6 +196,7 @@
     "best": "Rekord",
     "gameOver": "Loja mbaroi",
     "playAgain": "Luaj përsëri",
+    "rewardProgressLine": "{{current}} / {{target}} → {{percent}}%",
     "claimReward": "Merr shpërblimin",
     "tapToJump": "Prek për të kërcyer",
     "back": "Mbrapsht",
@@ -220,7 +242,8 @@
     "loseTime": "Koha mbaroi para se të gjesh të gjitha çiftet.",
     "loseMistakes": "Shumë çifte të gabuara — provo përsëri.",
     "loseStats": "Koha {{time}} · Lëvizje {{moves}} · Çifte të gabuara {{mistakes}}",
-    "playAgain": "Luaj përsëri"
+    "playAgain": "Luaj përsëri",
+    "consolationCarry": "— prapë e zhbllokove: {{text}}"
   },
   "experience": {
     "shopIdRequired": "Mungon ID e dyqanit.",

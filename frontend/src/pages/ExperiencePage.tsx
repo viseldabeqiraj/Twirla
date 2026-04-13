@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ExperienceMode, ShopConfig } from '../types/ShopConfig';
 import { fetchShopConfig, fetchShopConfigBySlug } from '../api/configApi';
@@ -7,15 +7,22 @@ import { useTranslation } from '../i18n/i18n';
 import ExperienceHost from '../components/ExperienceHost';
 import ModeNavigation from '../components/ModeNavigation';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import CuteLoader from '../components/CuteLoader';
+import AppLoader from '../components/twirla-ui/AppLoader';
+import { useComputedShopTheme } from '../theme/ShopThemeProvider';
 import './ExperiencePage.css';
 
+const DEFAULT_THEME_INPUT = {
+  primaryColor: '#db2777',
+  secondaryColor: '#be185d',
+  backgroundMode: 'light' as const,
+};
+
 export default function ExperiencePage() {
-  const { shopId, shopName, uniqueId, mode } = useParams<{ 
-    shopId?: string; 
-    shopName?: string; 
-    uniqueId?: string; 
-    mode?: string 
+  const { shopId, shopName, uniqueId, mode } = useParams<{
+    shopId?: string;
+    shopName?: string;
+    uniqueId?: string;
+    mode?: string;
   }>();
   const { language, t } = useTranslation();
   const [config, setConfig] = useState<ShopConfig | null>(null);
@@ -23,9 +30,8 @@ export default function ExperiencePage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Format: /mode/shopName/uniqueId
     const finalShopId = shopId || (shopName && uniqueId ? `${shopName}-${uniqueId}` : null);
-    
+
     if (!finalShopId) {
       setError(t('experience.shopIdRequired'));
       setLoading(false);
@@ -50,11 +56,11 @@ export default function ExperiencePage() {
       return raw;
     };
 
-    const applyConfig = (config: ShopConfig) => {
-      const finalConfig = { ...config, mode: normalizeMode(mode!) as any };
+    const applyConfig = (cfg: ShopConfig) => {
+      const finalConfig = { ...cfg, mode: normalizeMode(mode!) as any };
       setConfig(finalConfig);
       setError(null);
-      trackEvent(config.shopId, 'page_view', { mode: finalConfig.mode });
+      trackEvent(cfg.shopId, 'page_view', { mode: finalConfig.mode });
     };
 
     fetchShopConfig(finalShopId, fetchMode, language)
@@ -72,8 +78,26 @@ export default function ExperiencePage() {
       .finally(() => setLoading(false));
   }, [shopId, shopName, uniqueId, mode, language, t]);
 
+  // Hooks must be called unconditionally — before any early returns
+  const themeInput = useMemo(
+    () =>
+      config
+        ? {
+            primaryColor: config.branding.primaryColor,
+            secondaryColor: config.branding.secondaryColor,
+            accentColor: config.branding.accentColor,
+            backgroundMode: (config.branding.backgroundMode ??
+              (config.branding.theme?.backgroundPattern === 'dark' ? 'dark' : 'light')) as
+              | 'light'
+              | 'dark',
+          }
+        : DEFAULT_THEME_INPUT,
+    [config],
+  );
+  const { cssVars } = useComputedShopTheme(themeInput);
+
   if (loading) {
-    return <CuteLoader />;
+    return <AppLoader message={t('landing.loading')} variant="full" />;
   }
 
   if (error || !config) {
@@ -81,7 +105,7 @@ export default function ExperiencePage() {
       <div className="experience-error-page">
         <div className="experience-error-card">
           <div className="experience-error-icon" aria-hidden>⚠️</div>
-          <h1 className="experience-error-title">Couldn’t load this experience</h1>
+          <h1 className="experience-error-title">Couldn't load this experience</h1>
           <p className="experience-error-message">{error || 'Configuration not found'}</p>
           <p className="experience-error-hint">Check the link or try the demo shop below.</p>
           <div className="experience-error-actions">
@@ -107,10 +131,7 @@ export default function ExperiencePage() {
   return (
     <div
       className="experience-page-wrap"
-      style={{
-        '--primary-color': config.branding.primaryColor,
-        '--secondary-color': config.branding.secondaryColor,
-      } as React.CSSProperties}
+      style={cssVars as React.CSSProperties}
     >
       <ModeNavigation
         currentMode={mode!}
@@ -124,4 +145,3 @@ export default function ExperiencePage() {
     </div>
   );
 }
-

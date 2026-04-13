@@ -93,6 +93,25 @@
 .subtitle { margin: 0.35rem 0 0.75rem; color: #64748b; }
 .surface-neon .subtitle { color: #cbd5e1; }
 
+.experience-preplay {
+  margin: 0 0 0.65rem;
+  padding: 0.55rem 0.75rem;
+  text-align: center;
+  font-size: var(--tw-font-subtitle, 0.95rem);
+  font-weight: 700;
+  line-height: 1.35;
+  color: #0f172a;
+  background: color-mix(in srgb, var(--primary-color) 10%, #fff);
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--primary-color) 18%, transparent);
+}
+
+.surface-neon .experience-preplay {
+  color: #f8fafc;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
 /* Single card: game area is part of the main card, no nested card */
 .experience-content {
   min-height: 340px;

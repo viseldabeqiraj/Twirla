@@ -1,0 +1,9 @@
+.tw-reward-reveal {
+  position: relative;
+  width: 100%;
+}
+
+.tw-reward-reveal__content {
+  position: relative;
+  z-index: 1;
+}

@@ -1,14 +1,27 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import type { RunnerGameConfig } from './runnerTypes';
 import { DEFAULT_RUNNER_OUTCOMES, DEFAULT_RUNNER_THEME } from './runnerTypes';
 import { useRunnerGame, type RunnerFrameState } from './useRunnerGame';
 import { drawRunnerFrame } from './runnerDraw';
 import Confetti from '../../components/Confetti';
+import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
+import RewardModal from '../../components/twirla-ui/RewardModal';
+import { trackEvent } from '../../api/analyticsApi';
+import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
+import { normalizeRunnerReward } from '../../utils/rewardConsolation';
+import { REWARD_PROGRESS_TARGET } from './runnerConstants';
 import '../../components/GameStats.css';
 import './RunnerGame.css';
 
-export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }) {
+export interface RunnerGameProps {
+  config?: Partial<RunnerGameConfig>;
+  shopId?: string;
+  shopSlug?: string;
+  experienceMode?: string;
+}
+
+export default function RunnerGame(props: RunnerGameProps) {
   const { t } = useTranslation();
   const defaultConfig: RunnerGameConfig = {
     outcomes: DEFAULT_RUNNER_OUTCOMES,
@@ -21,6 +34,9 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
   const config = { ...defaultConfig, ...props.config };
   const theme = config.theme ?? DEFAULT_RUNNER_THEME;
   const outcomes = config.outcomes ?? DEFAULT_RUNNER_OUTCOMES;
+  const shopId = props.shopId;
+  const shopSlug = props.shopSlug ?? shopId;
+  const gameMode = props.experienceMode ?? 'Runner';
 
   const {
     state,
@@ -34,11 +50,19 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
     outcomes,
   });
 
+  const displayReward = useMemo(
+    () => (state.reward ? normalizeRunnerReward(state.reward, t) : null),
+    [state.reward, t]
+  );
+
   const rafRef = useRef<number>(0);
   const [replayFading, setReplayFading] = useState(false);
   const [isShaking, setIsShaking] = useState(false);
   const prevScoreRef = useRef(0);
   const [scorePop, setScorePop] = useState(false);
+  const [finishCode, setFinishCode] = useState<string | null>(null);
+  const finishTrackedRef = useRef(false);
+
   useEffect(() => {
     if (state.uiState === 'gameover') {
       setIsShaking(true);
@@ -56,9 +80,31 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
     prevScoreRef.current = state.score;
   }, [state.score, state.uiState]);
 
+  useEffect(() => {
+    if (state.uiState !== 'gameover') {
+      finishTrackedRef.current = false;
+      setFinishCode(null);
+      return;
+    }
+    if (!displayReward || finishTrackedRef.current) return;
+    finishTrackedRef.current = true;
+    const sid = shopId ?? 'DEMO';
+    const slug = shopSlug ?? sid;
+    const code = generateDiscountCode({ shopSlug: slug, shopId: sid, gameMode });
+    setFinishCode(code);
+    if (shopId) {
+      persistRewardCodeMeta({ code, generatedAt: Date.now(), shopId, game: gameMode });
+      trackEvent(shopId, 'game_finish', { mode: gameMode });
+      trackEvent(shopId, 'reward_won', { mode: gameMode });
+      trackEvent(shopId, 'reward_generated', { mode: gameMode, couponCode: code });
+    }
+  }, [state.uiState, displayReward, shopId, shopSlug, gameMode]);
+
   const handleReplay = useCallback(() => {
     setReplayFading(true);
     setTimeout(() => {
+      finishTrackedRef.current = false;
+      setFinishCode(null);
       startGame();
       setReplayFading(false);
     }, 280);
@@ -143,6 +189,21 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
     [state.uiState, jump]
   );
 
+  const progressPct = Math.min(100, Math.round((state.score / REWARD_PROGRESS_TARGET) * 100));
+  const progressCaption =
+    state.uiState === 'playing'
+      ? t('runner.rewardProgressLine', {
+          current: String(Math.min(state.score, REWARD_PROGRESS_TARGET)),
+          target: String(REWARD_PROGRESS_TARGET),
+          percent: String(progressPct),
+        })
+      : null;
+
+  const handleStartGame = useCallback(() => {
+    if (shopId) trackEvent(shopId, 'game_start', { mode: gameMode });
+    startGame();
+  }, [shopId, gameMode, startGame]);
+
   return (
     <div
       className="runner-game"
@@ -168,13 +229,9 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
             <h2 className="runner-title">{config.title}</h2>
             <p className="runner-instruction">{config.instruction}</p>
             <p className="runner-reward-hint">{t('runner.rewardHint')}</p>
-            <button
-              type="button"
-              className="runner-btn runner-btn-primary"
-              onClick={startGame}
-            >
+            <PrimaryButton type="button" block pulse onClick={handleStartGame}>
               {t('runner.start')}
-            </button>
+            </PrimaryButton>
           </div>
         )}
 
@@ -185,6 +242,14 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
               <span className="game-stat-value runner-score-bubble-value">{state.score}</span>
               {scorePop && <span className="runner-plus-one">+1</span>}
             </div>
+            {progressCaption ? (
+              <div className="runner-next-threshold" aria-live="polite">
+                <p className="runner-threshold-progress">{progressCaption}</p>
+                <div className="runner-threshold-track" aria-hidden>
+                  <div className="runner-threshold-fill" style={{ width: `${progressPct}%` }} />
+                </div>
+              </div>
+            ) : null}
             <div
               className="runner-canvas-wrap"
               role="button"
@@ -199,42 +264,29 @@ export default function RunnerGame(props: { config?: Partial<RunnerGameConfig> }
           </div>
         )}
 
-        {state.uiState === 'gameover' && (
+        {state.uiState === 'gameover' && displayReward && (
           <div
-            className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''} ${state.reward?.isNoWin ? 'runner-gameover--nowin' : ''}`}
+            className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''}`}
           >
-            {state.reward && !state.reward.isNoWin && <Confetti count={24} />}
+            <Confetti count={22} />
             <h2 className="runner-gameover-title">{t('runner.gameOver')}</h2>
-            {state.reward && (
-              <div
-                className={`runner-outcome ${state.reward.isNoWin ? 'runner-outcome--nowin' : ''}`}
-              >
-                <p className="runner-outcome-headline">{state.reward.headline}</p>
-                {state.reward.body && (
-                  <p className="runner-outcome-body">{state.reward.body}</p>
-                )}
-              </div>
-            )}
+            <RewardModal
+              title={displayReward.headline}
+              description={displayReward.body ?? undefined}
+              discountCode={finishCode}
+              ctaUrl={config.ctaUrl || '#'}
+              ctaLabel={config.ctaLabel ?? t('runner.claimReward')}
+              copyLabel={t('campaign.copyCode')}
+              copiedLabel={t('reward.copied')}
+              shopId={shopId}
+              gameMode={gameMode}
+              extraActions={
+                <PrimaryButton type="button" variant="ghost" block onClick={handleReplay}>
+                  {t('runner.playAgain')}
+                </PrimaryButton>
+              }
+            />
             <p className="runner-gameover-run-score">{t('runner.runScore', { n: state.score })}</p>
-            <div className="runner-gameover-actions">
-              <button
-                type="button"
-                className="runner-btn runner-btn-primary"
-                onClick={handleReplay}
-              >
-                {t('runner.playAgain')}
-              </button>
-              {config.ctaUrl && state.reward && !state.reward.isNoWin && (
-                <a
-                  href={config.ctaUrl}
-                  className="runner-btn runner-btn-cta"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {config.ctaLabel}
-                </a>
-              )}
-            </div>
             <p className="runner-gameover-best">
               {t('runner.best')}: {state.bestScore}
             </p>

@@ -236,6 +236,17 @@
   border-color: rgba(252, 165, 165, 0.35);
 }
 
+/* One framed surface with RewardModal: strip outer panel chrome */
+.memory-match-win:has(.tw-reward-modal),
+.memory-match-lose:has(.tw-reward-modal),
+.surface-neon .memory-match-win:has(.tw-reward-modal),
+.surface-neon .memory-match-lose:has(.tw-reward-modal) {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+}
+
 .memory-match-lose-title {
   margin: 0 0 0.35rem;
   font-size: 1.15rem;
@@ -373,4 +384,15 @@
   .memory-match-grid {
     gap: 0.65rem;
   }
+}
+
+.memory-match-lose-stats--muted {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.surface-neon .memory-match-lose-stats--muted {
+  color: #94a3b8;
 }

@@ -1,42 +1,87 @@
 .home-page {
-  min-height: 100vh;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: max(0.25rem, env(safe-area-inset-top, 0px)) 1rem max(0.25rem, env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 38%, #f1f5f9 100%);
+}
+
+/* One column: margin auto top+bottom = vertical center, nudged slightly upward */
+.home-main {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 100%;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 1rem 2rem;
-  background: linear-gradient(180deg, #fff5f8 0%, #debacb 100%);; /*linear-gradient(180deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);*/
+  transform: translateY(clamp(-4rem, -3vh, -2.5rem));
 }
 
-/* Twirla logo at top */
+@media (prefers-reduced-motion: reduce) {
+  .home-main {
+    transform: translateY(-0.75rem);
+  }
+}
+
+/* Logo only — hook lives below */
 .home-hero {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin: 0 0 0.15rem;
   flex-shrink: 0;
+  max-width: 26rem;
 }
 
 .home-hero-logo {
-  max-width: 140px;
+  max-width: 132px;
   display: block;
   margin: 0 auto;
+  filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.08));
 }
 
-.home-hero-tagline {
-  color: #8b5a6b;
-  font-size: 0.82rem;
-  margin: 0.4rem 0 0;
-  font-weight: 500;
+/* Product hook — above card */
+.home-hook {
+  width: 100%;
+  max-width: min(22rem, 92vw);
+  margin: 0 auto;
+  padding: 0.35rem 0.75rem;
+  text-align: center;
+  flex-shrink: 0;
 }
 
-/* Scratch card: more prominent (larger, centered) */
+.home-hook-headline {
+  margin: 0;
+  font-size: clamp(1.35rem, 5.2vw, 1.85rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: #0f172a;
+}
+
+.home-hook-support {
+  margin: 0.5rem 0 0.15rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #64748b;
+  letter-spacing: 0.01em;
+}
+
+/* Scratch — extra air between tagline and card */
 .home-scratch-section {
   position: relative;
-  margin: 0;
+  margin: 1.35rem 0 0;
   padding: 0;
   width: 100%;
   max-width: 480px;
-  flex: 1 0 auto;
+  flex: 0 0 auto;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
 }
 
@@ -44,47 +89,68 @@
   z-index: 10;
 }
 
-/* Larger card on home (no container): fill section width */
 .home-scratch-section .scratch-card-wrap {
   max-width: 100%;
 }
 
-/* Card: gradient + prominent box shadow (coming soon page) */
-.home-scratch-section .scratch-card-container {
-  background: linear-gradient(135deg, #FD79A7 0%, #e93b8f 40%, #DC0066 100%);
-  box-shadow:
-    0 4px 8px rgba(0, 0, 0, 0.12),
-    0 16px 36px rgba(0, 0, 0, 0.22),
-    0 32px 64px rgba(0, 0, 0, 0.28),
-    0 0 0 1px rgba(0, 0, 0, 0.08);
+.home-scratch-section .scratch-card-instruction {
+  margin-bottom: 0.35rem;
 }
 
-/* Reveal panel: brighter colors, higher-contrast text */
+/* On-foil hint — premium: softer light, wide tracking, refined weight */
+.home-scratch-section .scratch-card-instruction-pulse {
+  font-size: clamp(1.28rem, 3.8vw, 1.42rem);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: rgba(255, 252, 254, 0.93);
+  text-shadow:
+    0 0 20px rgba(15, 23, 42, 0.2),
+    0 1px 2px rgba(15, 23, 42, 0.35),
+    0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Card shell — depth + soft top light */
+.home-scratch-section .scratch-card-container {
+  background: linear-gradient(145deg, #fd79a7 0%, #e11d74 38%, #7b5cff 100%);
+  border-radius: 22px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 14px 32px rgba(15, 23, 42, 0.14),
+    0 28px 56px rgba(91, 33, 182, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 1px 0 rgba(255, 255, 255, 0.38) inset;
+}
+
+/* Reveal copy hierarchy */
 .home-scratch-reveal-panel {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0;
-  padding: 1rem;
+  gap: 0.35rem;
+  padding: 1.1rem 1.25rem;
 }
 
 .home-scratch-reveal-title {
-  font-size: 1.75rem;
+  font-size: clamp(1.55rem, 5vw, 1.95rem);
   font-weight: 800;
-  color: #ffffff;
+  color: #fff;
   margin: 0;
-  letter-spacing: 0.12em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5), 0 2px 16px rgba(0, 0, 0, 0.35);
+  letter-spacing: 0.14em;
+  line-height: 1.15;
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
 .home-scratch-reveal-subtitle {
-  font-size: 0.875rem;
-  color: #ffffff;
-  margin: 0.65rem 0 0;
-  line-height: 1.4;
-  max-width: 22ch;
+  font-size: clamp(0.95rem, 3.2vw, 1.05rem);
+  color: rgba(255, 255, 255, 0.96);
+  margin: 0.5rem 0 0;
+  max-width: 26ch;
+  line-height: 1.45;
   font-weight: 600;
+  letter-spacing: 0.01em;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 

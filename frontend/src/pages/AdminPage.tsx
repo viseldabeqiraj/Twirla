@@ -97,10 +97,15 @@ export default function AdminPage() {
   }
 
   const s = summary!;
+  const rewardsGenerated = s.rewardsGenerated ?? 0;
+  const codesCopied = s.codesCopied ?? 0;
+  const ctaClicks = s.ctaClicks ?? 0;
 
   const funnelSteps = [
     { label: t('dashboard.funnelVisitors'), value: s.uniqueVisitors },
     { label: t('dashboard.funnelGamesStarted'), value: s.starts },
+    { label: t('dashboard.funnelRewardsGenerated'), value: rewardsGenerated },
+    { label: t('dashboard.funnelCtaClicks'), value: ctaClicks },
     { label: t('dashboard.funnelCouponsGenerated'), value: s.couponsGenerated },
     { label: t('dashboard.funnelCouponsRedeemed'), value: s.couponsRedeemed },
   ];
@@ -154,6 +159,18 @@ export default function AdminPage() {
           <div className="admin-card">
             <span className="admin-card-value">{s.rewardsWon.toLocaleString()}</span>
             <span className="admin-card-label">{t('dashboard.rewardsWon')}</span>
+          </div>
+          <div className="admin-card">
+            <span className="admin-card-value">{rewardsGenerated.toLocaleString()}</span>
+            <span className="admin-card-label">{t('dashboard.rewardsGenerated')}</span>
+          </div>
+          <div className="admin-card">
+            <span className="admin-card-value">{codesCopied.toLocaleString()}</span>
+            <span className="admin-card-label">{t('dashboard.codesCopied')}</span>
+          </div>
+          <div className="admin-card">
+            <span className="admin-card-value">{ctaClicks.toLocaleString()}</span>
+            <span className="admin-card-label">{t('dashboard.ctaClicks')}</span>
           </div>
           <div className="admin-card">
             <span className="admin-card-value">{s.couponsGenerated.toLocaleString()}</span>

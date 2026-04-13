@@ -24,19 +24,16 @@ export default function CatchPrizeExperience({ config }: CatchPrizeExperiencePro
     trackEvent(shopId, 'game_start', { mode: 'TapHearts' });
   };
 
-  const handleGameEnd = (payload: { score: number; won: boolean }) => {
-    trackEvent(shopId, 'game_finish', { mode: 'TapHearts' });
-    if (payload.won) trackEvent(shopId, 'reward_won', { mode: 'TapHearts' });
-  };
-
   return (
     <CatchPrizeGame
       outcomes={tapHearts.outcomes}
       ctaLabel={text.ctaText}
       ctaUrl={cta.url}
       primaryColor={branding.primaryColor}
+      shopId={shopId}
+      shopSlug={config.slug ?? shopId}
+      gameMode="TapHearts"
       onGameStart={handleGameStart}
-      onGameEnd={handleGameEnd}
     />
   );
 }

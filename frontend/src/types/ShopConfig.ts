@@ -65,6 +65,10 @@ export interface BrandingConfig {
   logoUrl?: string;
   brandName?: string;
   accentColor?: string;
+  /** "light" (default) — warm off-white page; "dark" — deep navy / charcoal. */
+  backgroundMode?: 'light' | 'dark';
+  /** Explicit logo container color; derived from primary when omitted. */
+  logoBackgroundColor?: string;
   theme?: ThemeConfig;
 }
 
@@ -74,6 +78,8 @@ export interface TextConfig {
   ctaText: string;
   resultTitle: string;
   resultSubtitle?: string;
+  /** When set, experience shows “play for up to X% off” style pre-game line (shop-specific cap). */
+  maxDiscountPercent?: number;
 }
 
 export interface CtaConfig {

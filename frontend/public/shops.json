@@ -9,6 +9,8 @@
       "branding": {
         "primaryColor": "#F23383",
         "secondaryColor": "#F6C7CD",
+        "accentColor": "#fda4cf",
+        "backgroundMode": "light",
         "logoUrl": "/logos/pinkster.png",
         "brandName": "Pinkster.al"
       },
@@ -184,6 +186,8 @@
       "branding": {
         "primaryColor": "#A837D7",
         "secondaryColor": "#F8BBD0",
+        "accentColor": "#e879f9",
+        "backgroundMode": "light",
         "logoUrl": "/logos/fashionista.png",
         "brandName": "Fashionista"
       },
@@ -280,6 +284,8 @@
       "branding": {
         "primaryColor": "#0ea5e9",
         "secondaryColor": "#7dd3fc",
+        "accentColor": "#0369a1",
+        "backgroundMode": "light",
         "logoUrl": "/logos/twirla.png",
         "brandName": "Twirla playground",
         "theme": {
@@ -385,6 +391,8 @@
         "primaryColor": "#4c1d95",
         "secondaryColor": "#6d28d9",
         "accentColor": "#c4b5fd",
+        "backgroundMode": "light",
+        "logoBackgroundColor": "#ede9fe",
         "brandName": "Thread & Fold",
         "theme": {
           "backgroundPattern": "aurora",
@@ -593,6 +601,8 @@
         "primaryColor": "#92400e",
         "secondaryColor": "#78350f",
         "accentColor": "#fbbf24",
+        "backgroundMode": "light",
+        "logoBackgroundColor": "#fef3c7",
         "brandName": "Rose & Crumb",
         "theme": {
           "backgroundPattern": "mesh",
@@ -761,6 +771,8 @@
         "primaryColor": "#0f172a",
         "secondaryColor": "#1e3a5f",
         "accentColor": "#d4af37",
+        "backgroundMode": "dark",
+        "logoBackgroundColor": "#1e293b",
         "brandName": "Aurelia & Co.",
         "theme": {
           "backgroundPattern": "dark",

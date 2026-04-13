@@ -1,9 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
+import RewardModal from '../twirla-ui/RewardModal';
+import PrimaryButton from '../twirla-ui/PrimaryButton';
+import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
 import './WheelExperience.css';
 
 interface WheelExperienceProps {
@@ -26,8 +29,29 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   const [skillLocked, setSkillLocked] = useState(false);
   const [skillLabel, setSkillLabel] = useState('Warm-up');
   const hasTrackedFinish = useRef(false);
+  const [finishCode, setFinishCode] = useState<string | null>(null);
+  const rewardTrackedRef = useRef(false);
 
-  if (!wheel) return null;
+  useEffect(() => {
+    if (!wheel) return;
+    if (!showResult || !selectedPrize) {
+      rewardTrackedRef.current = false;
+      setFinishCode(null);
+      return;
+    }
+    if (rewardTrackedRef.current) return;
+    rewardTrackedRef.current = true;
+    const code = generateDiscountCode({
+      shopSlug: config.slug ?? shopId,
+      shopId,
+      gameMode: 'Wheel',
+    });
+    setFinishCode(code);
+    persistRewardCodeMeta({ code, generatedAt: Date.now(), shopId, game: 'Wheel' });
+    trackEvent(shopId, 'game_finish', { mode: 'Wheel' });
+    trackEvent(shopId, 'reward_won', { mode: 'Wheel' });
+    trackEvent(shopId, 'reward_generated', { mode: 'Wheel', couponCode: code });
+  }, [showResult, selectedPrize, shopId, config.slug, wheel]);
 
   // TEMP (testing): daily cooldown disabled.
   // const playStatus = canUserPlay(shopId, playCooldownHours);
@@ -51,6 +75,8 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     }, 80);
     return () => clearInterval(timer);
   }, [skillDirection, skillLocked]);
+
+  if (!wheel) return null;
 
   const selectPrize = (): { label: string; index: number } => {
     const totalWeight = wheel.prizes.reduce((sum, prize) => sum + prize.weight, 0);
@@ -114,6 +140,8 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     setWheelRotation(0);
     setSkillLocked(false);
     setSkillLabel('Warm-up');
+    rewardTrackedRef.current = false;
+    setFinishCode(null);
   };
 
   const handleSpin = () => {
@@ -175,8 +203,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
         setHasSpun(true);
         if (!hasTrackedFinish.current) {
           hasTrackedFinish.current = true;
-          trackEvent(shopId, 'game_finish', { mode: 'Wheel' });
-          if (isWinningPrize(label)) trackEvent(shopId, 'reward_won', { mode: 'Wheel' });
         }
         recordPlay(shopId);
       }, 2000);
@@ -187,35 +213,30 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     const isWinning = isWinningPrize(selectedPrize);
     const prize = wheel.prizes.find(p => p.label === selectedPrize);
     
-    if (!isWinning) {
-      // Losing result - show sad animation
-      return (
-        <div className="wheel-result wheel-result-losing">
-          <div className="sad-emoji">😔</div>
-          <h2 className="result-title losing-title">{t('wheel.noWinTitle')}</h2>
-          <p className="result-subtitle">{t('wheel.noWinMessage')}</p>
-          <div className="prize-display losing-prize">
-            <div className="prize-label">{selectedPrize}</div>
-            {prize?.description && (
-              <p className="prize-description">{prize.description}</p>
-            )}
-          </div>
-          <button className="play-again-button" onClick={resetRound}>Play again</button>
-        </div>
-      );
-    }
-    
-    // Winning result: prize label + description only (no generic resultTitle / "high score" copy).
+    const title = isWinning ? selectedPrize : t('reward.consolationHeadline', { pct: String(5) });
+    const description = isWinning
+      ? prize?.description ?? undefined
+      : t('reward.consolationWheel', { label: selectedPrize });
+
     return (
-      <div className="wheel-result wheel-result-winning">
-        <Confetti />
-        <div className="prize-display">
-          <div className="prize-label">{selectedPrize}</div>
-          {prize?.description && (
-            <p className="prize-description">{prize.description}</p>
-          )}
-        </div>
-        <button className="play-again-button" onClick={resetRound}>Spin again</button>
+      <div className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-winning wheel-result-consolation'}`}>
+        <Confetti count={isWinning ? 40 : 18} />
+        <RewardModal
+          title={title}
+          description={description}
+          discountCode={finishCode}
+          ctaUrl={config.cta.url}
+          ctaLabel={config.text.ctaText}
+          copyLabel={t('campaign.copyCode')}
+          copiedLabel={t('reward.copied')}
+          shopId={shopId}
+          gameMode="Wheel"
+          extraActions={
+            <PrimaryButton type="button" variant="ghost" block onClick={resetRound}>
+              {t('wheel.spinAgain')}
+            </PrimaryButton>
+          }
+        />
       </div>
     );
   }

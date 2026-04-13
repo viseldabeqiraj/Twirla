@@ -12,7 +12,7 @@ export default function TwirlaFooter() {
     <footer className="twirla-footer-fixed" role="contentinfo">
       <a href="/" className="twirla-footer-fixed-brand" aria-label={t('landing.goToTwirla')}>
         <img src={resolveAssetUrl('/logos/twirla.png')} alt="" className="twirla-footer-fixed-logo" />
-        <span className="twirla-footer-fixed-name">Twirla</span>
+        {/* <span className="twirla-footer-fixed-name">Twirla</span> */}
       </a>
       <span className="twirla-footer-fixed-powered">{t('landing.poweredByTwirla')}</span>
     </footer>

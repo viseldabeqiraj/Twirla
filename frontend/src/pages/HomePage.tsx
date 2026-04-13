@@ -1,49 +1,65 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Confetti from '../components/Confetti';
 import ScratchCard from '../components/ScratchCard';
 import { resolveAssetUrl } from '../config/api';
+import { useTranslation } from '../i18n/i18n';
 import './HomePage.css';
 
 export default function HomePage() {
+  const { t } = useTranslation();
   const [showConfetti, setShowConfetti] = useState(false);
+
+  useEffect(() => {
+    const appContent = document.querySelector('.app-layout > .app-content');
+    appContent?.classList.add('app-content--home-teaser');
+    return () => appContent?.classList.remove('app-content--home-teaser');
+  }, []);
 
   const hiddenContent = (
     <div className="home-scratch-reveal-panel">
-      <h2 className="home-scratch-reveal-title">SË SHPEJTI</h2>
-      <p className="home-scratch-reveal-subtitle">Lojëra interaktive për dyqanet.</p>
+      <h2 className="home-scratch-reveal-title">{t('home.scratchRevealTitle')}</h2>
+      <p className="home-scratch-reveal-subtitle">{t('home.scratchRevealSubtitle')}</p>
     </div>
   );
 
   return (
     <div className="home-page">
-      <header className="home-hero">
-        <img
-          src={resolveAssetUrl('/logos/twirla-transparent.png')}
-          alt="Twirla"
-          className="home-hero-logo"
-          onError={(e) => {
-            const img = e.target as HTMLImageElement;
-            if (img.src && !img.src.includes('twirla.png')) {
-              img.src = resolveAssetUrl('/logos/twirla.png');
-              img.onerror = () => { img.style.display = 'none'; };
-            } else {
-              img.style.display = 'none';
-            }
-          }}
-        />
-        <p className="home-hero-tagline">Platformë interaktive për biznese.</p>
-      </header>
+      <main className="home-main">
+        <header className="home-hero">
+          <img
+            src={resolveAssetUrl('/logos/twirla-transparent.png')}
+            alt="Twirla"
+            className="home-hero-logo"
+            onError={(e) => {
+              const img = e.target as HTMLImageElement;
+              if (img.src && !img.src.includes('twirla.png')) {
+                img.src = resolveAssetUrl('/logos/twirla.png');
+                img.onerror = () => {
+                  img.style.display = 'none';
+                };
+              } else {
+                img.style.display = 'none';
+              }
+            }}
+          />
+        </header>
 
-      <div className="home-scratch-section">
-        <ScratchCard
-          instructionText="Gërvisht këtu"
-          hiddenContent={hiddenContent}
-          revealThreshold={50}
-          onReveal={() => setShowConfetti(true)}
-          aspectRatio="16/10"
-        />
-        {showConfetti && <Confetti count={40} />}
-      </div>
+        <div className="home-hook">
+          <h1 className="home-hook-headline">{t('home.hookHeadline')}</h1>
+          <p className="home-hook-support">{t('home.tagline')}</p>
+        </div>
+
+        <div className="home-scratch-section">
+          <ScratchCard
+            instructionText={t('home.scratchInstruction')}
+            hiddenContent={hiddenContent}
+            revealThreshold={50}
+            onReveal={() => setShowConfetti(true)}
+            aspectRatio="16/10"
+          />
+          {showConfetti && <Confetti count={40} />}
+        </div>
+      </main>
 
       {/* Demo section hidden for launch teaser */}
       <div className="home-demo-section home-demo-section--hidden" aria-hidden="true">

@@ -1,0 +1,82 @@
+.tw-animated-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tw-animated-bg__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(56px);
+  opacity: 0.14;
+  will-change: transform;
+}
+
+.tw-animated-bg__orb--1 {
+  width: min(72vw, 420px);
+  height: min(72vw, 420px);
+  top: -12%;
+  left: -18%;
+  background: color-mix(in srgb, var(--tw-bg-anim-a, #db2777) 70%, transparent);
+  animation: tw-bg-float-a 28s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+}
+
+.tw-animated-bg__orb--2 {
+  width: min(60vw, 360px);
+  height: min(60vw, 360px);
+  bottom: -8%;
+  right: -14%;
+  background: color-mix(in srgb, var(--tw-bg-anim-b, #be185d) 65%, transparent);
+  animation: tw-bg-float-b 32s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+}
+
+.tw-animated-bg__orb--3 {
+  width: min(48vw, 280px);
+  height: min(48vw, 280px);
+  top: 38%;
+  left: 40%;
+  transform: translate(-50%, -50%);
+  background: color-mix(in srgb, var(--tw-bg-anim-a, #db2777) 40%, var(--tw-bg-anim-b, #be185d) 40%, transparent);
+  opacity: 0.1;
+  animation: tw-bg-float-c 36s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+}
+
+.tw-animated-bg--static .tw-animated-bg__orb {
+  animation: none;
+  opacity: 0.1;
+}
+
+@keyframes tw-bg-float-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(4%, 3%, 0) scale(1.04);
+  }
+}
+
+@keyframes tw-bg-float-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3%, -4%, 0) scale(1.05);
+  }
+}
+
+@keyframes tw-bg-float-c {
+  from {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    transform: translate(-48%, -52%) scale(1.06);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-animated-bg__orb {
+    animation: none !important;
+  }
+}

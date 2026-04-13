@@ -70,7 +70,8 @@ public class AnalyticsService : IAnalyticsService
         }
 
         var visitorIds = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-        long impressions = 0, starts = 0, finishes = 0, rewardsWon = 0, couponsGenerated = 0, couponsRedeemed = 0;
+        long impressions = 0, starts = 0, finishes = 0, rewardsWon = 0, rewardsGenerated = 0, couponsGenerated = 0,
+            couponsRedeemed = 0, codesCopied = 0, ctaClicks = 0;
         decimal attributedRevenue = 0;
 
         foreach (var e in events)
@@ -84,9 +85,12 @@ public class AnalyticsService : IAnalyticsService
                 case AnalyticsEventTypes.GameStart: starts++; break;
                 case AnalyticsEventTypes.GameFinish: finishes++; break;
                 case AnalyticsEventTypes.RewardWon: rewardsWon++; break;
+                case AnalyticsEventTypes.RewardGenerated: rewardsGenerated++; break;
                 case AnalyticsEventTypes.CouponGenerated: couponsGenerated++; break;
                 case AnalyticsEventTypes.CouponRedeemed: couponsRedeemed++; break;
                 case AnalyticsEventTypes.PurchaseAttributed: attributedRevenue += e.Value ?? 0; break;
+                case AnalyticsEventTypes.CodeCopied: codesCopied++; break;
+                case AnalyticsEventTypes.CtaClicked: ctaClicks++; break;
             }
         }
 
@@ -97,8 +101,11 @@ public class AnalyticsService : IAnalyticsService
             Starts = starts,
             Finishes = finishes,
             RewardsWon = rewardsWon,
+            RewardsGenerated = rewardsGenerated,
             CouponsGenerated = couponsGenerated,
             CouponsRedeemed = couponsRedeemed,
+            CodesCopied = codesCopied,
+            CtaClicks = ctaClicks,
             AttributedRevenue = attributedRevenue
         };
     }

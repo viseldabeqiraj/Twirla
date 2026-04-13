@@ -1,0 +1,30 @@
+/**
+ * Twirla motion tokens — subtle, consistent, transform/opacity first.
+ * Pair with prefers-reduced-motion overrides.
+ */
+:root {
+  --tw-motion-fast: 150ms;
+  --tw-motion-normal: 250ms;
+  --tw-motion-slow: 500ms;
+  --tw-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --tw-ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+  --tw-tap-scale: 0.97;
+  --tw-lift-hover: -2px;
+  --tw-glow-pulse-opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --tw-motion-fast: 0.01ms;
+    --tw-motion-normal: 0.01ms;
+    --tw-motion-slow: 0.01ms;
+  }
+
+  .tw-anim-disable *,
+  .tw-anim-disable *::before,
+  .tw-anim-disable *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

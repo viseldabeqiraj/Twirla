@@ -17,3 +17,11 @@
 .scratch-experience-wrap .scratch-reveal-subtitle { font-size: 0.95rem; opacity: .95; margin: 0 0 0.25rem; }
 .scratch-experience-wrap .scratch-reveal-text { font-size: 1.2rem; font-weight: 700; margin: 0; }
 .scratch-experience-wrap .scratch-reveal-detail { font-size: 0.85rem; opacity: .9; margin: 0.35rem 0 0; }
+
+.scratch-reward-panel {
+  margin-top: var(--tw-space-md, 1rem);
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}

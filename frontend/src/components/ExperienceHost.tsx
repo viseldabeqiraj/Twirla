@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { ShopConfig, ExperienceMode } from '../types/ShopConfig';
 import { useTranslation } from '../i18n/i18n';
 import { resolveAssetUrl } from '../config/api';
+import { trackEvent } from '../api/analyticsApi';
 import WheelExperience from './experiences/WheelExperience';
 import CatchPrizeExperience from './experiences/CatchPrizeExperience';
 import ScratchExperience from './experiences/ScratchExperience';
@@ -10,6 +11,9 @@ import CountdownExperience from './experiences/CountdownExperience';
 import MemoryMatchExperience from './experiences/MemoryMatchExperience';
 import RunnerGame from '../games/runner/RunnerGame';
 import AmbientParticles from './AmbientParticles';
+import AnimatedPrimaryButton from './twirla-ui/AnimatedPrimaryButton';
+import { HideRewardModalShopCtaContext } from './ExperienceRewardCtaContext';
+import { ShopThemeProvider, useComputedShopTheme } from '../theme/ShopThemeProvider';
 import './ExperienceHost.css';
 
 interface ExperienceHostProps {
@@ -20,9 +24,21 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   const { branding, text, cta, mode, shopId } = config;
   const { t } = useTranslation();
   const [shouldPulse, setShouldPulse] = useState(false);
-  const [showLossFooter, setShowLossFooter] = useState(false);
   const experienceContentRef = useRef<HTMLDivElement>(null);
   const theme = branding.theme || {};
+
+  const bgMode = branding.backgroundMode ?? (theme.backgroundPattern === 'dark' ? 'dark' : 'light');
+  const themeInput = useMemo(
+    () => ({
+      primaryColor: branding.primaryColor,
+      secondaryColor: branding.secondaryColor,
+      accentColor: branding.accentColor,
+      backgroundMode: bgMode as 'light' | 'dark',
+      logoBackgroundColor: branding.logoBackgroundColor,
+    }),
+    [branding.primaryColor, branding.secondaryColor, branding.accentColor, bgMode, branding.logoBackgroundColor],
+  );
+  const { cssVars } = useComputedShopTheme(themeInput);
 
   const getModeTitle = () => {
     if (!mode) return text.title;
@@ -44,19 +60,11 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       const root = experienceContentRef.current;
       if (!root) {
         setShouldPulse(false);
-        setShowLossFooter(false);
         return;
       }
       const hasResult = root.querySelector(
-        '.wheel-result, .hearts-reveal, .scratch-reveal, .countdown-ended, .runner-gameover, .catch-prize-ended, .memory-match-win, .memory-match-lose'
+        '.wheel-result, .scratch-reveal, .countdown-ended, .runner-gameover, .catch-prize-ended, .memory-match-win, .memory-match-lose, .scratch-reward-panel'
       );
-      const isLoss = Boolean(
-        root.querySelector(
-          '.wheel-result-losing, .memory-match-lose, .catch-prize-ended--nowin, .runner-gameover--nowin'
-        )
-      );
-      setShowLossFooter(isLoss);
-
       if (hasResult) {
         setShouldPulse(true);
         if (pulseClear) clearTimeout(pulseClear);
@@ -83,6 +91,9 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       case ExperienceMode.Runner:
         return (
           <RunnerGame
+            shopId={shopId}
+            shopSlug={config.slug ?? shopId}
+            experienceMode="Runner"
             config={{
               outcomes: config.runnerGame?.outcomes,
               theme: {
@@ -111,17 +122,18 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
     }
   };
 
+  const hostStyle = {
+    ...cssVars,
+    '--app-font': theme.fontFamily || 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+    '--card-radius': `${theme.borderRadius ?? 26}px`,
+    '--btn-radius': `${theme.buttonRadius ?? 14}px`,
+  } as React.CSSProperties;
+
   return (
+    <ShopThemeProvider input={themeInput}>
     <div
       className={`experience-host pattern-${theme.backgroundPattern || 'gradient'} surface-${theme.surfaceStyle || 'glass'} ambient-${theme.ambientMotion ?? 'none'}`}
-      style={{
-        '--primary-color': branding.primaryColor,
-        '--secondary-color': branding.secondaryColor,
-        '--accent-color': branding.accentColor || branding.primaryColor,
-        '--app-font': theme.fontFamily || 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
-        '--card-radius': `${theme.borderRadius ?? 26}px`,
-        '--btn-radius': `${theme.buttonRadius ?? 14}px`,
-      } as React.CSSProperties}
+      style={hostStyle}
     >
       <div className="orb orb-a" />
       <div className="orb orb-b" />
@@ -134,41 +146,40 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
           accentColor={branding.accentColor || branding.primaryColor}
         />
       ) : null}
+      <HideRewardModalShopCtaContext.Provider value={true}>
       <motion.div className="experience-container" initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-        {(branding.logoUrl || branding.brandName) && (
+        {branding.logoUrl ? (
           <div className="brand-head">
-            {branding.logoUrl && <img src={resolveAssetUrl(branding.logoUrl)} alt={branding.brandName || t('common.logoAlt')} className="logo" />}
-            {branding.brandName && <h2 className="brand-name">{branding.brandName}</h2>}
+            <img src={resolveAssetUrl(branding.logoUrl)} alt={branding.brandName || t('common.logoAlt')} className="logo" />
           </div>
-        )}
+        ) : null}
 
         <h1 className="title">{getModeTitle()}</h1>
         {getModeSubtitle() && <p className="subtitle">{getModeSubtitle()}</p>}
+        {text.maxDiscountPercent != null && text.maxDiscountPercent > 0 ? (
+          <p className="experience-preplay">{t('games.prePlayDiscount', { pct: String(text.maxDiscountPercent) })}</p>
+        ) : null}
 
         <div className="experience-content" ref={experienceContentRef}>{renderExperience()}</div>
 
-        {showLossFooter ? (
-          <p className="experience-loss-footer" role="status">
-            {t('campaign.noPrizeFooter')}
-          </p>
-        ) : (
-          <motion.a
-            href={cta.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`cta-button ${shouldPulse ? 'pulse' : ''}`}
-            whileTap={{ scale: 0.98 }}
-            whileHover={{ y: -2 }}
-          >
-            {shouldPulse ? t('campaign.dmToClaim') : text.ctaText}
-          </motion.a>
-        )}
+        <AnimatedPrimaryButton
+          href={cta.url}
+          external
+          block
+          pulse={shouldPulse}
+          className="cta-button"
+          onClick={() => trackEvent(shopId, 'cta_clicked', { mode: String(mode ?? '') })}
+        >
+          {shouldPulse ? t('campaign.dmToClaim') : text.ctaText}
+        </AnimatedPrimaryButton>
 
         <a href="/" className="twirla-app-button">
           <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-app-button-logo" />
           {t('common.goToTwirlaApp')}
         </a>
       </motion.div>
+      </HideRewardModalShopCtaContext.Provider>
     </div>
+    </ShopThemeProvider>
   );
 }

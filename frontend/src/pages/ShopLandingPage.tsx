@@ -23,6 +23,9 @@ import {
 } from '../components/shopLanding';
 import { resolveAssetUrl } from '../config/api';
 import { useTranslation } from '../i18n/i18n';
+import AppLoader from '../components/twirla-ui/AppLoader';
+import AnimatedBackground from '../components/twirla-ui/AnimatedBackground';
+import { ShopThemeProvider, useComputedShopTheme } from '../theme/ShopThemeProvider';
 import './ShopLandingPage.css';
 
 export default function ShopLandingPage() {
@@ -58,8 +61,21 @@ export default function ShopLandingPage() {
   const primary = config?.primaryColor ?? config?.hero.primaryColor ?? '#db2777';
   const secondary = config?.secondaryColor ?? config?.hero.secondaryColor ?? '#be185d';
   const accent = config?.accentColor ?? secondary;
+  const bgMode = config?.backgroundMode ?? 'light';
   const fontPair = config?.fontPairId ?? 'default';
   const layout = config?.layoutTemplate ?? 'product-focused';
+
+  const themeInput = useMemo(
+    () => ({
+      primaryColor: primary,
+      secondaryColor: secondary,
+      accentColor: accent,
+      backgroundMode: bgMode as 'light' | 'dark',
+      logoBackgroundColor: config?.logoBackgroundColor,
+    }),
+    [primary, secondary, accent, bgMode, config?.logoBackgroundColor],
+  );
+  const { tokens, cssVars } = useComputedShopTheme(themeInput);
 
   const mainSections = useMemo(() => {
     if (!config) return null;
@@ -117,49 +133,41 @@ export default function ShopLandingPage() {
   }
 
   if (!config) {
-    return (
-      <div className="shop-landing shop-landing-loading">
-        <p>{t('landing.loading')}</p>
-      </div>
-    );
+    return <AppLoader message={t('landing.loading')} variant="full" />;
   }
 
   const hero = config.hero;
   const initial = hero.shopName.trim().charAt(0).toUpperCase() || '?';
 
   return (
-    <div
-      className="shop-landing"
-      data-layout={layout}
-      data-font-pair={fontPair}
-      style={
-        {
-          '--shop-primary': primary,
-          '--shop-secondary': secondary,
-          '--shop-accent': accent,
-          '--primary-color': primary,
-          '--secondary-color': secondary,
-        } as React.CSSProperties
-      }
-    >
-      <header className="shop-landing-app-header">
-        <div className="shop-landing-app-header-inner">
-          <div className="shop-landing-app-logo">
-            {hero.logoUrl ? (
-              <img src={resolveAssetUrl(hero.logoUrl)} alt="" />
-            ) : (
-              <span className="shop-landing-app-logo-placeholder" aria-hidden>{initial}</span>
-            )}
+    <ShopThemeProvider input={themeInput}>
+      <div
+        className={`shop-landing ${bgMode === 'dark' ? 'shop-landing--dark' : ''}`}
+        data-layout={layout}
+        data-font-pair={fontPair}
+        data-bg-mode={bgMode}
+        style={cssVars as React.CSSProperties}
+      >
+        <AnimatedBackground primaryColor={primary} secondaryColor={secondary} />
+        <header className="shop-landing-app-header">
+          <div className="shop-landing-app-header-inner">
+            <div className="shop-landing-app-logo" style={{ background: tokens.logoBackground }}>
+              {hero.logoUrl ? (
+                <img src={resolveAssetUrl(hero.logoUrl)} alt="" />
+              ) : (
+                <span className="shop-landing-app-logo-placeholder" aria-hidden>{initial}</span>
+              )}
+            </div>
+            <span className="shop-landing-app-name">{hero.shopName}</span>
+            <LanguageSwitcher />
           </div>
-          <span className="shop-landing-app-name">{hero.shopName}</span>
-          <LanguageSwitcher />
-        </div>
-      </header>
+        </header>
 
-      <main className="shop-landing-main">
-        <HeroSection hero={config.hero} hideBar scrollToId="featured-game" />
-        {mainSections}
-      </main>
-    </div>
+        <main className="shop-landing-main">
+          <HeroSection hero={config.hero} hideBar scrollToId="featured-game" />
+          {mainSections}
+        </main>
+      </div>
+    </ShopThemeProvider>
   );
 }

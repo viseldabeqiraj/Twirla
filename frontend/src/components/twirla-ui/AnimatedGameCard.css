@@ -1,0 +1,44 @@
+.tw-anim-game-card {
+  display: block;
+  width: 100%;
+  border-radius: inherit;
+}
+
+.tw-anim-game-card > a {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow var(--tw-motion-normal, 250ms) var(--tw-ease-out, ease-out),
+    border-color var(--tw-motion-normal, 250ms) var(--tw-ease-out, ease-out);
+}
+
+.tw-anim-game-card:hover > a,
+.tw-anim-game-card:focus-within > a {
+  box-shadow:
+    0 14px 32px rgba(15, 23, 42, 0.1),
+    0 0 0 1px color-mix(in srgb, var(--tw-primary, var(--shop-primary, #db2777)) 22%, transparent);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a.tw-anim-game-card-link--float {
+    animation: tw-anim-game-card-float 9s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+  }
+
+  @keyframes tw-anim-game-card-float {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(0, -4px, 0);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  a.tw-anim-game-card-link--float {
+    animation: none;
+  }
+}

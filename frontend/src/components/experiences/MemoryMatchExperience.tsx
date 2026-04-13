@@ -4,6 +4,9 @@ import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import Confetti from '../Confetti';
+import RewardModal from '../twirla-ui/RewardModal';
+import PrimaryButton from '../twirla-ui/PrimaryButton';
+import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
 import './MemoryMatchExperience.css';
 
 const DEFAULT_SYMBOLS = ['🎁', '🎯', '✨', '🏃', '💝', '⭐', '🎀', '🔔'];
@@ -51,7 +54,7 @@ interface MemoryMatchExperienceProps {
 }
 
 export default function MemoryMatchExperience({ config }: MemoryMatchExperienceProps) {
-  const { memory, shopId, branding } = config;
+  const { memory, shopId, branding, cta, text } = config;
   const { t } = useTranslation();
   const [started, setStarted] = useState(false);
   const [cards, setCards] = useState<CardModel[]>(() => (memory ? buildDeck(memory) : []));
@@ -68,7 +71,9 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
   const [mistakes, setMistakes] = useState(0);
   const startedTracked = useRef(false);
   const winRecorded = useRef(false);
+  const lostRecorded = useRef(false);
   const gameStartRef = useRef<number | null>(null);
+  const [finishCode, setFinishCode] = useState<string | null>(null);
 
   const totalPairs = useMemo(() => {
     if (!memory) return 0;
@@ -123,10 +128,18 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
       setFinalClockMs(Date.now() - gameStartRef.current);
     }
     setWon(true);
+    const code = generateDiscountCode({
+      shopSlug: config.slug ?? shopId,
+      shopId,
+      gameMode: 'MemoryMatch',
+    });
+    setFinishCode(code);
+    persistRewardCodeMeta({ code, generatedAt: Date.now(), shopId, game: 'MemoryMatch' });
     trackEvent(shopId, 'game_finish', { mode: 'MemoryMatch' });
     trackEvent(shopId, 'reward_won', { mode: 'MemoryMatch' });
+    trackEvent(shopId, 'reward_generated', { mode: 'MemoryMatch', couponCode: code });
     recordPlay(shopId);
-  }, [started, won, lost, matchedPairCount, totalPairs, shopId]);
+  }, [started, won, lost, matchedPairCount, totalPairs, shopId, config.slug]);
 
   const resetGame = useCallback(() => {
     if (!memory) return;
@@ -145,8 +158,26 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
     gameStartRef.current = null;
     startedTracked.current = false;
     winRecorded.current = false;
+    lostRecorded.current = false;
+    setFinishCode(null);
     setStarted(false);
   }, [memory]);
+
+  useEffect(() => {
+    if (!started || !lost || lostRecorded.current) return;
+    lostRecorded.current = true;
+    const code = generateDiscountCode({
+      shopSlug: config.slug ?? shopId,
+      shopId,
+      gameMode: 'MemoryMatch',
+    });
+    setFinishCode(code);
+    persistRewardCodeMeta({ code, generatedAt: Date.now(), shopId, game: 'MemoryMatch' });
+    trackEvent(shopId, 'game_finish', { mode: 'MemoryMatch' });
+    trackEvent(shopId, 'reward_won', { mode: 'MemoryMatch' });
+    trackEvent(shopId, 'reward_generated', { mode: 'MemoryMatch', couponCode: code });
+    recordPlay(shopId);
+  }, [started, lost, shopId, config.slug]);
 
   const handleStart = () => {
     gameStartRef.current = Date.now();
@@ -294,48 +325,68 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
 
       {lost && (
         <div className="memory-match-lose">
-          <h2 className="memory-match-lose-title">{t('memoryMatch.loseTitle')}</h2>
-          <p className="memory-match-lose-msg">
-            {lostReason === 'time' ? t('memoryMatch.loseTime') : t('memoryMatch.loseMistakes')}
-          </p>
-          <p className="memory-match-lose-stats">
+          <Confetti count={20} />
+          <RewardModal
+            title={t('reward.consolationHeadline', { pct: String(5) })}
+            description={`${lostReason === 'time' ? t('memoryMatch.loseTime') : t('memoryMatch.loseMistakes')} ${t('memoryMatch.consolationCarry', { text: memory.revealText })}`}
+            discountCode={finishCode}
+            ctaUrl={cta.url}
+            ctaLabel={text.ctaText}
+            copyLabel={t('campaign.copyCode')}
+            copiedLabel={t('reward.copied')}
+            shopId={shopId}
+            gameMode="MemoryMatch"
+            extraActions={
+              <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
+                {t('memoryMatch.playAgain')}
+              </PrimaryButton>
+            }
+          />
+          <p className="memory-match-lose-stats memory-match-lose-stats--muted">
             {t('memoryMatch.loseStats', {
               time: formatElapsed(clockMs),
               moves: String(moves),
               mistakes: String(mistakes),
             })}
           </p>
-          <button type="button" className="memory-match-start" onClick={resetGame}>
-            {t('memoryMatch.playAgain')}
-          </button>
         </div>
       )}
 
       {won && (
         <div className="memory-match-win">
-          <h2 className="memory-match-win-title">{config.text.resultTitle}</h2>
-          {config.text.resultSubtitle && <p className="memory-match-win-sub">{config.text.resultSubtitle}</p>}
-          <dl className="memory-match-stats">
-            <div className="memory-match-stat">
-              <dt>{t('memoryMatch.statTime')}</dt>
-              <dd>{formatElapsed(finalClockMs)}</dd>
-            </div>
-            <div className="memory-match-stat">
-              <dt>{t('memoryMatch.statMoves')}</dt>
-              <dd>{moves}</dd>
-            </div>
-            <div className="memory-match-stat">
-              <dt>{t('memoryMatch.statMistakes')}</dt>
-              <dd>{mistakes}</dd>
-            </div>
-          </dl>
-          <p className="memory-match-reward-label">{t('memoryMatch.rewardHeading')}</p>
-          <p className="memory-match-win-code">{memory.revealText}</p>
-          {memory.revealSubtitle && <p className="memory-match-win-hint">{memory.revealSubtitle}</p>}
-          <button type="button" className="memory-match-reset memory-match-reset--after-win" onClick={resetGame}>
-            {t('memoryMatch.playAgain')}
-          </button>
           <Confetti count={36} />
+          <RewardModal
+            title={text.resultTitle}
+            description={[text.resultSubtitle, memory.revealText, memory.revealSubtitle].filter(Boolean).join(' · ')}
+            discountCode={finishCode}
+            ctaUrl={cta.url}
+            ctaLabel={text.ctaText}
+            copyLabel={t('campaign.copyCode')}
+            copiedLabel={t('reward.copied')}
+            shopId={shopId}
+            gameMode="MemoryMatch"
+            extraActions={
+              <>
+                <dl className="memory-match-stats">
+                  <div className="memory-match-stat">
+                    <dt>{t('memoryMatch.statTime')}</dt>
+                    <dd>{formatElapsed(finalClockMs)}</dd>
+                  </div>
+                  <div className="memory-match-stat">
+                    <dt>{t('memoryMatch.statMoves')}</dt>
+                    <dd>{moves}</dd>
+                  </div>
+                  <div className="memory-match-stat">
+                    <dt>{t('memoryMatch.statMistakes')}</dt>
+                    <dd>{mistakes}</dd>
+                  </div>
+                </dl>
+                <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
+                  {t('memoryMatch.playAgain')}
+                </PrimaryButton>
+              </>
+            }
+          />
         </div>
       )}
     </div>

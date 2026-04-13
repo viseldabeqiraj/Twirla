@@ -51,6 +51,10 @@ export interface ShopLandingConfig {
   howToOrder?: HowToOrderConfig;
   /** Third brand color (buttons, accents); falls back to primary if omitted */
   accentColor?: string;
+  /** Page background mode: "light" (default) or "dark" */
+  backgroundMode?: 'light' | 'dark';
+  /** Explicit logo container color */
+  logoBackgroundColor?: string;
   /** Section order template */
   layoutTemplate?: LandingLayoutTemplate;
   /** Typography pair (loaded via index.html Google Fonts subset) */

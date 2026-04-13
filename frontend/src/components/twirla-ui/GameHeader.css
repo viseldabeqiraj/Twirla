@@ -1,0 +1,33 @@
+.tw-game-header {
+  text-align: center;
+  margin-bottom: var(--tw-space-md, 1rem);
+}
+
+.tw-game-header__title {
+  margin: 0 0 var(--tw-space-xs, 0.25rem);
+  font-size: var(--tw-font-title);
+  font-weight: var(--tw-weight-title);
+  letter-spacing: var(--tw-letter-heading);
+  line-height: 1.12;
+  color: #0f172a;
+}
+
+.surface-neon .tw-game-header__title {
+  color: #f8fafc;
+}
+
+.tw-game-header__subtitle {
+  margin: 0;
+  font-size: var(--tw-font-subtitle);
+  font-weight: var(--tw-weight-subtitle);
+  color: var(--tw-color-muted, #64748b);
+  line-height: 1.45;
+}
+
+.surface-neon .tw-game-header__subtitle {
+  color: #cbd5e1;
+}
+
+.tw-game-header__slot {
+  margin-top: var(--tw-space-sm, 0.5rem);
+}

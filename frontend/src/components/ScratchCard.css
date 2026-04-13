@@ -1,4 +1,4 @@
-/* ScratchCard – premium foil surface, Twirla reveal */
+/* ScratchCard – premium holographic foil, Twirla reveal */
 
 .scratch-card-wrap {
   width: 100%;
@@ -33,6 +33,7 @@
   min-height: 220px;
   display: grid;
   place-items: center;
+  transition: transform 0.2s var(--tw-ease-out, ease-out);
 }
 
 .scratch-card-content {
@@ -73,7 +74,7 @@
   user-select: none;
 }
 
-/* Instruction text overlay: pulse hint (same font as app) */
+/* Instruction text overlay: pulse hint */
 .scratch-card-instruction-pulse {
   position: absolute;
   left: 50%;
@@ -81,14 +82,15 @@
   transform: translate(-50%, -50%);
   font: 600 1.1rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   color: #fff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.35);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 0 12px rgba(255, 255, 255, 0.15);
   pointer-events: none;
   white-space: nowrap;
+  z-index: 3;
   animation: scratch-instruction-pulse 2s ease-in-out infinite;
 }
 
 @keyframes scratch-instruction-pulse {
-  0%, 100% { opacity: 0.85; }
+  0%, 100% { opacity: 0.82; }
   50% { opacity: 1; }
 }
 
@@ -97,12 +99,12 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  cursor: grab;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='12' fill='%23c0c0c0' stroke='%23999' stroke-width='1.5'/%3E%3Ccircle cx='11' cy='11' r='4' fill='%23e8e8e8' opacity='.5'/%3E%3C/svg%3E") 14 14, crosshair;
   transition: opacity 0.35s ease-out;
 }
 
 .scratch-card-canvas:active {
-  cursor: grabbing;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Ccircle cx='14' cy='14' r='12' fill='%23b0b0b0' stroke='%23888' stroke-width='1.5'/%3E%3Ccircle cx='11' cy='11' r='4' fill='%23d8d8d8' opacity='.5'/%3E%3C/svg%3E") 14 14, crosshair;
 }
 
 .scratch-card-canvas--fade {
@@ -110,26 +112,87 @@
   pointer-events: none;
 }
 
-/* Prominent shine sweep across foil (more metallic) */
+/* Holographic shine sweep across foil */
 .scratch-card-shine {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
-    105deg,
-    transparent 0%,
-    transparent 36%,
-    rgba(255, 255, 255, 0.12) 44%,
-    rgba(255, 255, 255, 0.28) 50%,
-    rgba(255, 255, 255, 0.12) 56%,
-    transparent 64%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: scratch-shine-sweep 2.6s ease-in-out infinite;
+  z-index: 2;
+  background:
+    linear-gradient(
+      105deg,
+      transparent 0%,
+      transparent 32%,
+      rgba(255, 255, 255, 0.06) 38%,
+      rgba(255, 200, 255, 0.1) 42%,
+      rgba(255, 255, 255, 0.28) 50%,
+      rgba(200, 255, 255, 0.1) 58%,
+      rgba(255, 255, 255, 0.06) 62%,
+      transparent 68%,
+      transparent 100%
+    );
+  background-size: 220% 100%;
+  animation: scratch-shine-sweep 3s ease-in-out infinite;
 }
 
 @keyframes scratch-shine-sweep {
-  0%, 100% { background-position: 200% 0; }
-  50% { background-position: -100% 0; }
+  0%, 100% { background-position: 220% 0; }
+  50% { background-position: -120% 0; }
+}
+
+/* Subtle press scale when user starts scratching */
+.scratch-card-inner--pressing {
+  transform: scale(0.988) perspective(600px) rotateX(0.5deg);
+  transition: transform 0.12s var(--tw-ease-out, ease-out);
+}
+
+/* Glow pulse on reveal */
+.scratch-card-container--revealed {
+  animation: scratch-card-reveal-glow 2.8s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+}
+
+@keyframes scratch-card-reveal-glow {
+  from {
+    box-shadow:
+      0 4px 6px rgba(0, 0, 0, 0.08),
+      0 12px 28px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+  to {
+    box-shadow:
+      0 6px 10px rgba(0, 0, 0, 0.1),
+      0 16px 36px rgba(124, 58, 237, 0.12),
+      0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+}
+
+/* Idle highlight glow before scratching */
+@media (prefers-reduced-motion: no-preference) {
+  .scratch-card-canvas-wrap--idle::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      120% 80% at 30% 20%,
+      rgba(255, 255, 255, 0.06) 0%,
+      transparent 55%
+    );
+    animation: scratch-idle-glow 6s var(--tw-ease-in-out, ease-in-out) infinite alternate;
+  }
+
+  @keyframes scratch-idle-glow {
+    from { opacity: 0.35; }
+    to { opacity: 0.55; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scratch-card-container--revealed {
+    animation: none;
+  }
+  .scratch-card-shine {
+    animation: none;
+  }
 }

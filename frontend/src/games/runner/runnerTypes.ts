@@ -9,25 +9,24 @@ export type { RunnerGameOutcome };
 /** Default outcomes when `runnerGame.outcomes` is omitted from shops.json. */
 export const DEFAULT_RUNNER_OUTCOMES: RunnerGameOutcome[] = [
   {
-    headline: 'No prize this run',
-    body: 'Thanks for playing — try again another time.',
-    weight: 40,
-    isNoWin: true,
-  },
-  {
     headline: 'You won: 5% off',
     body: 'Message the shop to get your code.',
-    weight: 28,
+    weight: 38,
   },
   {
     headline: 'You won: 10% off',
     body: 'Use at checkout (the shop will confirm).',
-    weight: 22,
+    weight: 32,
   },
   {
     headline: 'You won: a small perk',
     body: 'DM the shop with a screenshot of this screen.',
-    weight: 10,
+    weight: 22,
+  },
+  {
+    headline: 'You won: 15% off',
+    body: 'Screenshot this screen and message the shop.',
+    weight: 8,
   },
 ];
 

@@ -1,4 +1,6 @@
 import { getApiBase } from '../config/api';
+import { getOrCreatePlaySessionId } from '../utils/playSession';
+
 const getApiUrl = () => `${getApiBase()}/api`;
 
 export type AnalyticsEventType =
@@ -6,10 +8,14 @@ export type AnalyticsEventType =
   | 'game_start'
   | 'game_finish'
   | 'reward_won'
-  | 'coupon_generated';
+  | 'reward_generated'
+  | 'coupon_generated'
+  | 'code_copied'
+  | 'cta_clicked';
 
 export interface TrackEventOptions {
   visitorId?: string;
+  sessionId?: string;
   value?: number;
   mode?: string;
   couponCode?: string;
@@ -36,6 +42,7 @@ export async function trackEvent(
   options: TrackEventOptions = {}
 ): Promise<void> {
   const visitorId = options.visitorId ?? getOrCreateVisitorId();
+  const sessionId = options.sessionId ?? getOrCreatePlaySessionId();
   const url = `${getApiUrl()}/shops/${encodeURIComponent(shopId)}/analytics/event`;
   try {
     await fetch(url, {
@@ -44,6 +51,7 @@ export async function trackEvent(
       body: JSON.stringify({
         event,
         visitorId,
+        sessionId,
         value: options.value,
         mode: options.mode,
         couponCode: options.couponCode,

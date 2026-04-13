@@ -7,8 +7,11 @@ export interface AdminSummary {
   starts: number;
   finishes: number;
   rewardsWon: number;
+  rewardsGenerated: number;
   couponsGenerated: number;
   couponsRedeemed: number;
+  codesCopied: number;
+  ctaClicks: number;
   attributedRevenue: number;
 }
 

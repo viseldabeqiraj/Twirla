@@ -1,11 +1,10 @@
-import { Link } from 'react-router-dom';
 import type { ExperienceMode } from '../../types/ShopConfig';
 import type { ShopLandingConfig } from '../../types/ShopLandingConfig';
 import { useTranslation } from '../../i18n/i18n';
+import AnimatedGameCard from '../twirla-ui/AnimatedGameCard';
 
 interface GamesSectionProps {
   enabledGames: ExperienceMode[];
-  /** Primary game shown above the fold; links to this game. */
   featuredGame?: ExperienceMode;
   experiencePath: ShopLandingConfig['experiencePath'];
   sectionTitle?: string;
@@ -30,9 +29,10 @@ export default function GamesSection({
   if (enabledGames.length === 0) return null;
 
   const { shopName, uniqueId } = experiencePath;
-  const featured = featuredGame && GAME_META[featuredGame] && enabledGames.includes(featuredGame)
-    ? featuredGame
-    : enabledGames[0];
+  const featured =
+    featuredGame && GAME_META[featuredGame] && enabledGames.includes(featuredGame)
+      ? featuredGame
+      : enabledGames[0];
   const moreGames = enabledGames.filter((m) => m !== featured);
   const featuredMeta = GAME_META[featured];
   if (!featuredMeta) return null;
@@ -41,7 +41,6 @@ export default function GamesSection({
 
   return (
     <>
-      {/* Featured game – primary CTA target, above the fold / early scroll */}
       <section
         id="featured-game"
         className="shop-section shop-featured-game"
@@ -52,15 +51,20 @@ export default function GamesSection({
             {sectionTitle?.trim() || t('campaign.featuredGame')}
           </h2>
           <p className="shop-featured-game-intro">{t('landing.gamesIntro')}</p>
-          <Link to={featuredTo} className="shop-featured-game-card">
-            <span className="shop-featured-game-emoji" aria-hidden>{featuredMeta.emoji}</span>
-            <span className="shop-featured-game-label">{t(featuredMeta.key)}</span>
-            <span className="shop-featured-game-cta">{t('campaign.playNow')}</span>
-          </Link>
+          <AnimatedGameCard to={featuredTo} featured className="shop-featured-game-card">
+            <span className="shop-featured-game-emoji" aria-hidden>
+              {featuredMeta.emoji}
+            </span>
+            <div className="shop-featured-game-body">
+              <span className="shop-featured-game-label">{t(featuredMeta.key)}</span>
+              <span className="shop-featured-game-cta shop-landing-cta-invite">
+                {t('campaign.ctaPlayWin')}
+              </span>
+            </div>
+          </AnimatedGameCard>
         </div>
       </section>
 
-      {/* More ways to win – secondary games */}
       {moreGames.length > 0 && (
         <section className="shop-section shop-games">
           <div className="shop-section-inner">
@@ -71,14 +75,10 @@ export default function GamesSection({
                 if (!meta) return null;
                 const to = `/${meta.path}/${shopName}/${uniqueId}`;
                 return (
-                  <Link
-                    key={mode}
-                    to={to}
-                    className="shop-game-card"
-                  >
+                  <AnimatedGameCard key={mode} to={to} className="shop-game-card">
                     <span className="shop-game-emoji">{meta.emoji}</span>
                     <span className="shop-game-label">{t(meta.key)}</span>
-                  </Link>
+                  </AnimatedGameCard>
                 );
               })}
             </div>

@@ -21,3 +21,6 @@ export const CHARACTER_WIDTH = 36;
 export const CHARACTER_HEIGHT = 40;
 export const CHARACTER_GROUND_OFFSET = 4;
 export const SCORE_PER_FRAME = 0.4; // score per 60fps frame while playing
+
+/** Display-only progress toward a “full” run tier (not tied to prize math). */
+export const REWARD_PROGRESS_TARGET = 80;

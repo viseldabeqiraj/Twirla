@@ -15,7 +15,18 @@
     "visitTiktok": "Visit TikTok",
     "dmToClaim": "DM us to claim your prize",
     "noPrizeFooter": "Nothing to claim this round — better luck next time.",
-    "tryAnotherGame": "Try another game"
+    "tryAnotherGame": "Try another game",
+    "ctaPlayWin": "Play & win 🎁",
+    "ctaTryLuck": "Try your luck"
+  },
+  "games": {
+    "prePlayDiscount": "Play to win up to {{pct}}% off 🎁"
+  },
+  "reward": {
+    "copied": "Copied!",
+    "consolationHeadline": "Better luck next time — here's {{pct}}% for today 🎉",
+    "consolationSub": "Message the shop with this screen to claim your {{pct}}% perk.",
+    "consolationWheel": "You landed on “{{label}}”. You still get a small thank-you discount — tap below to claim."
   },
   "landing": {
     "loading": "Loading…",
@@ -81,7 +92,8 @@
     "alreadyTried": "You already tried! Screenshot & DM us 💕",
     "thanksParticipating": "You've already played! Thanks for participating.",
     "noWinTitle": "Better luck next time!",
-    "noWinMessage": "Don't give up! Try again next time. 💪"
+    "noWinMessage": "Don't give up! Try again next time. 💪",
+    "spinAgain": "Spin again"
   },
   "tapHearts": {
     "title": "Catch the Prize",
@@ -113,7 +125,9 @@
     "cardLabel": "Scratch here",
     "hint": "Reveal your prize 🎁",
     "scratchToReveal": "Scratch for the surprise",
-    "scratchHere": "Scratch here"
+    "scratchHere": "Scratch here",
+    "revealedTitle": "Your prize is unlocked!",
+    "rewardPanelTitle": "Here's your reward"
   },
   "countdown": {
     "title": "Offer Ending Soon!",
@@ -131,9 +145,11 @@
     "comingSoon": "Coming Soon!",
     "comingSoonSubtitle": "Twirla is coming…",
     "scratchHint": "✨ Scratch to reveal…",
-    "tagline": "Interactive platform for businesses.",
+    "hookHeadline": "Play. Win. Bring them back.",
+    "tagline": "An experience your customers won't forget.",
+    "scratchInstruction": "Scratch here",
     "scratchRevealTitle": "COMING SOON",
-    "scratchRevealSubtitle": "Interactive games for shops."
+    "scratchRevealSubtitle": "Quick games. Real perks. Built for your brand."
   },
   "dashboard": {
     "title": "Shop admin",
@@ -163,7 +179,12 @@
     "invalidToken": "Invalid or missing token.",
     "redeemSuccess": "Coupon redeemed successfully.",
     "redeemPlaceholder": "e.g. TWIRLA-XXXX",
-    "redeemFailedGeneric": "Redemption failed."
+    "redeemFailedGeneric": "Redemption failed.",
+    "rewardsGenerated": "Reward codes generated",
+    "codesCopied": "Codes copied",
+    "ctaClicks": "DM / CTA clicks",
+    "funnelRewardsGenerated": "Rewards generated",
+    "funnelCtaClicks": "Shop CTA clicks"
   },
   "runner": {
     "title": "Twirla Run",
@@ -175,6 +196,7 @@
     "best": "Best",
     "gameOver": "Game Over",
     "playAgain": "Play again",
+    "rewardProgressLine": "{{current}} / {{target}} → {{percent}}%",
     "claimReward": "Claim reward",
     "tapToJump": "Tap to jump",
     "back": "Back",
@@ -220,7 +242,8 @@
     "loseTime": "Time ran out before you matched every pair.",
     "loseMistakes": "Too many wrong pairs — take a breath and try again.",
     "loseStats": "Time {{time}} · Moves {{moves}} · Wrong pairs {{mistakes}}",
-    "playAgain": "Play again"
+    "playAgain": "Play again",
+    "consolationCarry": "— you still unlocked: {{text}}"
   },
   "experience": {
     "shopIdRequired": "Shop ID is required.",

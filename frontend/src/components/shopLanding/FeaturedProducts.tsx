@@ -1,4 +1,5 @@
 import { useTranslation } from '../../i18n/i18n';
+import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
 import { resolveAssetUrl } from '../../config/api';
 import type { FeaturedProductConfig, SocialLinksConfig } from '../../types/ShopLandingConfig';
 
@@ -80,14 +81,15 @@ export default function FeaturedProducts({ products, sectionTitle, social }: Fea
                       <p className="shop-product-price">{p.price}</p>
                     )}
                     {resolved && (
-                      <a
+                      <AnimatedPrimaryButton
                         href={resolved.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        external
+                        pulse
+                        small
                         className="shop-product-cta"
                       >
                         {resolved.label}
-                      </a>
+                      </AnimatedPrimaryButton>
                     )}
                   </div>
                 </article>

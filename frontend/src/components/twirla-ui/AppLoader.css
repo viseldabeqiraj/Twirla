@@ -1,0 +1,58 @@
+.tw-app-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tw-app-loader--full {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: var(--tw-space-lg, 1.5rem);
+  background: var(--tw-color-bg, #f8fafc);
+}
+
+.tw-app-loader--inline {
+  min-height: 200px;
+  padding: var(--tw-space-md, 1rem);
+}
+
+.tw-app-loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tw-space-md, 1rem);
+  text-align: center;
+}
+
+.tw-app-loader__ring {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--primary-color, #db2777) 18%, #e2e8f0);
+  border-top-color: var(--primary-color, #db2777);
+  animation: tw-app-loader-spin 0.75s var(--tw-ease-in-out, ease-in-out) infinite;
+}
+
+@keyframes tw-app-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.tw-app-loader__label {
+  margin: 0;
+  font-size: var(--tw-font-small, 0.8125rem);
+  font-weight: 600;
+  color: var(--tw-color-muted, #64748b);
+  letter-spacing: 0.02em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-app-loader__ring {
+    animation: none;
+    border-top-color: #e2e8f0;
+  }
+}

@@ -62,6 +62,11 @@ body {
     padding-bottom: 56px;
     padding-bottom: max(56px, env(safe-area-inset-bottom) + 48px);
   }
+
+  /* Home teaser: short page, centered stack — avoid a tall empty scroll band above the footer */
+  .app-content.app-content--home-teaser {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
+  }
 }
 
 button {

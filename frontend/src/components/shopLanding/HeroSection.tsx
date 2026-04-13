@@ -1,12 +1,13 @@
+import type { CSSProperties, MouseEvent } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import type { HeroConfig } from '../../types/ShopLandingConfig';
 import { resolveAssetUrl } from '../../config/api';
+import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
+import StaggeredEntrance from '../twirla-ui/StaggeredEntrance';
 
 interface HeroSectionProps {
   hero: HeroConfig;
-  /** When true, hide the in-hero bar (logo/name) when a sticky app header is used */
   hideBar?: boolean;
-  /** When set, primary CTA scrolls to this id instead of using hero.cta.url */
   scrollToId?: string;
 }
 
@@ -23,9 +24,9 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
   const isGradient = hero.backgroundStyle !== 'solid';
   const initial = hero.shopName.trim().charAt(0).toUpperCase() || '?';
   const headline = hero.headline ?? t('campaign.headline');
-  const ctaLabel = scrollToId ? t('campaign.playNow') : (hero.cta?.label ?? t('campaign.playNow'));
+  const ctaLabel = scrollToId ? t('campaign.ctaPlayWin') : (hero.cta?.label ?? t('campaign.ctaPlayWin'));
 
-  const handleCtaClick = (e: React.MouseEvent) => {
+  const handleCtaClick = (e: MouseEvent) => {
     if (scrollToId) {
       e.preventDefault();
       document.getElementById(scrollToId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -60,7 +61,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
     .filter(Boolean)
     .join(' ');
 
-  const innerStyle: React.CSSProperties = hasImage
+  const innerStyle: CSSProperties = hasImage
     ? {
         backgroundImage: `${IMAGE_OVERLAY[overlay]}, url(${resolvedBg})`,
         backgroundSize: 'cover',
@@ -69,6 +70,44 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
       }
     : {};
 
+  const ctaNode = isAnchor ? (
+    <AnimatedPrimaryButton
+      type="button"
+      block
+      className="shop-hero-cta shop-hero-cta-button"
+      onClick={handleCtaClick}
+      aria-label={ctaLabel}
+    >
+      {ctaLabel}
+    </AnimatedPrimaryButton>
+  ) : (
+    <AnimatedPrimaryButton href={ctaHref} external block className="shop-hero-cta">
+      {ctaLabel}
+    </AnimatedPrimaryButton>
+  );
+
+  const staggerItems = [
+    <div key="logo" className="shop-hero-logo-wrap">
+      {hero.logoUrl ? (
+        <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} className="shop-hero-logo" />
+      ) : (
+        <span className="shop-hero-logo-placeholder" aria-hidden>{initial}</span>
+      )}
+    </div>,
+    <p key="shop" className="shop-hero-shop-name">
+      {hero.shopName}
+    </p>,
+    <h1 key="title" className="shop-hero-title">
+      {headline}
+    </h1>,
+    <p key="tag" className="shop-hero-tagline">
+      {hero.tagline}
+    </p>,
+    <div key="cta" className="shop-hero-cta-wrap shop-landing-cta-invite">
+      {ctaNode}
+    </div>,
+  ];
+
   return (
     <header
       className="shop-hero"
@@ -76,7 +115,9 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
         {
           '--shop-primary': primary,
           '--shop-secondary': secondary,
-        } as React.CSSProperties
+          '--primary-color': primary,
+          '--accent-color': primary,
+        } as CSSProperties
       }
     >
       <div className={`shop-hero-bar ${hideBar ? 'shop-hero-bar-hidden' : ''}`}>
@@ -90,35 +131,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
         <span className="shop-hero-bar-name">{hero.shopName}</span>
       </div>
       <div className={innerClassName} style={innerStyle}>
-        <div className="shop-hero-logo-wrap">
-          {hero.logoUrl ? (
-            <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} className="shop-hero-logo" />
-          ) : (
-            <span className="shop-hero-logo-placeholder" aria-hidden>{initial}</span>
-          )}
-        </div>
-        <p className="shop-hero-shop-name">{hero.shopName}</p>
-        <h1 className="shop-hero-title">{headline}</h1>
-        <p className="shop-hero-tagline">{hero.tagline}</p>
-        {isAnchor ? (
-          <button
-            type="button"
-            className="shop-hero-cta shop-hero-cta-button"
-            onClick={handleCtaClick}
-            aria-label={ctaLabel}
-          >
-            {ctaLabel}
-          </button>
-        ) : (
-          <a
-            href={ctaHref}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="shop-hero-cta"
-          >
-            {ctaLabel}
-          </a>
-        )}
+        <StaggeredEntrance items={staggerItems} stagger={0.05} />
       </div>
     </header>
   );

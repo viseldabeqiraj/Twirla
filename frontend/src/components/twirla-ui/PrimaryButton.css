@@ -1,0 +1,85 @@
+.tw-primary-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--tw-space-sm, 0.5rem);
+  padding: 0.75rem 1.35rem;
+  border-radius: var(--btn-radius, 14px);
+  font-family: var(--app-font, inherit);
+  font-size: var(--tw-font-body, 0.95rem);
+  font-weight: var(--tw-weight-title, 800);
+  letter-spacing: var(--tw-letter-heading, -0.02em);
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--tw-btn-text, #fff);
+  background: var(--tw-btn-gradient,
+    linear-gradient(135deg,
+      color-mix(in srgb, var(--primary-color, #db2777) 92%, #000),
+      color-mix(in srgb, var(--accent-color, var(--primary-color, #db2777)) 88%, #fff))
+  );
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--tw-primary, var(--primary-color, #db2777)) 35%, transparent),
+    0 10px 28px color-mix(in srgb, var(--tw-primary, var(--primary-color, #db2777)) 38%, transparent);
+  transition: box-shadow 0.2s ease, filter 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tw-primary-btn:hover {
+  filter: brightness(1.04);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--primary-color, #db2777) 45%, transparent),
+    0 14px 36px color-mix(in srgb, var(--primary-color, #db2777) 48%, transparent);
+}
+
+.tw-primary-btn:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--primary-color, #db2777) 65%, white);
+  outline-offset: 2px;
+}
+
+.tw-primary-btn--secondary {
+  color: var(--primary-color, #db2777);
+  background: #fff;
+  border: 2px solid color-mix(in srgb, var(--primary-color, #db2777) 55%, transparent);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+.tw-primary-btn--secondary:hover {
+  background: color-mix(in srgb, var(--primary-color, #db2777) 6%, white);
+}
+
+.tw-primary-btn--ghost {
+  color: var(--primary-color, #db2777);
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid color-mix(in srgb, var(--primary-color, #db2777) 28%, transparent);
+}
+
+.tw-primary-btn--block {
+  width: 100%;
+}
+
+.tw-primary-btn--sm {
+  padding: 0.55rem 1rem;
+  font-size: var(--tw-font-small, 0.8125rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tw-primary-btn--pulse {
+    animation: tw-primary-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes tw-primary-pulse {
+    0%,
+    100% {
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--primary-color, #db2777) 35%, transparent),
+        0 10px 28px color-mix(in srgb, var(--primary-color, #db2777) 32%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--primary-color, #db2777) 55%, transparent),
+        0 12px 40px color-mix(in srgb, var(--primary-color, #db2777) 55%, transparent);
+    }
+  }
+}

@@ -1,0 +1,34 @@
+/**
+ * Twirla design tokens — global rhythm and typography.
+ * Brand colors continue to come from shop config (--primary-color, etc. on hosts).
+ */
+:root {
+  /* Spacing scale */
+  --tw-space-xs: 0.25rem;
+  --tw-space-sm: 0.5rem;
+  --tw-space-md: 1rem;
+  --tw-space-lg: 1.5rem;
+  --tw-space-xl: 2.25rem;
+
+  /* Typography */
+  --tw-font-title: clamp(1.45rem, 4.2vw, 2rem);
+  --tw-font-subtitle: clamp(0.95rem, 2.8vw, 1.05rem);
+  --tw-font-body: 0.95rem;
+  --tw-font-small: 0.8125rem;
+  --tw-weight-title: 800;
+  --tw-weight-subtitle: 600;
+  --tw-weight-body: 500;
+  --tw-weight-small: 600;
+  --tw-letter-heading: -0.02em;
+  --tw-letter-reward: 0.04em;
+
+  /* Neutrals (non-shop-specific chrome) */
+  --tw-color-bg: #f8fafc;
+  --tw-color-surface: #ffffff;
+  --tw-color-muted: #64748b;
+  --tw-color-border: rgba(148, 163, 184, 0.35);
+
+  /* Motion */
+  --tw-tap-duration: 0.18s;
+  --tw-reveal-duration: 0.42s;
+}

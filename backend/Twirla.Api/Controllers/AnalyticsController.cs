@@ -36,6 +36,7 @@ public class AnalyticsController : ControllerBase
         {
             Event = body.Event.Trim(),
             VisitorId = body.VisitorId?.Trim(),
+            SessionId = body.SessionId?.Trim(),
             Value = body.Value,
             Mode = body.Mode?.Trim(),
             CouponCode = body.CouponCode?.Trim(),
