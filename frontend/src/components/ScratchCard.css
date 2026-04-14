@@ -140,10 +140,10 @@
   50% { background-position: -120% 0; }
 }
 
-/* Subtle press scale when user starts scratching */
+/* Subtle press depth when user starts scratching (no scale to avoid exposing corners) */
 .scratch-card-inner--pressing {
-  transform: scale(0.988) perspective(600px) rotateX(0.5deg);
-  transition: transform 0.12s var(--tw-ease-out, ease-out);
+  filter: brightness(0.97);
+  transition: filter 0.12s var(--tw-ease-out, ease-out);
 }
 
 /* Glow pulse on reveal */

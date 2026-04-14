@@ -202,25 +202,8 @@ export default function ScratchCard({
     }
     ctx.restore();
 
-    // Instruction text: white, engraved look (subtle dark shadow above/left)
-    if (instructionText) {
-      ctx.save();
-      ctx.font = '600 1.1rem -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const tx = w / 2;
-      const ty = h / 2;
-      // Engraved: dark shadow offset up-left, then white fill
-      ctx.shadowColor = 'rgba(0,0,0,0.35)';
-      ctx.shadowBlur = 0;
-      ctx.shadowOffsetX = 1;
-      ctx.shadowOffsetY = 1;
-      ctx.fillStyle = '#ffffff';
-      ctx.fillText(instructionText, tx, ty);
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 0;
-      ctx.restore();
-    }
+    // Instruction text is rendered as an HTML overlay (scratch-card-instruction-pulse)
+    // so we skip drawing it on the canvas to avoid duplication.
 
     overlayDrawnRef.current = true;
   }, [isRevealed, instructionText]);
