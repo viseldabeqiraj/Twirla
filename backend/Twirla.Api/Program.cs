@@ -31,8 +31,13 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
-app.UseCors();
+// Static files must run before routing; otherwise unmatched paths can 404 before wwwroot is checked.
 app.UseStaticFiles();
+
+app.UseRouting();
+
+app.UseCors();
+
 app.MapControllers();
 
 app.Run();
