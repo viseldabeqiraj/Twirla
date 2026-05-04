@@ -2,16 +2,10 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './ScratchCard.css';
 
 const SAMPLE_STEP = 8;
-const BRUSH_BASE = 15;
-const BRUSH_TOUCH = 22;
-const SCRATCH_BRISTLES = 7;
+const BRUSH_BASE = 18;
+const BRUSH_TOUCH = 20;
 const SUSPENSE_MS = 260;
 const FADE_MS = 320;
-
-const seededNoise = (seed: number) => {
-  const x = Math.sin(seed * 12.9898) * 43758.5453;
-  return x - Math.floor(x);
-};
 
 export interface ScratchCardProps {
   /** Content shown under the scratch layer (and after reveal) */
@@ -49,8 +43,11 @@ export default function ScratchCard({
   const overlayDrawnRef = useRef(false);
   const hasScratchedRef = useRef(false);
   const hasFiredFirstTouchRef = useRef(false);
+  const coinRef = useRef<HTMLDivElement>(null);
   const [showInstructionPulse, setShowInstructionPulse] = useState(true);
   const [isPressing, setIsPressing] = useState(false);
+  const [isTouchPointer, setIsTouchPointer] = useState(false);
+  const [coinVisible, setCoinVisible] = useState(false);
 
   const drawOverlay = useCallback(() => {
     const canvas = canvasRef.current;
@@ -239,6 +236,13 @@ export default function ScratchCard({
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }, []);
 
+  const updateCoinPointer = useCallback((pos: { x: number; y: number }) => {
+    const coin = coinRef.current;
+    if (!coin) return;
+    coin.style.left = `${pos.x}px`;
+    coin.style.top = `${pos.y}px`;
+  }, []);
+
   const getRevealedPercent = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return 0;
@@ -263,28 +267,13 @@ export default function ScratchCard({
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const scale = Math.max(scaleX, scaleY);
-      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * scale;
+      const brush = isTouch ? BRUSH_TOUCH : BRUSH_BASE;
 
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.globalAlpha = 0.55;
-      for (let i = 0; i < SCRATCH_BRISTLES; i++) {
-        const angle = seededNoise(x + y + i * 17) * Math.PI * 2;
-        const distance = seededNoise(x * 3 + y + i * 23) * brush * 0.55;
-        const radius = brush * (0.18 + seededNoise(x + y * 5 + i * 31) * 0.16);
-        ctx.beginPath();
-        ctx.arc(
-          x * scaleX + Math.cos(angle) * distance,
-          y * scaleY + Math.sin(angle) * distance,
-          radius,
-          0,
-          Math.PI * 2
-        );
-        ctx.fill();
-      }
+      ctx.globalAlpha = 0.85;
+      ctx.beginPath();
+      ctx.arc(x, y, brush, 0, Math.PI * 2);
+      ctx.fill();
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
@@ -302,39 +291,17 @@ export default function ScratchCard({
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const scale = Math.max(scaleX, scaleY);
-      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * scale;
-      const dx = to.x - from.x;
-      const dy = to.y - from.y;
-      const length = Math.hypot(dx, dy) || 1;
-      const normalX = -dy / length;
-      const normalY = dx / length;
-      const seed = from.x * 13 + from.y * 17 + to.x * 19 + to.y * 23;
+      const brush = isTouch ? BRUSH_TOUCH : BRUSH_BASE;
 
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.globalAlpha = 0.68;
+      ctx.globalAlpha = 0.85;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
-      for (let i = 0; i < SCRATCH_BRISTLES; i++) {
-        const offset = (seededNoise(seed + i * 29) - 0.5) * brush * 1.25;
-        const wobble = (seededNoise(seed + i * 37) - 0.5) * brush * 0.2;
-        const width = brush * (0.16 + seededNoise(seed + i * 41) * 0.18);
-
-        ctx.beginPath();
-        ctx.moveTo(
-          from.x * scaleX + normalX * offset + wobble,
-          from.y * scaleY + normalY * offset - wobble
-        );
-        ctx.lineTo(
-          to.x * scaleX + normalX * offset - wobble,
-          to.y * scaleY + normalY * offset + wobble
-        );
-        ctx.lineWidth = width;
-        ctx.stroke();
-      }
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.lineWidth = brush * 2;
+      ctx.stroke();
       ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
@@ -357,31 +324,52 @@ export default function ScratchCard({
       if (pos) {
         isScratchingRef.current = true;
         lastRef.current = pos;
+        setIsTouchPointer('touches' in e);
+        setCoinVisible(true);
+        updateCoinPointer(pos);
         scratchAt(pos.x, pos.y, 'touches' in e);
       }
     },
-    [getScratchPosition, scratchAt, onFirstTouch]
+    [getScratchPosition, scratchAt, onFirstTouch, updateCoinPointer]
   );
 
   const handleMove = useCallback(
     (e: React.TouchEvent | React.MouseEvent) => {
-      if (!isScratchingRef.current) return;
-      e.preventDefault();
       const pos = getScratchPosition(e);
-      if (pos && lastRef.current) {
+      if (!pos) return;
+
+      if (isScratchingRef.current && lastRef.current) {
+        e.preventDefault();
+        setIsTouchPointer('touches' in e);
+        updateCoinPointer(pos);
         drawLine(lastRef.current, pos, 'touches' in e);
         lastRef.current = pos;
+      } else if (!('touches' in e)) {
+        setCoinVisible(true);
+        updateCoinPointer(pos);
       }
     },
-    [getScratchPosition, drawLine]
+    [getScratchPosition, drawLine, updateCoinPointer]
   );
 
   const handleEnd = useCallback(() => {
     isScratchingRef.current = false;
     lastRef.current = null;
     setIsPressing(false);
+    setCoinVisible(false);
     document.body.style.overflow = '';
   }, []);
+
+  const handleMouseEnter = useCallback(
+    (e: React.MouseEvent) => {
+      const pos = getScratchPosition(e);
+      if (pos) {
+        updateCoinPointer(pos);
+        setCoinVisible(true);
+      }
+    },
+    [getScratchPosition, updateCoinPointer]
+  );
 
   // Prevent page scroll when touching the scratch canvas (passive: false so preventDefault works)
   const canvasWrapRef = useRef<HTMLDivElement>(null);
@@ -455,12 +443,20 @@ export default function ScratchCard({
                 onMouseMove={handleMove}
                 onMouseUp={handleEnd}
                 onMouseLeave={handleEnd}
+                onMouseEnter={handleMouseEnter}
                 onTouchStart={handleStart}
                 onTouchMove={handleMove}
                 onTouchEnd={handleEnd}
                 style={{ touchAction: 'none' }}
               />
               <div className="scratch-card-shine" aria-hidden="true" />
+              <div
+                ref={coinRef}
+                className={`scratch-card-coin-pointer ${isTouchPointer ? 'scratch-card-coin-pointer--touch' : ''} ${
+                  coinVisible && !fadeOut ? 'scratch-card-coin-pointer--visible' : ''
+                } ${isPressing ? 'scratch-card-coin-pointer--pressing' : ''}`}
+                aria-hidden="true"
+              />
             </div>
           )}
         </div>
