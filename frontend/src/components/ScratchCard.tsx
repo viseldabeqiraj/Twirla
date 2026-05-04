@@ -2,10 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './ScratchCard.css';
 
 const SAMPLE_STEP = 8;
-const BRUSH_BASE = 38;
-const BRUSH_TOUCH = 56;
+const BRUSH_BASE = 15;
+const BRUSH_TOUCH = 22;
+const SCRATCH_BRISTLES = 7;
 const SUSPENSE_MS = 260;
 const FADE_MS = 320;
+
+const seededNoise = (seed: number) => {
+  const x = Math.sin(seed * 12.9898) * 43758.5453;
+  return x - Math.floor(x);
+};
 
 export interface ScratchCardProps {
   /** Content shown under the scratch layer (and after reveal) */
@@ -260,12 +266,26 @@ export default function ScratchCard({
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
-      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * Math.max(scaleX, scaleY);
+      const scale = Math.max(scaleX, scaleY);
+      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * scale;
 
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.arc(x * scaleX, y * scaleY, brush, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.globalAlpha = 0.55;
+      for (let i = 0; i < SCRATCH_BRISTLES; i++) {
+        const angle = seededNoise(x + y + i * 17) * Math.PI * 2;
+        const distance = seededNoise(x * 3 + y + i * 23) * brush * 0.55;
+        const radius = brush * (0.18 + seededNoise(x + y * 5 + i * 31) * 0.16);
+        ctx.beginPath();
+        ctx.arc(
+          x * scaleX + Math.cos(angle) * distance,
+          y * scaleY + Math.sin(angle) * distance,
+          radius,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
       const pct = getRevealedPercent();
@@ -285,15 +305,37 @@ export default function ScratchCard({
       const rect = canvas.getBoundingClientRect();
       const scaleX = canvas.width / rect.width;
       const scaleY = canvas.height / rect.height;
-      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * Math.max(scaleX, scaleY) * 0.55;
+      const scale = Math.max(scaleX, scaleY);
+      const brush = (isTouch ? BRUSH_TOUCH : BRUSH_BASE) * scale;
+      const dx = to.x - from.x;
+      const dy = to.y - from.y;
+      const length = Math.hypot(dx, dy) || 1;
+      const normalX = -dy / length;
+      const normalY = dx / length;
+      const seed = from.x * 13 + from.y * 17 + to.x * 19 + to.y * 23;
 
       ctx.globalCompositeOperation = 'destination-out';
-      ctx.beginPath();
-      ctx.moveTo(from.x * scaleX, from.y * scaleY);
-      ctx.lineTo(to.x * scaleX, to.y * scaleY);
-      ctx.lineWidth = brush * 2;
+      ctx.globalAlpha = 0.68;
       ctx.lineCap = 'round';
-      ctx.stroke();
+      ctx.lineJoin = 'round';
+      for (let i = 0; i < SCRATCH_BRISTLES; i++) {
+        const offset = (seededNoise(seed + i * 29) - 0.5) * brush * 1.25;
+        const wobble = (seededNoise(seed + i * 37) - 0.5) * brush * 0.2;
+        const width = brush * (0.16 + seededNoise(seed + i * 41) * 0.18);
+
+        ctx.beginPath();
+        ctx.moveTo(
+          from.x * scaleX + normalX * offset + wobble,
+          from.y * scaleY + normalY * offset - wobble
+        );
+        ctx.lineTo(
+          to.x * scaleX + normalX * offset - wobble,
+          to.y * scaleY + normalY * offset + wobble
+        );
+        ctx.lineWidth = width;
+        ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
       ctx.globalCompositeOperation = 'source-over';
 
       const pct = getRevealedPercent();

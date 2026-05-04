@@ -87,7 +87,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
             {scratch.revealSubtitle && <p className="scratch-reveal-detail">{scratch.revealSubtitle}</p>}
           </div>
         }
-        revealThreshold={50}
+        revealThreshold={78}
         onReveal={handleReveal}
         onFirstTouch={handleFirstTouch}
         aspectRatio="16/10"
