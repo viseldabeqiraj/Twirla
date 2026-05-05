@@ -78,13 +78,15 @@
 .home-scratch-section {
   position: relative;
   margin: 1.35rem 0 0;
-  padding: 0;
+  /* Insets the whole card from the column edges (foil is full-bleed inside the wrap; content padding alone does not shrink the visible card). */
+  padding: 0 clamp(1.25rem, 5vw, 2rem);
   width: 100%;
   max-width: 480px;
   flex: 0 0 auto;
   display: flex;
-  align-items: flex-start;
+  align-items: stretch;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .home-scratch-section .confetti-container {
@@ -93,6 +95,7 @@
 
 .home-scratch-section .scratch-card-wrap {
   max-width: 100%;
+  width: 100%;
 }
 
 .home-scratch-section .scratch-card-instruction {
@@ -105,6 +108,8 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   color: rgba(255, 252, 254, 0.93);
+  /* Symmetric inset so flex centering stays optical-center inside the foil */
+  padding: 0 clamp(0.75rem, 3vw, 1.25rem);
   text-shadow:
     0 0 20px rgba(15, 23, 42, 0.2),
     0 1px 2px rgba(15, 23, 42, 0.35),
@@ -123,6 +128,11 @@
     0 1px 0 rgba(255, 255, 255, 0.38) inset;
 }
 
+.home-scratch-section .scratch-card-content {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
 /* Reveal copy hierarchy */
 .home-scratch-reveal-panel {
   display: flex;
@@ -130,7 +140,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.35rem;
-  padding: 1.1rem 1.25rem;
+  padding: 1.25rem 1.75rem;
 }
 
 .home-scratch-reveal-title {

@@ -433,7 +433,7 @@ export default function ScratchCard({
             >
               {instructionText && showInstructionPulse && (
                 <span className="scratch-card-instruction-pulse" aria-hidden="true">
-                  {instructionText}
+                  <span className="scratch-card-instruction-pulse__label">{instructionText}</span>
                 </span>
               )}
               <canvas
