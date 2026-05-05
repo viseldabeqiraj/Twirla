@@ -49,6 +49,15 @@
   z-index: 0;
 }
 
+.scratch-card-celebration {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: inherit;
+}
+
 .scratch-card-content.scratch-card-reveal-anim {
   animation: scratch-reveal-scale 0.38s ease-out;
 }

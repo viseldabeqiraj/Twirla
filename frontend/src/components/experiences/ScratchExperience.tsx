@@ -91,12 +91,8 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
         onReveal={handleReveal}
         onFirstTouch={handleFirstTouch}
         aspectRatio="16/10"
+        celebration={showConfetti ? <Confetti count={40} /> : undefined}
       />
-      {showConfetti && (
-        <div className="scratch-experience-confetti">
-          <Confetti count={40} />
-        </div>
-      )}
       {showRewardPanel ? (
         <div className="scratch-reward-panel">
           <RewardModal

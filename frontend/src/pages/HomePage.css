@@ -89,10 +89,6 @@
   box-sizing: border-box;
 }
 
-.home-scratch-section .confetti-container {
-  z-index: 10;
-}
-
 .home-scratch-section .scratch-card-wrap {
   max-width: 100%;
   width: 100%;

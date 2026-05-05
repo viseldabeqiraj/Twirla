@@ -22,6 +22,8 @@ export interface ScratchCardProps {
   aspectRatio?: string;
   /** Called once when the user first touches/scratches (e.g. for analytics) */
   onFirstTouch?: () => void;
+  /** Rendered on top of revealed content, clipped to the card (e.g. confetti) */
+  celebration?: React.ReactNode;
 }
 
 export default function ScratchCard({
@@ -32,6 +34,7 @@ export default function ScratchCard({
   instruction,
   aspectRatio = '16/10',
   onFirstTouch,
+  celebration,
 }: ScratchCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -459,6 +462,11 @@ export default function ScratchCard({
               />
             </div>
           )}
+          {isRevealed && celebration != null ? (
+            <div className="scratch-card-celebration" aria-hidden="true">
+              {celebration}
+            </div>
+          ) : null}
         </div>
       </div>
     </div>

@@ -56,8 +56,8 @@ export default function HomePage() {
             revealThreshold={50}
             onReveal={() => setShowConfetti(true)}
             aspectRatio="16/10"
+            celebration={showConfetti ? <Confetti count={40} /> : undefined}
           />
-          {showConfetti && <Confetti count={40} />}
         </div>
       </main>
 
