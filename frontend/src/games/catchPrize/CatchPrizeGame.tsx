@@ -120,22 +120,31 @@ export default function CatchPrizeGame({
               </span>
             </div>
           )}
-          <GameStatsBar
-            items={[
-              { label: t('catchPrize.score'), value: String(state.score) },
-              {
-                label: t('catchPrize.timer'),
-                value: `${Math.ceil(state.timeLeft)}s`,
-                urgent: state.timeLeft <= 5,
-              },
-            ]}
-          />
-          {state.multiplier > 1 && (
-            <p className="catch-prize-multiplier">{t('catchPrize.multiplierActive')}</p>
-          )}
-          {state.comboCount > 0 && (
-            <p className="catch-prize-combo">Combo ×{state.comboCount}</p>
-          )}
+          <div className="catch-prize-active-stack">
+            <GameStatsBar
+              items={[
+                { label: t('catchPrize.score'), value: String(state.score) },
+                {
+                  label: t('catchPrize.timer'),
+                  value: `${Math.ceil(state.timeLeft)}s`,
+                  urgent: state.timeLeft <= 5,
+                },
+              ]}
+            />
+            <div className="catch-prize-status-slot" aria-live="polite">
+              <p
+                aria-hidden={state.multiplier <= 1}
+                className={`catch-prize-multiplier ${state.multiplier > 1 ? '' : 'catch-prize-status--idle'}`}
+              >
+                {t('catchPrize.multiplierActive')}
+              </p>
+              <p
+                aria-hidden={state.comboCount <= 0}
+                className={`catch-prize-combo ${state.comboCount > 0 ? '' : 'catch-prize-status--idle'}`}
+              >
+                {state.comboCount > 0 ? `Combo ×${state.comboCount}` : '\u00a0'}
+              </p>
+            </div>
           <div
             ref={playAreaRef}
             className="catch-prize-play-area"
@@ -171,6 +180,7 @@ export default function CatchPrizeGame({
                 {f.text}
               </span>
             ))}
+          </div>
           </div>
         </>
       )}

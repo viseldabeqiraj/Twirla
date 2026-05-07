@@ -76,6 +76,8 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
   const lastScoreIntRef = useRef(0);
   /** Cumulative score at the moment warmup ends — speed ramp only counts points after this */
   const postWarmupScoreBaselineRef = useRef<number | null>(null);
+  /** Avoid setState every RAF — only sync React when displayed integer changes */
+  const lastDisplayedScoreRef = useRef(0);
 
   const startGame = useCallback(() => {
     runningRef.current = true;
@@ -95,6 +97,7 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
     scorePopFramesRef.current = 0;
     lastScoreIntRef.current = 0;
     postWarmupScoreBaselineRef.current = null;
+    lastDisplayedScoreRef.current = 0;
     setState((s) => ({
       ...s,
       uiState: 'playing',
@@ -234,10 +237,14 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
       obstaclesRef.current = [...obstaclesRef.current, newObs];
     }
 
-    setState((s) => {
-      if (s.uiState !== 'playing') return s;
-      return { ...s, score: Math.floor(score) };
-    });
+    const displayScore = Math.floor(score);
+    if (displayScore !== lastDisplayedScoreRef.current) {
+      lastDisplayedScoreRef.current = displayScore;
+      setState((s) => {
+        if (s.uiState !== 'playing') return s;
+        return { ...s, score: displayScore };
+      });
+    }
 
     onFrameRef.current?.({
       characterY: charY,

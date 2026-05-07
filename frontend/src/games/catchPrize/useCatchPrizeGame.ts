@@ -44,7 +44,8 @@ const initialState: CatchPrizeGameState = {
   endOutcome: null,
 };
 
-const TICK_MS = 50; // ~20 fps for game logic
+/** ~14 fps — fewer React updates on phones (was 50ms). Physics still feels smooth at this step. */
+const TICK_MS = 72;
 
 export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
   const [state, setState] = useState<CatchPrizeGameState>(initialState);

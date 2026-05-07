@@ -14,6 +14,7 @@ import AmbientParticles from './AmbientParticles';
 import AnimatedPrimaryButton from './twirla-ui/AnimatedPrimaryButton';
 import { HideRewardModalShopCtaContext } from './ExperienceRewardCtaContext';
 import { ShopThemeProvider, useComputedShopTheme } from '../theme/ShopThemeProvider';
+import { runnerThemeFromBranding } from '../utils/runnerThemeFromBranding';
 import './ExperienceHost.css';
 
 interface ExperienceHostProps {
@@ -96,12 +97,11 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
             experienceMode="Runner"
             config={{
               outcomes: config.runnerGame?.outcomes,
-              theme: {
-                accent: branding.primaryColor,
-                highlight: branding.accentColor ?? branding.secondaryColor,
-                ground: branding.secondaryColor,
-                obstacleColor: branding.primaryColor,
-              },
+              theme: runnerThemeFromBranding({
+                primaryColor: branding.primaryColor,
+                secondaryColor: branding.secondaryColor,
+                accentColor: branding.accentColor,
+              }),
               ctaLabel: text.ctaText,
               ctaUrl: cta.url,
             }}

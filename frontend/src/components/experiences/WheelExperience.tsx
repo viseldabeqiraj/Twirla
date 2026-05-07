@@ -24,10 +24,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   const [wheelRotation, setWheelRotation] = useState(0);
   const [showBlockedTooltip, setShowBlockedTooltip] = useState(false);
   const [buttonShake, setButtonShake] = useState(false);
-  const [skillValue, setSkillValue] = useState(0);
-  const [skillDirection, setSkillDirection] = useState(1);
-  const [skillLocked, setSkillLocked] = useState(false);
-  const [skillLabel, setSkillLabel] = useState('Warm-up');
   const hasTrackedFinish = useRef(false);
   const [finishCode, setFinishCode] = useState<string | null>(null);
   const rewardTrackedRef = useRef(false);
@@ -56,25 +52,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   // TEMP (testing): daily cooldown disabled.
   // const playStatus = canUserPlay(shopId, playCooldownHours);
   const playStatus = { canPlay: true, hoursRemaining: null as number | null };
-
-  React.useEffect(() => {
-    if (skillLocked) return;
-    const timer = setInterval(() => {
-      setSkillValue((prev) => {
-        let next = prev + 6 * skillDirection;
-        if (next >= 100) {
-          setSkillDirection(-1);
-          next = 100;
-        }
-        if (next <= 0) {
-          setSkillDirection(1);
-          next = 0;
-        }
-        return next;
-      });
-    }, 80);
-    return () => clearInterval(timer);
-  }, [skillDirection, skillLocked]);
 
   if (!wheel) return null;
 
@@ -125,33 +102,18 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     return !isLosing;
   };
 
-  const lockSkill = () => {
-    if (skillLocked) return;
-    setSkillLocked(true);
-    if (skillValue >= 45 && skillValue <= 55) setSkillLabel('Perfect timing ✨');
-    else if (skillValue >= 35 && skillValue <= 65) setSkillLabel('Nice timing 👍');
-    else setSkillLabel('Wild spin 😅');
-  };
-
   const resetRound = () => {
     setShowResult(false);
     setSelectedPrize(null);
     setSelectedPrizeIndex(null);
     setWheelRotation(0);
-    setSkillLocked(false);
-    setSkillLabel('Warm-up');
     rewardTrackedRef.current = false;
     setFinishCode(null);
   };
 
   const handleSpin = () => {
     if (isSpinning) return;
-    if (!skillLocked) {
-      setShowBlockedTooltip(true);
-      setTimeout(() => setShowBlockedTooltip(false), 1800);
-      return;
-    }
-    
+
     // Check if user can play (cooldown check)
     if (!playStatus.canPlay) {
       setButtonShake(true);
@@ -348,11 +310,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
           <span key={idx} className="wheel-prize-chip">{prize.label}</span>
         ))}
       </div>
-      <div className="skill-meter-wrap">
-        <div className="skill-meter-label">Skill shot: {skillLabel}</div>
-        <div className="skill-meter"><span style={{ left: `${skillValue}%` }} /></div>
-        <button className="lock-skill-button" onClick={lockSkill} disabled={skillLocked || isSpinning}>{skillLocked ? 'Locked' : 'Lock timing'}</button>
-      </div>
       <div className="spin-button-container">
         <button 
           className={`spin-button ${buttonShake ? 'shake' : ''}`}
@@ -362,9 +319,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
           {isSpinning ? t('wheel.spinning') : t('wheel.spinButton')}
         </button>
         {showBlockedTooltip && (
-          <div className="blocked-tooltip">
-            {skillLocked ? t('wheel.alreadyTried') : 'Lock timing first to start the spin 🎯'}
-          </div>
+          <div className="blocked-tooltip">{t('wheel.thanksParticipating')}</div>
         )}
       </div>
     </div>

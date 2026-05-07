@@ -210,6 +210,29 @@
   .experience-content { padding: 0.5rem 0; }
 }
 
+/* Phones / narrow viewports: blur, backdrop-filter, and continuous filter animations are GPU killers */
+@media (max-width: 768px) {
+  .experience-host .orb {
+    filter: none !important;
+    opacity: 0.16;
+  }
+  .surface-glass .experience-container {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+  .experience-host.ambient-pulse .orb-a,
+  .experience-host.ambient-pulse .orb-b {
+    animation: none;
+  }
+  .experience-host.ambient-shimmer::before {
+    animation-duration: 28s;
+    opacity: 0.28;
+  }
+  .cta-button.pulse {
+    animation: none;
+  }
+}
+
 /* Optional per-shop background motion (ThemeConfig.ambientMotion) */
 .experience-host.ambient-drift .orb-a {
   animation: mmOrbDriftA 22s ease-in-out infinite alternate;

@@ -117,11 +117,12 @@ export default function RunnerGame(props: RunnerGameProps) {
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const narrow = typeof window !== 'undefined' && window.innerWidth <= 768;
+      const dpr = Math.min(window.devicePixelRatio || 1, narrow ? 1.33 : 2);
       if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
-        ctx.scale(dpr, dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       }
       drawRunnerFrame(ctx, frame, theme);
     },
@@ -150,7 +151,8 @@ export default function RunnerGame(props: RunnerGameProps) {
     if (!canvas) return;
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      const dpr = window.devicePixelRatio || 1;
+      const narrow = typeof window !== 'undefined' && window.innerWidth <= 768;
+      const dpr = Math.min(window.devicePixelRatio || 1, narrow ? 1.33 : 2);
       canvas.width = rect.width * dpr;
       canvas.height = rect.height * dpr;
       canvas.style.width = `${rect.width}px`;

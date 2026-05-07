@@ -539,13 +539,27 @@
 }
 .shop-featured-game-cta {
   display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--shop-primary, #db2777);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: color-mix(in srgb, var(--shop-primary, #db2777) 78%, #334155);
   margin-top: 0;
   line-height: 1.35;
   text-align: center;
   transform-origin: center;
+}
+
+.shop-landing--dark .shop-featured-game-cta {
+  /* Anchor on heading color so dark accents never drag contrast down */
+  color: color-mix(
+    in srgb,
+    var(--tw-primary, var(--shop-primary)) 20%,
+    var(--tw-heading-color, #f1f5f9)
+  );
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.45);
+}
+
+.shop-landing--dark .shop-featured-game-intro {
+  color: var(--tw-muted-color, #94a3b8);
 }
 
 /* Subtle invite bounce — hero primary CTA + featured card line */

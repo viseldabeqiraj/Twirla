@@ -22,8 +22,17 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  /* Neutral shell — card provides color; avoids outer lilac wash around the white box */
-  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 55%, #eef2f6 100%);
+  background: var(
+    --runner-bg,
+    linear-gradient(180deg, #f8fafc 0%, #f1f5f9 55%, #eef2f6 100%)
+  );
+}
+
+/* Inside shop experience host the outer shell is redundant */
+.experience-content .runner-game {
+  min-height: 0;
+  padding: 0;
+  background: transparent;
 }
 
 .runner-game-card {
@@ -32,12 +41,17 @@
   border-radius: 24px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(251, 207, 232, 0.5);
+  border: 1px solid color-mix(in srgb, var(--primary-color, #db2777) 22%, rgba(251, 207, 232, 0.65));
   box-shadow:
-    0 25px 60px rgba(219, 39, 119, 0.12),
+    0 25px 60px color-mix(in srgb, var(--primary-color, #db2777) 14%, transparent),
     0 8px 24px rgba(0, 0, 0, 0.06);
   padding: 1.25rem;
   position: relative;
+}
+
+.surface-neon .runner-game-card:not(:has(.runner-gameover)) {
+  background: var(--tw-card-bg, rgba(15, 23, 42, 0.92));
+  border-color: var(--tw-border-color, rgba(148, 163, 184, 0.35));
 }
 
 /* Game over: one framed surface — reward card only (see .runner-gameover .tw-reward-modal__card) */
@@ -108,7 +122,11 @@
   height: 72px;
   margin-bottom: 0.75rem;
   border-radius: 12px;
-  background: linear-gradient(180deg, #fef7fb 0%, #fce7f3 100%);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--tw-surface-tint, #fef7fb) 88%, #ffffff) 0%,
+    color-mix(in srgb, var(--runner-highlight, #fce7f3) 55%, #ffffff) 100%
+  );
   overflow: hidden;
 }
 
@@ -199,6 +217,18 @@
   margin: 0 0 1.25rem;
 }
 
+.surface-neon .runner-title {
+  color: var(--tw-heading-color, #f8fafc);
+}
+
+.surface-neon .runner-instruction {
+  color: var(--tw-body-color, #cbd5e1);
+}
+
+.surface-neon .runner-reward-hint {
+  color: var(--tw-muted-color, #94a3b8);
+}
+
 .runner-btn {
   display: inline-flex;
   align-items: center;
@@ -242,8 +272,8 @@
   padding: 0.5rem 1rem;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 999px;
-  box-shadow: 0 4px 20px rgba(219, 39, 119, 0.18);
-  border: 1px solid rgba(219, 39, 119, 0.2);
+  box-shadow: 0 4px 20px color-mix(in srgb, var(--primary-color, #db2777) 16%, transparent);
+  border: 1px solid color-mix(in srgb, var(--runner-accent, var(--primary-color, #db2777)) 22%, transparent);
   position: relative;
 }
 
@@ -251,6 +281,16 @@
   font-size: 0.85rem;
   color: #64748b;
   font-weight: 600;
+}
+
+.surface-neon .runner-score-bubble {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: color-mix(in srgb, var(--accent-color, #f472b6) 38%, transparent);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.surface-neon .runner-score-bubble-label {
+  color: var(--tw-muted-color, #94a3b8);
 }
 
 .runner-score-bubble-value {
@@ -301,6 +341,10 @@
   margin: 0 0 0.2rem;
 }
 
+.surface-neon .runner-threshold-progress {
+  color: color-mix(in srgb, var(--runner-accent, var(--accent-color)) 55%, var(--tw-heading-color, #f8fafc));
+}
+
 .runner-threshold-more {
   font-size: 0.78rem;
   color: #94a3b8;
@@ -313,8 +357,8 @@
   overflow: hidden;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--primary-color, #db2777) 8%, #fff) 0%,
-    color-mix(in srgb, var(--secondary-color, #f6c7cd) 20%, #fff) 100%
+    color-mix(in srgb, var(--runner-highlight, var(--accent-color, #fbcfe8)) 48%, #ffffff) 0%,
+    color-mix(in srgb, var(--runner-accent, var(--primary-color, #db2777)) 12%, #ffffff) 100%
   );
   min-height: clamp(200px, 38vh, 320px);
   height: clamp(200px, 38vh, 320px);
@@ -361,6 +405,10 @@
   font-weight: 800;
   color: #1e293b;
   margin: 0 0 0.75rem;
+}
+
+.surface-neon .runner-gameover-title {
+  color: var(--tw-heading-color, #f8fafc);
 }
 
 /* Single visible frame: reward card only */
@@ -430,6 +478,10 @@
   font-weight: 600;
 }
 
+.surface-neon .runner-gameover-run-score {
+  color: var(--tw-muted-color, #94a3b8);
+}
+
 .runner-gameover-actions {
   display: flex;
   flex-direction: column;
@@ -442,6 +494,10 @@
   font-size: 0.8rem;
   color: #94a3b8;
   font-weight: 600;
+}
+
+.surface-neon .runner-gameover-best {
+  color: var(--tw-muted-color, #94a3b8);
 }
 
 .runner-btn-cta {

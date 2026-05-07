@@ -56,6 +56,21 @@
   }
 }
 
+@media (max-width: 768px) {
+  .ambient-particle--orb,
+  .ambient-particle--dot {
+    filter: none;
+    box-shadow: none;
+  }
+  .ambient-particle--ring {
+    filter: none;
+  }
+  .ambient-particle {
+    animation-duration: 22s;
+    opacity: 0.14;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .ambient-particles {
     display: none;
