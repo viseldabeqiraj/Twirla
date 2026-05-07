@@ -1,5 +1,7 @@
+using System.Globalization;
 using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Twirla.Application.Interfaces;
 using Twirla.Domain.Entities;
 
@@ -11,27 +13,56 @@ public class ShopConfigService : IShopConfigService
     private readonly Dictionary<string, ShopConfig> _configsBySlug = new(StringComparer.OrdinalIgnoreCase);
     private readonly string _configFilePath;
 
-    public ShopConfigService(IWebHostEnvironment env)
+    public ShopConfigService(IWebHostEnvironment env, IConfiguration configuration)
     {
-        _configFilePath = Path.Combine(env.ContentRootPath, "Data", "shops.json");
+        var fileName = configuration["ShopConfig:ShopsFile"] ?? "shops-prod.json";
+        _configFilePath = Path.Combine(env.ContentRootPath, "Data", fileName);
         LoadConfigsFromFile();
-        InitializeDemoConfigs();
+
+        var loadDemos = configuration.GetValue("ShopConfig:LoadBuiltinDemos", false);
+        if (loadDemos)
+            InitializeDemoConfigs();
     }
 
     public ShopConfig? GetByShopId(string shopId) =>
-        _configsByShopId.TryGetValue(shopId, out var config) && IsShopEnabled(config) ? config : null;
+        TryGetByShopIdRaw(shopId) is { } c && IsShopPubliclyAccessible(c) ? c : null;
 
     public ShopConfig? GetBySlug(string slug) =>
-        _configsBySlug.TryGetValue(slug ?? "", out var config) && IsShopEnabled(config) ? config : null;
+        TryGetBySlugRaw(slug) is { } c && IsShopPubliclyAccessible(c) ? c : null;
 
-    private static bool IsShopEnabled(ShopConfig shop) => shop.Enabled != false;
+    private ShopConfig? TryGetByShopIdRaw(string shopId) =>
+        _configsByShopId.TryGetValue(shopId, out var config) ? config : null;
+
+    private ShopConfig? TryGetBySlugRaw(string? slug) =>
+        _configsBySlug.TryGetValue(slug ?? "", out var config) ? config : null;
+
+    /// <summary>Enabled and not past optional ExpiresAt (UTC).</summary>
+    private static bool IsShopPubliclyAccessible(ShopConfig shop)
+    {
+        if (shop.Enabled == false)
+            return false;
+        return !IsPastExpiration(shop);
+    }
+
+    private static bool IsPastExpiration(ShopConfig shop)
+    {
+        if (string.IsNullOrWhiteSpace(shop.ExpiresAt))
+            return false;
+        if (!DateTimeOffset.TryParse(
+                shop.ExpiresAt,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal,
+                out var expires))
+            return false;
+        return DateTimeOffset.UtcNow >= expires;
+    }
 
     public ShopConfig? ValidateAdminToken(string? slug, string? token)
     {
         if (string.IsNullOrWhiteSpace(slug) || string.IsNullOrWhiteSpace(token))
             return null;
-        var shop = GetBySlug(slug);
-        if (shop == null || string.IsNullOrWhiteSpace(shop.AdminToken))
+        var shop = TryGetBySlugRaw(slug);
+        if (shop == null || shop.Enabled == false || string.IsNullOrWhiteSpace(shop.AdminToken))
             return null;
         return shop.AdminToken == token ? shop : null;
     }
@@ -76,8 +107,10 @@ public class ShopConfigService : IShopConfigService
 
         foreach (var shop in demos)
         {
-            _configsByShopId[shop.ShopId] = shop;
-            _configsBySlug[shop.Slug ?? shop.ShopId] = shop;
+            if (!_configsByShopId.ContainsKey(shop.ShopId))
+                _configsByShopId[shop.ShopId] = shop;
+            if (!string.IsNullOrWhiteSpace(shop.Slug) && !_configsBySlug.ContainsKey(shop.Slug))
+                _configsBySlug[shop.Slug] = shop;
         }
     }
 

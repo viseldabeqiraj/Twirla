@@ -5,6 +5,7 @@ import type {
   HowToOrderConfig,
   LandingFontPairId,
   LandingLayoutTemplate,
+  ParticlesBackgroundConfig,
   SocialLinksConfig,
   TestimonialConfig,
   TrustBadgeConfig,
@@ -50,4 +51,12 @@ export interface ShopCampaignPageConfig {
   testimonials?: TestimonialConfig[];
   trustBadges?: TrustBadgeConfig[];
   faq?: FAQItemConfig[];
+  /** Optional linked-particles layer on `/shop/:slug` (see ParticlesBackgroundConfig). */
+  particlesBackground?: ParticlesBackgroundConfig;
+  /**
+   * Localized campaign overlays keyed by locale (`sq`, future locales).
+   * Deep-merged in `applyShopConfigLanguage` when `getShopLandingConfig(..., lang)` matches.
+   * Example: `"translations": { "sq": { "hero": { "headline": "..." }, "about": { "physicalAddress": "..." } } }`
+   */
+  translations?: Record<string, Partial<ShopCampaignPageConfig>>;
 }

@@ -1,6 +1,14 @@
 import { ShopConfig } from '../types/ShopConfig';
 import { getApiBase } from '../config/api';
-import { fetchShopsFromJson, findEnabledShopByUrlSlug, findShopByUrlSlug, isShopEnabled } from '../data/shopsJson';
+import {
+  fetchShopsFromJson,
+  findEnabledShopByUrlSlug,
+  findShopByUrlSlug,
+  isShopAccessible,
+  isShopEnabled,
+  isShopExpired,
+} from '../data/shopsJson';
+import { applyShopConfigLanguage } from '../data/shopConfigLocale';
 
 const getApiUrl = () => `${getApiBase()}/api`;
 
@@ -8,7 +16,7 @@ interface ShopsPayload {
   shops: ShopConfig[];
 }
 
-async function loadFromStaticJson(shopId: string, mode?: string): Promise<ShopConfig> {
+async function loadFromStaticJson(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
   const res = await fetch('/shops.json');
   if (!res.ok) {
     throw new Error('Static config file not found');
@@ -21,15 +29,16 @@ async function loadFromStaticJson(shopId: string, mode?: string): Promise<ShopCo
     throw new Error(`Shop configuration not found for: ${shopId}${mode ? ` (mode: ${mode})` : ''}`);
   }
 
-  if (!isShopEnabled(target)) {
+  if (!isShopAccessible(target)) {
+    if (isShopExpired(target)) throw new Error('SHOP_EXPIRED');
     throw new Error('SHOP_DISABLED');
   }
 
-  return target;
+  return applyShopConfigLanguage(target, language ?? 'en');
 }
 
 /** Find shop in static JSON by slug (explicit `slug` field or shopId prefix). */
-async function loadFromStaticJsonBySlug(slug: string, _mode?: string): Promise<ShopConfig> {
+async function loadFromStaticJsonBySlug(slug: string, _mode?: string, language?: string): Promise<ShopConfig> {
   const shops = await fetchShopsFromJson();
   const target = findEnabledShopByUrlSlug(slug, shops);
   if (!target) {
@@ -37,9 +46,12 @@ async function loadFromStaticJsonBySlug(slug: string, _mode?: string): Promise<S
     if (exists && !isShopEnabled(exists)) {
       throw new Error('SHOP_DISABLED');
     }
+    if (exists && isShopExpired(exists)) {
+      throw new Error('SHOP_EXPIRED');
+    }
     throw new Error(`Shop configuration not found for slug: ${slug}`);
   }
-  return target;
+  return applyShopConfigLanguage(target, language ?? 'en');
 }
 
 /** Safe parse JSON; returns null if response is HTML or invalid. */
@@ -74,15 +86,16 @@ export async function fetchShopConfigBySlug(
     }
     const data = await parseJsonOrNull(response);
     if (data) {
-      if (!isShopEnabled(data)) {
+      if (!isShopAccessible(data)) {
+        if (isShopExpired(data)) throw new Error('SHOP_EXPIRED');
         throw new Error('SHOP_DISABLED');
       }
-      return data;
+      return applyShopConfigLanguage(data, language ?? 'en');
     }
   } catch {
     // fall through to static
   }
-  return loadFromStaticJsonBySlug(slug, mode);
+  return loadFromStaticJsonBySlug(slug, mode, language);
 }
 
 export async function fetchShopConfig(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
@@ -98,17 +111,18 @@ export async function fetchShopConfig(shopId: string, mode?: string, language?: 
     }
     const data = await parseJsonOrNull(response);
     if (data) {
-      if (!isShopEnabled(data)) {
+      if (!isShopAccessible(data)) {
+        if (isShopExpired(data)) throw new Error('SHOP_EXPIRED');
         throw new Error('SHOP_DISABLED');
       }
-      return data;
+      return applyShopConfigLanguage(data, language ?? 'en');
     }
     // Response was 200 but not JSON (e.g. SPA index.html when API base not set)
     throw new Error('Not JSON');
   } catch (e) {
     // Try static JSON by exact shopId first
     try {
-      return await loadFromStaticJson(shopId, mode);
+      return await loadFromStaticJson(shopId, mode, language);
     } catch {
       // Try by slug (e.g. "pinkster-main" → slug "pinkster")
       const slugMatch = shopId.match(/^([a-z0-9-]+)-([a-z0-9]+)$/i);

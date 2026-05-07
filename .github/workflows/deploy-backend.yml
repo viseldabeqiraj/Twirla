@@ -1,3 +1,10 @@
+# Auth: GitHub secret AZURE_WEBAPP_PUBLISH_PROFILE = entire *.PublishSettings XML from Azure Portal
+# (Web app → Overview → Download publish profile). Do not paste Visual Studio .pubxml contents.
+#
+# Linux Web Apps: Configuration → Application settings → add WEBSITE_WEBDEPLOY_USE_SCM = true → Save,
+# then download the publish profile again. Without this, deploy fails with:
+# "Publish profile does not contain kudu URL" / "Failed to fetch credentials from Publish Profile".
+
 name: Deploy Backend to Azure
 
 on:

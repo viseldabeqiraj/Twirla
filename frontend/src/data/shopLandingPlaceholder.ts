@@ -1,7 +1,15 @@
 import type { ShopLandingConfig } from '../types/ShopLandingConfig';
 import type { ShopConfig } from '../types/ShopConfig';
 import { shopConfigToLandingConfig } from './shopConfigToLanding';
-import { fetchShopsFromJson, findEnabledShopByUrlSlug, findShopByUrlSlug, isShopEnabled } from './shopsJson';
+import { applyShopConfigLanguage } from './shopConfigLocale';
+import {
+  fetchShopsFromJson,
+  findEnabledShopByUrlSlug,
+  findShopByUrlSlug,
+  isShopAccessible,
+  isShopEnabled,
+  isShopExpired,
+} from './shopsJson';
 
 /** Saved from /setup/campaign/form — opens at /shop/campaign-preview */
 export const CAMPAIGN_PREVIEW_SLUG = 'campaign-preview';
@@ -34,25 +42,31 @@ export function mergeLandingDraft(
     valueProposition: draft.valueProposition ?? base.valueProposition,
     howToOrder: draft.howToOrder ?? base.howToOrder,
     about: draft.about ? { ...(base.about ?? {}), ...draft.about } : base.about,
+    particlesBackground: draft.particlesBackground ?? base.particlesBackground,
   };
 }
 
 /**
  * Resolve landing config from shops.json only (no hardcoded shop objects).
  * `campaign-preview` merges optional localStorage draft over the template shop from JSON.
+ * Pass the active UI `language` so `applyShopConfigLanguage` merges Albanian fallbacks and `campaign.translations`.
  */
-export async function getShopLandingConfig(shopSlug: string): Promise<ShopLandingConfig> {
+export async function getShopLandingConfig(
+  shopSlug: string,
+  language: 'en' | 'sq' = 'en'
+): Promise<ShopLandingConfig> {
   const shops = await fetchShopsFromJson();
 
   if (shopSlug === CAMPAIGN_PREVIEW_SLUG) {
     const template =
       findEnabledShopByUrlSlug(CAMPAIGN_PREVIEW_TEMPLATE_SLUG, shops) ??
       findEnabledShopByUrlSlug('demo', shops) ??
-      shops.find(isShopEnabled);
+      shops.find(isShopAccessible);
     if (!template) {
-      throw new Error('shops.json has no enabled shops');
+      throw new Error('shops.json has no accessible shops');
     }
-    const base = shopConfigToLandingConfig(template as ShopConfig, CAMPAIGN_PREVIEW_SLUG);
+    const localized = applyShopConfigLanguage(template as ShopConfig, language);
+    const base = shopConfigToLandingConfig(localized, CAMPAIGN_PREVIEW_SLUG);
     if (typeof localStorage !== 'undefined') {
       const raw = localStorage.getItem(CAMPAIGN_LANDING_STORAGE_KEY);
       if (raw) {
@@ -77,7 +91,11 @@ export async function getShopLandingConfig(shopSlug: string): Promise<ShopLandin
     if (exists && !isShopEnabled(exists)) {
       throw new Error('SHOP_DISABLED');
     }
+    if (exists && isShopExpired(exists)) {
+      throw new Error('SHOP_EXPIRED');
+    }
     throw new Error(`Unknown shop slug: ${shopSlug}`);
   }
-  return shopConfigToLandingConfig(shop as ShopConfig, shopSlug);
+  const localized = applyShopConfigLanguage(shop as ShopConfig, language);
+  return shopConfigToLandingConfig(localized, shopSlug);
 }

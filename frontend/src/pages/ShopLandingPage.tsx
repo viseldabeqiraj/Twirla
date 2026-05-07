@@ -25,12 +25,13 @@ import { resolveAssetUrl } from '../config/api';
 import { useTranslation } from '../i18n/i18n';
 import AppLoader from '../components/twirla-ui/AppLoader';
 import AnimatedBackground from '../components/twirla-ui/AnimatedBackground';
+import ParticlesBackground from '../components/twirla-ui/ParticlesBackground';
 import { ShopThemeProvider, useComputedShopTheme } from '../theme/ShopThemeProvider';
 import './ShopLandingPage.css';
 
 export default function ShopLandingPage() {
   const { shopSlug } = useParams<{ shopSlug: string }>();
-  const { t } = useTranslation();
+  const { language, t } = useTranslation();
   const [config, setConfig] = useState<ShopLandingConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -40,7 +41,7 @@ export default function ShopLandingPage() {
       return;
     }
     let cancelled = false;
-    getShopLandingConfig(shopSlug)
+    getShopLandingConfig(shopSlug, language)
       .then((cfg) => {
         if (!cancelled) setConfig(cfg);
       })
@@ -49,14 +50,16 @@ export default function ShopLandingPage() {
           const msg =
             err?.message === 'SHOP_DISABLED'
               ? t('landing.shopDisabled')
-              : err?.message ?? t('landing.errorLoadFailed');
+              : err?.message === 'SHOP_EXPIRED'
+                ? t('landing.shopExpired')
+                : err?.message ?? t('landing.errorLoadFailed');
           setError(msg);
         }
       });
     return () => {
       cancelled = true;
     };
-  }, [shopSlug, t]);
+  }, [shopSlug, language, t]);
 
   const primary = config?.primaryColor ?? config?.hero.primaryColor ?? '#db2777';
   const secondary = config?.secondaryColor ?? config?.hero.secondaryColor ?? '#be185d';
@@ -148,7 +151,6 @@ export default function ShopLandingPage() {
         data-bg-mode={bgMode}
         style={cssVars as React.CSSProperties}
       >
-        <AnimatedBackground primaryColor={primary} secondaryColor={secondary} />
         <header className="shop-landing-app-header">
           <div className="shop-landing-app-header-inner">
             <div className="shop-landing-app-logo" style={{ background: tokens.logoBackground }}>
@@ -164,6 +166,19 @@ export default function ShopLandingPage() {
         </header>
 
         <main className="shop-landing-main">
+          <div className="shop-landing-main__decor" aria-hidden>
+            <AnimatedBackground primaryColor={primary} secondaryColor={secondary} />
+            {config.particlesBackground?.enabled ? (
+              <ParticlesBackground
+                shopSlug={config.shopSlug}
+                primaryColor={primary}
+                secondaryColor={secondary}
+                accentColor={accent}
+                backgroundMode={bgMode}
+                config={config.particlesBackground}
+              />
+            ) : null}
+          </div>
           <HeroSection hero={config.hero} hideBar scrollToId="featured-game" />
           {mainSections}
         </main>

@@ -50,16 +50,12 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     }
     
     if (value === undefined) {
-      // Avoid mixing English into Albanian UI; English still falls back from key to en file.
-      if (language === 'sq') {
-        value = key;
-      } else {
-        let fallbackValue: any = translations.en;
-        for (const k of keys) {
-          fallbackValue = fallbackValue?.[k];
-        }
-        value = fallbackValue || key;
+      // Prefer English copy over raw keys when Albanian is missing (full sq coverage is ideal).
+      let fallbackValue: any = translations.en;
+      for (const k of keys) {
+        fallbackValue = fallbackValue?.[k];
       }
+      value = fallbackValue ?? key;
     }
     
     // Replace parameters

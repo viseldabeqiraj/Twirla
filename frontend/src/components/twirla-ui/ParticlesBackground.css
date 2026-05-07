@@ -1,0 +1,31 @@
+/* Full-bleed particle field — sits above gradient orbs, below scrollable content (z-index 0). */
+.tw-particles-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.tw-particles-bg__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tw-particles-bg--light .tw-particles-bg__canvas {
+  opacity: 1;
+}
+
+.tw-particles-bg--dark .tw-particles-bg__canvas {
+  opacity: 0.62;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-particles-bg--light .tw-particles-bg__canvas {
+    opacity: 0.88;
+  }
+  .tw-particles-bg--dark .tw-particles-bg__canvas {
+    opacity: 0.48;
+  }
+}

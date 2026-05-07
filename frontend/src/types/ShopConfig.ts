@@ -2,6 +2,8 @@ export interface ShopConfig {
   shopId: string;
   /** When false, shop landing and game URLs return nothing (Twirla-side offboarding). Omitted defaults to true. */
   enabled?: boolean;
+  /** ISO 8601 UTC; after this instant public shop/game URLs are unavailable. Omitted = never expires. */
+  expiresAt?: string;
   /** Public URL slug for /shop/:slug and /:mode/:slug/:id */
   slug?: string;
   /** Display name from admin / JSON (optional; falls back to branding.brandName). */
@@ -80,6 +82,7 @@ export interface TextConfig {
   resultSubtitle?: string;
   /** When set, experience shows “play for up to X% off” style pre-game line (shop-specific cap). */
   maxDiscountPercent?: number;
+  translations?: Record<string, Partial<TextConfig>>;
 }
 
 export interface CtaConfig {
@@ -97,6 +100,7 @@ export interface PrizeConfig {
   iconUrl?: string;
   description?: string;
   isWinning?: boolean;
+  translations?: Record<string, Partial<Pick<PrizeConfig, 'label' | 'description'>>>;
 }
 
 /** Weighted random result when Catch the Prize ends (replaces score-based tiers). */
@@ -115,6 +119,7 @@ export interface TapHeartsConfig {
   revealSubtitle?: string;
   /** If set, one row is picked at random by weight when the round ends. If omitted, built-in defaults apply. */
   outcomes?: TapHeartsOutcome[];
+  translations?: Record<string, Partial<Pick<TapHeartsConfig, 'revealText' | 'revealSubtitle'>>>;
 }
 
 /** Weighted random result when Runner mode ends. */
@@ -134,12 +139,14 @@ export interface ScratchConfig {
   overlayText: string;
   revealText: string;
   revealSubtitle?: string;
+  translations?: Record<string, Partial<Pick<ScratchConfig, 'overlayText' | 'revealText' | 'revealSubtitle'>>>;
 }
 
 export interface CountdownConfig {
   endAt: string;
   endMessage: string;
   showCtaBeforeEnd: boolean;
+  translations?: Record<string, Partial<Pick<CountdownConfig, 'endMessage'>>>;
 }
 
 export interface MemoryMatchConfig {
@@ -154,4 +161,5 @@ export interface MemoryMatchConfig {
   timeLimitSeconds?: number;
   /** Game ends after this many wrong pairs; omit for unlimited */
   maxMistakes?: number;
+  translations?: Record<string, Partial<Pick<MemoryMatchConfig, 'revealText' | 'revealSubtitle'>>>;
 }

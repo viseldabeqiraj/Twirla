@@ -5,7 +5,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Clean Architecture: register application interfaces with infrastructure implementations
 builder.Services.AddSingleton<IShopConfigService>(sp =>
-    new ShopConfigService(sp.GetRequiredService<IWebHostEnvironment>()));
+    new ShopConfigService(
+        sp.GetRequiredService<IWebHostEnvironment>(),
+        sp.GetRequiredService<IConfiguration>()));
 builder.Services.AddSingleton<IAnalyticsService>(sp =>
     new AnalyticsService(sp.GetRequiredService<IWebHostEnvironment>()));
 builder.Services.AddSingleton<ICouponService>(sp =>
@@ -31,7 +33,6 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 var app = builder.Build();
 
-// Static files must run before routing; otherwise unmatched paths can 404 before wwwroot is checked.
 app.UseStaticFiles();
 
 app.UseRouting();

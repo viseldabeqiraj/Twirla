@@ -7,6 +7,8 @@ public class ShopConfig
     public string ShopId { get; set; } = string.Empty;
     /// <summary>When false, API does not serve this shop (landing/games). Omitted or null defaults to on.</summary>
     public bool? Enabled { get; set; }
+    /// <summary>ISO 8601 UTC instant; after this time the shop is treated as unavailable for public URLs (optional).</summary>
+    public string? ExpiresAt { get; set; }
     public string? Slug { get; set; }
     public string? Name { get; set; }
     public string? AdminToken { get; set; }
@@ -37,6 +39,9 @@ public class ShopConfig
         {
             ShopId = ShopId,
             Enabled = Enabled,
+            ExpiresAt = ExpiresAt,
+            Slug = Slug,
+            Name = Name,
             PlayCooldownHours = PlayCooldownHours,
             Branding = Branding,
             Text = Text.GetForLanguage(language),

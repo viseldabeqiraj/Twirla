@@ -73,7 +73,13 @@ export default function ExperiencePage() {
       })
       .catch((err) => {
         const raw = err instanceof Error ? err.message : t('experience.genericError');
-        setError(raw === 'SHOP_DISABLED' ? t('experience.shopDisabled') : raw);
+        setError(
+          raw === 'SHOP_DISABLED'
+            ? t('experience.shopDisabled')
+            : raw === 'SHOP_EXPIRED'
+              ? t('experience.shopExpired')
+              : raw
+        );
       })
       .finally(() => setLoading(false));
   }, [shopId, shopName, uniqueId, mode, language, t]);

@@ -16,6 +16,27 @@ export type LandingLayoutTemplate = 'product-focused' | 'story-driven' | 'game-f
 /** Curated headline/body font pairs (admin guardrail: pick from this list only). */
 export type LandingFontPairId = 'default' | 'editorial' | 'modern-tech';
 
+/**
+ * Optional full-page particle layer on shop landing (inspired by linked-particles backgrounds
+ * such as [React Bits Particles](https://reactbits.dev/backgrounds/particles)).
+ */
+export interface ParticlesBackgroundConfig {
+  /** When true, renders behind main content (still above soft gradient orbs). */
+  enabled?: boolean;
+  /** Approximate number of dots; clamped internally. */
+  count?: number;
+  /** Link neighbors within this distance (px); omit or 0 to hide lines. */
+  linkDistance?: number;
+  /** Dot radius in CSS pixels (typical 2.1–3.2; values below ~2.05 are bumped up). */
+  dotSize?: number;
+  /** Drift speed multiplier (typical 0.25–1). */
+  speed?: number;
+  /** Dot / line tint (hex); defaults to shop primary. */
+  color?: string;
+  /** Secondary tint mixed into some particles. */
+  accentColor?: string;
+}
+
 /** Slug used in URL: /shop/:shopSlug */
 export interface ShopLandingConfig {
   shopSlug: string;
@@ -59,6 +80,8 @@ export interface ShopLandingConfig {
   layoutTemplate?: LandingLayoutTemplate;
   /** Typography pair (loaded via index.html Google Fonts subset) */
   fontPairId?: LandingFontPairId;
+  /** Optional animated particle field on the campaign landing page */
+  particlesBackground?: ParticlesBackgroundConfig;
 }
 
 export interface TestimonialConfig {

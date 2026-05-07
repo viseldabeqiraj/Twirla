@@ -7,7 +7,8 @@ import {
   CAMPAIGN_PREVIEW_TEMPLATE_SLUG,
 } from '../data/shopLandingPlaceholder';
 import { shopConfigToLandingConfig } from '../data/shopConfigToLanding';
-import { fetchShopsFromJson, findEnabledShopByUrlSlug, isShopEnabled } from '../data/shopsJson';
+import { applyShopConfigLanguage } from '../data/shopConfigLocale';
+import { fetchShopsFromJson, findEnabledShopByUrlSlug, isShopAccessible } from '../data/shopsJson';
 import { useTranslation } from '../i18n/i18n';
 import type { LandingFontPairId, LandingLayoutTemplate, ShopLandingConfig } from '../types/ShopLandingConfig';
 import { PUBLIC_CAMPAIGN_GAMES } from '../types/ShopLandingConfig';
@@ -77,7 +78,7 @@ function rowsToFeaturedProducts(rows: ProductRow[]): FeaturedProductConfig[] {
 }
 
 export default function ShopCampaignSetupPage() {
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
   const navigate = useNavigate();
   const [sessionAuth, setSessionAuth] = useState<'pending' | 'ok'>('pending');
   const [ready, setReady] = useState(false);
@@ -174,7 +175,7 @@ export default function ShopCampaignSetupPage() {
         const template =
           findEnabledShopByUrlSlug(CAMPAIGN_PREVIEW_TEMPLATE_SLUG, shops) ??
           findEnabledShopByUrlSlug('demo', shops) ??
-          shops.find(isShopEnabled);
+          shops.find(isShopAccessible);
         if (!template) {
           setMessage({ type: 'err', text: t('campaignSetup.noShopsJson') });
           setReady(true);
@@ -182,7 +183,7 @@ export default function ShopCampaignSetupPage() {
         }
         setTemplateShop(template);
         const slug = template.slug ?? CAMPAIGN_PREVIEW_TEMPLATE_SLUG;
-        const baseLanding = shopConfigToLandingConfig(template, slug);
+        const baseLanding = shopConfigToLandingConfig(applyShopConfigLanguage(template, language), slug);
 
         if (typeof localStorage !== 'undefined') {
           const raw = localStorage.getItem(CAMPAIGN_LANDING_STORAGE_KEY);
@@ -209,7 +210,7 @@ export default function ShopCampaignSetupPage() {
     return () => {
       cancelled = true;
     };
-  }, [applyLanding, sessionAuth, t]);
+  }, [applyLanding, language, sessionAuth, t]);
 
   const toggleGame = (mode: ExperienceMode) => {
     setGames((prev) => ({ ...prev, [mode]: !prev[mode] }));
@@ -246,7 +247,7 @@ export default function ShopCampaignSetupPage() {
     const expUid = experienceUniqueId.trim() || 'main';
 
     const templateSlug = templateShop.slug ?? CAMPAIGN_PREVIEW_TEMPLATE_SLUG;
-    const base = shopConfigToLandingConfig(templateShop, templateSlug);
+    const base = shopConfigToLandingConfig(applyShopConfigLanguage(templateShop, language), templateSlug);
     const landing: ShopLandingConfig = {
       ...base,
       shopSlug: CAMPAIGN_PREVIEW_SLUG,
@@ -309,7 +310,7 @@ export default function ShopCampaignSetupPage() {
     setMessage({ type: 'ok', text: t('campaignSetup.cleared') });
     if (templateShop) {
       const slug = templateShop.slug ?? CAMPAIGN_PREVIEW_TEMPLATE_SLUG;
-      applyLanding(shopConfigToLandingConfig(templateShop, slug));
+      applyLanding(shopConfigToLandingConfig(applyShopConfigLanguage(templateShop, language), slug));
     }
   };
 

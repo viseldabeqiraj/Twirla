@@ -87,6 +87,7 @@ export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string):
     secondaryColor: branding.secondaryColor,
     backgroundMode: branding.backgroundMode ?? (branding.theme?.backgroundPattern === 'dark' ? 'dark' : 'light'),
     logoBackgroundColor: branding.logoBackgroundColor,
+    particlesBackground: campaign?.particlesBackground,
   };
 }
 

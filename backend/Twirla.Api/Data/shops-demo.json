@@ -1,0 +1,197 @@
+{
+  "shops": [
+    {
+      "shopId": "luna-lookbook-e2f6a9c4",
+      "slug": "luna-lookbook",
+      "name": "Luna Outfits",
+      "expiresAt": "2026-08-31T23:59:59Z",
+      "adminToken": "luna-lookbook-admin-7e3c",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#3D3935",
+        "secondaryColor": "#F9F4F0",
+        "accentColor": "#B6A18E",
+        "logoUrl": "/logos/luna-outfits.png",
+        "brandName": "Luna Outfits",
+        "backgroundMode": "light",
+        "theme": {
+          "backgroundPattern": "mesh",
+          "surfaceStyle": "glass",
+          "ambientMotion": "drift",
+          "borderRadius": 22,
+          "buttonRadius": 14
+        }
+      },
+      "text": {
+        "title": "Spin for a wardrobe perk",
+        "subtitle": "Lookbook capture — same perks as production campaigns.",
+        "ctaText": "Message us on Instagram",
+        "resultTitle": "Here's your perk!",
+        "resultSubtitle": "Screenshot and DM within 7 days."
+      },
+      "cta": { "url": "https://instagram.com/luna.outfits" },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          { "label": "12% off outerwear", "weight": 35, "description": "Full-price coats." },
+          { "label": "Accessory voucher", "weight": 35, "description": "£15 toward belts or scarves." },
+          { "label": "Another visit", "weight": 30, "isWinning": false, "description": "Cooldown applies." }
+        ]
+      },
+      "scratch": {
+        "overlayColor": "#64748b",
+        "overlayText": "Scratch for your perk",
+        "revealText": "18% off first order",
+        "revealSubtitle": "Code LUNA-SCRATCH"
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "editorial",
+        "accentColor": "#B6A18E",
+        "featuredGame": "Wheel",
+        "experiencesSlug": "luna-lookbook",
+        "hero": {
+          "headline": "Quiet tailoring. Honest fabrics.",
+          "tagline": "Lookbook lighting reference — studio rack styling.",
+          "ctaUrl": "https://instagram.com/luna.outfits",
+          "backgroundPattern": "mesh"
+        },
+        "social": { "instagram": "https://instagram.com/luna.outfits" },
+        "featuredProducts": [],
+        "trustBadges": [{ "label": "Studio pickup", "icon": "📍" }],
+        "faq": []
+      }
+    },
+    {
+      "shopId": "astra-editorial-h8k3p7q1",
+      "slug": "astra-editorial",
+      "name": "Astra Accessories",
+      "expiresAt": "2026-08-31T23:59:59Z",
+      "adminToken": "astra-editorial-admin-5d9a",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#0c0a09",
+        "secondaryColor": "#1c1917",
+        "accentColor": "#C48B8E",
+        "logoUrl": "/logos/astra-accessories.png",
+        "brandName": "Astra Accessories",
+        "backgroundMode": "dark",
+        "theme": {
+          "backgroundPattern": "aurora",
+          "surfaceStyle": "glass",
+          "ambientMotion": "shimmer",
+          "borderRadius": 18,
+          "buttonRadius": 12
+        }
+      },
+      "text": {
+        "title": "Scratch your courtesy",
+        "subtitle": "Editorial lighting preset — jewellery bench tone.",
+        "ctaText": "Book a viewing",
+        "resultTitle": "Noted.",
+        "resultSubtitle": "Your courtesy appears below."
+      },
+      "cta": { "url": "https://instagram.com/astra.accessories" },
+      "scratch": {
+        "overlayColor": "#44403c",
+        "overlayText": "Reveal",
+        "revealText": "Priority appointment window",
+        "revealSubtitle": "DM ASTRA-SCRATCH"
+      },
+      "wheel": {
+        "allowRepeatSpins": true,
+        "prizes": [
+          { "label": "Sizing consult", "weight": 40, "description": "Mayfair atelier." },
+          { "label": "Engraving credit", "weight": 35, "description": "£50 toward bespoke engraving." },
+          { "label": "Visit soon", "weight": 25, "isWinning": false, "description": "Concierge follow-up." }
+        ]
+      },
+      "campaign": {
+        "layoutTemplate": "game-first",
+        "fontPairId": "modern-tech",
+        "accentColor": "#C48B8E",
+        "featuredGame": "Scratch",
+        "experiencesSlug": "astra-editorial",
+        "particlesBackground": {
+          "enabled": true,
+          "count": 48,
+          "linkDistance": 148,
+          "dotSize": 2.72,
+          "speed": 0.36,
+          "color": "#C48B8E",
+          "accentColor": "#e8c4b8"
+        },
+        "hero": {
+          "headline": "Gold that reads quiet.",
+          "tagline": "Macro-ready hero — Mayfair bench.",
+          "ctaUrl": "https://instagram.com/astra.accessories",
+          "backgroundPattern": "grain"
+        },
+        "social": { "instagram": "https://instagram.com/astra.accessories" },
+        "featuredProducts": [],
+        "trustBadges": [{ "label": "Hallmarked UK", "icon": "✓" }],
+        "faq": []
+      }
+    },
+    {
+      "shopId": "urban-glow-editorial-j4m9r2t6",
+      "slug": "urban-glow-editorial",
+      "name": "Urban Glow",
+      "expiresAt": "2026-08-31T23:59:59Z",
+      "adminToken": "urban-glow-editorial-admin-3f8b",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#db2777",
+        "secondaryColor": "#fce7f3",
+        "accentColor": "#f472b6",
+        "logoUrl": "/logos/urban-glow.png",
+        "brandName": "Urban Glow",
+        "backgroundMode": "light",
+        "theme": {
+          "backgroundPattern": "gradient",
+          "surfaceStyle": "glass",
+          "ambientMotion": "pulse",
+          "borderRadius": 24,
+          "buttonRadius": 999
+        }
+      },
+      "text": {
+        "title": "Catch the glow drops",
+        "subtitle": "Clean texture capture — bottle gloss preset.",
+        "ctaText": "Shop the routine",
+        "resultTitle": "Glow unlocked!",
+        "resultSubtitle": "Redeem via DM."
+      },
+      "cta": { "url": "https://instagram.com/urban.glow" },
+      "tapHearts": {
+        "heartsToTap": 10,
+        "heartColor": "#db2777",
+        "revealText": "Deluxe sample unlocked",
+        "revealSubtitle": "DM URBAN-GLOW-HEARTS"
+      },
+      "scratch": {
+        "overlayColor": "#d4c4cb",
+        "overlayText": "Scratch your glow perk",
+        "revealText": "25% off cleanser",
+        "revealSubtitle": "UG-SCRATCH-25"
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "default",
+        "accentColor": "#ec4899",
+        "featuredGame": "TapHearts",
+        "experiencesSlug": "urban-glow-editorial",
+        "hero": {
+          "headline": "Makeup with lab discipline.",
+          "tagline": "Flatlay-ready gradients — LA studio palette.",
+          "ctaUrl": "https://instagram.com/urban.glow",
+          "backgroundPattern": "dots"
+        },
+        "social": { "instagram": "https://instagram.com/urban.glow" },
+        "featuredProducts": [],
+        "trustBadges": [{ "label": "EU compliant", "icon": "🇪🇺" }],
+        "faq": []
+      }
+    }
+  ]
+}

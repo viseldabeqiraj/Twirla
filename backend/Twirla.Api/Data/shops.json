@@ -352,7 +352,14 @@
       },
       "memory": {
         "pairCount": 6,
-        "pairLabels": ["⭐", "🎁", "💎", "🎯", "✨", "🏆"],
+        "pairLabels": [
+          "⭐",
+          "🎁",
+          "💎",
+          "🎯",
+          "✨",
+          "🏆"
+        ],
         "timeLimitSeconds": 180,
         "maxMistakes": 24,
         "revealText": "MEM-DEMO-15",
@@ -904,6 +911,527 @@
           {
             "question": "Do you resize rings bought elsewhere?",
             "answer": "Often yes — send photos and hallmarks by DM; we quote before you visit."
+          }
+        ]
+      }
+    },
+    {
+      "shopId": "luna-outfits-k7n9p2m4x8",
+      "slug": "luna-outfits",
+      "name": "Luna Outfits",
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "adminToken": "luna-outfits-admin-9c4e7f2a8b1d",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#3D3935",
+        "secondaryColor": "#F9F4F0",
+        "accentColor": "#B6A18E",
+        "logoUrl": "/logos/luna-outfits.png",
+        "brandName": "Luna Outfits",
+        "backgroundMode": "light",
+        "theme": {
+          "backgroundPattern": "mesh",
+          "surfaceStyle": "glass",
+          "ambientMotion": "drift",
+          "borderRadius": 22,
+          "buttonRadius": 14
+        }
+      },
+      "text": {
+        "title": "Spin for a wardrobe perk",
+        "subtitle": "Luna Outfits rewards curious shoppers — one spin per day.",
+        "ctaText": "Message us on Instagram",
+        "resultTitle": "Lovely — here's your perk!",
+        "resultSubtitle": "Screenshot this screen and DM us within 7 days."
+      },
+      "cta": {
+        "url": "https://instagram.com/luna.outfits"
+      },
+      "wheel": {
+        "allowRepeatSpins": false,
+        "prizes": [
+          {
+            "label": "12% off outerwear",
+            "weight": 28,
+            "description": "Coats & jackets — full-price only."
+          },
+          {
+            "label": "Free tailoring adjustment",
+            "weight": 22,
+            "description": "One hem or sleeve tweak with purchase."
+          },
+          {
+            "label": "£15 accessory voucher",
+            "weight": 25,
+            "description": "Scarves, belts, or hats."
+          },
+          {
+            "label": "No perk this time",
+            "weight": 25,
+            "isWinning": false,
+            "description": "Visit again after the cooldown."
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 9,
+        "heartColor": "#3D3935",
+        "revealText": "Luna hearts perk unlocked",
+        "revealSubtitle": "DM LUNA-HEARTS with your screenshot"
+      },
+      "scratch": {
+        "overlayColor": "#64748b",
+        "overlayText": "Scratch for your perk",
+        "revealText": "18% off first full-price order",
+        "revealSubtitle": "Code LUNA-SCRATCH — online & studio"
+      },
+      "countdown": {
+        "endAt": "2028-06-01T09:00:00Z",
+        "endMessage": "Archive sale is live — limited sizes.",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": [
+          "🧵",
+          "🧥",
+          "👜",
+          "👞",
+          "🪡",
+          "🧶"
+        ],
+        "timeLimitSeconds": 85,
+        "maxMistakes": 12,
+        "revealText": "LUNA-MEM-14",
+        "revealSubtitle": "14% off when you DM this code with your win screen."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "editorial",
+        "accentColor": "#B6A18E",
+        "featuredSectionTitle": "In the studio now",
+        "gamesSectionTitle": "Play on your phone",
+        "featuredGame": "Wheel",
+        "experiencesSlug": "luna-outfits",
+        "hero": {
+          "headline": "Quiet tailoring. Honest fabrics.",
+          "tagline": "Small-batch coats, knitwear, and trousers — Luna Outfits cuts for real wear.",
+          "ctaLabel": "See new drops",
+          "ctaUrl": "https://instagram.com/luna.outfits",
+          "backgroundPattern": "mesh"
+        },
+        "valueProposition": {
+          "headline": "We buy cloth by the roll, not by the trend calendar.",
+          "body": "Luna Outfits works with mills in Portugal and Italy; every piece is meant to last several winters."
+        },
+        "howToOrder": {
+          "heading": "How to buy",
+          "body": "1) DM us with the piece and size. 2) We confirm stock from the studio rack. 3) Pick up in Shoreditch or we ship tracked UK-wide.",
+          "primaryCtaLabel": "Instagram DM",
+          "primaryCtaUrl": "https://instagram.com/luna.outfits"
+        },
+        "about": {
+          "whatWeSell": "Wool coats, merino knits, tailored trousers, leather belts.",
+          "aboutUs": "Founded by a former Savile Row cutter — Luna Outfits is slow fashion without the lecture.",
+          "city": "London",
+          "country": "United Kingdom",
+          "physicalAddress": "Studio visits Thu–Sat by appointment",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1558171813-4c088753af8f?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/luna.outfits",
+          "website": "https://example.com/luna-outfits",
+          "email": "studio@lunaoutfits.example"
+        },
+        "featuredProducts": [
+          {
+            "id": "mw-1",
+            "title": "Double-face wool coat — charcoal",
+            "description": "Dropped shoulder, raglan sleeve. EU 34–44.",
+            "price": "£420",
+            "imageUrl": "https://images.unsplash.com/photo-1539533010727-4bd632adb528?w=600&q=80",
+            "ctaLabel": "Reserve",
+            "ctaUrl": "https://instagram.com/luna.outfits"
+          },
+          {
+            "id": "mw-2",
+            "title": "Merino rib crew — birch",
+            "description": "Mid-weight, fully fashioned.",
+            "price": "£118",
+            "imageUrl": "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80",
+            "ctaLabel": "Reserve",
+            "ctaUrl": "https://instagram.com/luna.outfits"
+          }
+        ],
+        "testimonials": [
+          {
+            "quote": "The coat fits like it was made for me — the wheel perk was the nudge I needed.",
+            "author": "James L.",
+            "role": "Customer"
+          }
+        ],
+        "trustBadges": [
+          {
+            "label": "Tracked UK shipping",
+            "icon": "📦"
+          },
+          {
+            "label": "Studio fittings",
+            "icon": "📐"
+          }
+        ],
+        "faq": [
+          {
+            "question": "How do I redeem a game code?",
+            "answer": "DM Instagram within 7 days with a screenshot of your winning screen."
+          }
+        ]
+      }
+    },
+    {
+      "shopId": "astra-accessories-r3t8v1w6y9",
+      "slug": "astra-accessories",
+      "name": "Astra Accessories",
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "adminToken": "astra-accessories-admin-6d2a9e5c7f84",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#0c0a09",
+        "secondaryColor": "#1c1917",
+        "accentColor": "#C48B8E",
+        "logoUrl": "/logos/astra-accessories.png",
+        "brandName": "Astra Accessories",
+        "backgroundMode": "dark",
+        "theme": {
+          "backgroundPattern": "aurora",
+          "surfaceStyle": "glass",
+          "ambientMotion": "shimmer",
+          "borderRadius": 18,
+          "buttonRadius": 12
+        }
+      },
+      "text": {
+        "title": "Scratch to reveal your gesture",
+        "subtitle": "Fine jewellery & accessories — one courtesy play per guest.",
+        "ctaText": "Book a private viewing",
+        "resultTitle": "A pleasure.",
+        "resultSubtitle": "Your courtesy is noted below."
+      },
+      "cta": {
+        "url": "https://instagram.com/astra.accessories"
+      },
+      "wheel": {
+        "allowRepeatSpins": false,
+        "prizes": [
+          {
+            "label": "Complimentary sizing consult",
+            "weight": 30,
+            "description": "30 minutes, Mayfair atelier."
+          },
+          {
+            "label": "£50 toward bespoke engraving",
+            "weight": 25,
+            "description": "Applies to orders over £600."
+          },
+          {
+            "label": "Champagne at pickup",
+            "weight": 20,
+            "description": "When collecting any order over £800."
+          },
+          {
+            "label": "Visit us another time",
+            "weight": 25,
+            "isWinning": false,
+            "description": "Our concierge will welcome you soon."
+          }
+        ]
+      },
+      "scratch": {
+        "overlayColor": "#44403c",
+        "overlayText": "Reveal your courtesy",
+        "revealText": "Priority appointment window",
+        "revealSubtitle": "Mention code ASTRA-SCRATCH when you DM"
+      },
+      "tapHearts": {
+        "heartsToTap": 8,
+        "heartColor": "#C48B8E",
+        "revealText": "Astra hearts sequence complete",
+        "revealSubtitle": "DM ASTRA-HEARTS — polishing cloth on us"
+      },
+      "countdown": {
+        "endAt": "2028-02-14T18:00:00Z",
+        "endMessage": "Valentine capsule appointments open.",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 5,
+        "pairLabels": [
+          "💎",
+          "💍",
+          "✨",
+          "📿",
+          "🏆"
+        ],
+        "timeLimitSeconds": 70,
+        "maxMistakes": 10,
+        "revealText": "ASTRA-MEM-10",
+        "revealSubtitle": "10% toward workshop labour — DM with screenshot."
+      },
+      "campaign": {
+        "layoutTemplate": "game-first",
+        "fontPairId": "modern-tech",
+        "accentColor": "#C48B8E",
+        "featuredGame": "Scratch",
+        "experiencesSlug": "astra-accessories",
+        "particlesBackground": {
+          "enabled": true,
+          "count": 52,
+          "linkDistance": 152,
+          "dotSize": 2.72,
+          "speed": 0.38,
+          "color": "#C48B8E",
+          "accentColor": "#e8c4b8"
+        },
+        "hero": {
+          "headline": "Gold that reads quiet.",
+          "tagline": "Signets, chains, and stones — bench-made in London.",
+          "ctaLabel": "Request lookbook",
+          "ctaUrl": "https://instagram.com/astra.accessories",
+          "backgroundPattern": "grain",
+          "backgroundStyle": "gradient"
+        },
+        "valueProposition": {
+          "headline": "We assay everything we sell.",
+          "body": "Astra Accessories issues a certificate with each stone over 0.3ct — no mall markup, no mystery alloys."
+        },
+        "howToOrder": {
+          "heading": "Commission or ready-to-wear",
+          "body": "1) DM with occasion and budget. 2) We suggest three stones or samples. 3) Deposit holds the bench; balance on delivery.",
+          "primaryCtaLabel": "Concierge DM",
+          "primaryCtaUrl": "https://instagram.com/astra.accessories"
+        },
+        "about": {
+          "whatWeSell": "18k signets, tennis bracelets, bespoke bands.",
+          "aboutUs": "Two bench jewellers and a gemologist — one showroom, no franchise.",
+          "city": "London",
+          "country": "United Kingdom",
+          "physicalAddress": "Mayfair — address shared after consult",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/astra.accessories",
+          "website": "https://example.com/astra-accessories",
+          "email": "concierge@astraaccessories.example"
+        },
+        "featuredProducts": [
+          {
+            "id": "aa-1",
+            "title": "Channel-set band — 18k yellow",
+            "description": "FG VS diamonds, comfort fit.",
+            "price": "£2,400",
+            "imageUrl": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80",
+            "ctaLabel": "Ask availability",
+            "ctaUrl": "https://instagram.com/astra.accessories"
+          },
+          {
+            "id": "aa-2",
+            "title": "Snake chain — 2.4mm",
+            "description": "Lobster clasp, mirror polish.",
+            "price": "£680",
+            "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80",
+            "ctaLabel": "Ask availability",
+            "ctaUrl": "https://instagram.com/astra.accessories"
+          }
+        ],
+        "testimonials": [],
+        "trustBadges": [
+          {
+            "label": "Hallmarked UK",
+            "icon": "✓"
+          },
+          {
+            "label": "Insured courier",
+            "icon": "🛡️"
+          }
+        ],
+        "faq": [
+          {
+            "question": "Do you resize rings bought elsewhere?",
+            "answer": "Often — send photos and hallmarks first; we quote before you visit."
+          }
+        ]
+      }
+    },
+    {
+      "shopId": "urban-glow-n5q8s3u7v2",
+      "slug": "urban-glow",
+      "name": "Urban Glow",
+      "expiresAt": "2027-12-31T23:59:59Z",
+      "adminToken": "urban-glow-admin-4b8f1e9d6c3a",
+      "playCooldownHours": 24,
+      "branding": {
+        "primaryColor": "#db2777",
+        "secondaryColor": "#fce7f3",
+        "accentColor": "#f472b6",
+        "logoUrl": "/logos/urban-glow.png",
+        "brandName": "Urban Glow",
+        "backgroundMode": "light",
+        "theme": {
+          "backgroundPattern": "gradient",
+          "surfaceStyle": "glass",
+          "ambientMotion": "pulse",
+          "borderRadius": 24,
+          "buttonRadius": 999
+        }
+      },
+      "text": {
+        "title": "Catch the glow drops",
+        "subtitle": "Tap every capsule — Urban Glow makeup and skin hybrids without filler hype.",
+        "ctaText": "Shop the routine",
+        "resultTitle": "Skin wins!",
+        "resultSubtitle": "Your perk is ready to redeem."
+      },
+      "cta": {
+        "url": "https://instagram.com/urban.glow"
+      },
+      "wheel": {
+        "allowRepeatSpins": false,
+        "prizes": [
+          {
+            "label": "Travel-size peptide serum",
+            "weight": 30,
+            "description": "While supplies last."
+          },
+          {
+            "label": "20% off SPF trio",
+            "weight": 25,
+            "description": "Full routine bundle."
+          },
+          {
+            "label": "Complimentary skin quiz call",
+            "weight": 25,
+            "description": "15 minutes with our aesthetician."
+          },
+          {
+            "label": "Glow later",
+            "weight": 20,
+            "isWinning": false,
+            "description": "Visit us after cooldown."
+          }
+        ]
+      },
+      "tapHearts": {
+        "heartsToTap": 10,
+        "heartColor": "#f472b6",
+        "revealText": "Barrier cream deluxe sample",
+        "revealSubtitle": "DM URBAN-GLOW-HEARTS + shipping address"
+      },
+      "scratch": {
+        "overlayColor": "#d4c4cb",
+        "overlayText": "Scratch your glow perk",
+        "revealText": "25% off microbiome cleanser",
+        "revealSubtitle": "Code UG-SCRATCH-25 — one use per household"
+      },
+      "countdown": {
+        "endAt": "2028-03-20T12:00:00Z",
+        "endMessage": "Spring barrier drop ships — members first.",
+        "showCtaBeforeEnd": true
+      },
+      "memory": {
+        "pairCount": 6,
+        "pairLabels": [
+          "🧴",
+          "💧",
+          "✨",
+          "🌿",
+          "🫧",
+          "💆"
+        ],
+        "timeLimitSeconds": 90,
+        "maxMistakes": 14,
+        "revealText": "UG-MEM-12",
+        "revealSubtitle": "12% off cart — DM screenshot within 5 days."
+      },
+      "campaign": {
+        "layoutTemplate": "product-focused",
+        "fontPairId": "default",
+        "accentColor": "#ec4899",
+        "featuredSectionTitle": "Studio favourites",
+        "gamesSectionTitle": "Try a perk",
+        "featuredGame": "TapHearts",
+        "experiencesSlug": "urban-glow",
+        "hero": {
+          "headline": "Makeup with lab discipline.",
+          "tagline": "Skin-first bases, pigments that stay, and SPF you will actually wear.",
+          "ctaLabel": "Build my routine",
+          "ctaUrl": "https://instagram.com/urban.glow",
+          "backgroundPattern": "dots"
+        },
+        "valueProposition": {
+          "headline": "Every formula is patch-tested on sensitive panels.",
+          "body": "Urban Glow publishes full INCI and % actives — no fragrance masking, no mineral oil fillers."
+        },
+        "howToOrder": {
+          "heading": "Shipped from Los Angeles",
+          "body": "1) Cart online or DM for shade-matching advice. 2) We ship insulated when heat-sensitive. 3) Subscribe & save 12% on refills.",
+          "primaryCtaLabel": "Instagram shop",
+          "primaryCtaUrl": "https://instagram.com/urban.glow"
+        },
+        "about": {
+          "whatWeSell": "Clean makeup, barrier creams, niacinamide serums, mineral SPF.",
+          "aboutUs": "Founded by two cosmetic chemists after a decade in R&D — Urban Glow is direct-to-consumer only.",
+          "city": "Los Angeles",
+          "country": "United States",
+          "physicalAddress": "Studio pickup Fri afternoons",
+          "ownerPhotoUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=640&q=80"
+        },
+        "social": {
+          "instagram": "https://instagram.com/urban.glow",
+          "tiktok": "https://tiktok.com/@urban.glow",
+          "website": "https://example.com/urban-glow",
+          "email": "hello@urbanglow.example"
+        },
+        "featuredProducts": [
+          {
+            "id": "ug-1",
+            "title": "Barrier Recovery Cream — 50ml",
+            "description": "Ceramide NP + cholesterol ratio 3:1:1.",
+            "price": "€42",
+            "imageUrl": "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=600&q=80",
+            "ctaLabel": "Add via DM",
+            "ctaUrl": "https://instagram.com/urban.glow"
+          },
+          {
+            "id": "ug-2",
+            "title": "Mineral SPF 50 — sheer tint",
+            "description": "Zinc-only, reef considerate.",
+            "price": "€28",
+            "imageUrl": "https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=600&q=80",
+            "ctaLabel": "Add via DM",
+            "ctaUrl": "https://instagram.com/urban.glow"
+          }
+        ],
+        "testimonials": [
+          {
+            "quote": "Finally an SPF that doesn’t sting around my eyes — and the tint reads like real skin.",
+            "author": "Ingrid M.",
+            "role": "Subscriber"
+          }
+        ],
+        "trustBadges": [
+          {
+            "label": "EU compliant",
+            "icon": "🇪🇺"
+          },
+          {
+            "label": "Cold-chain summer ship",
+            "icon": "❄️"
+          }
+        ],
+        "faq": [
+          {
+            "question": "Are products pregnancy-safe?",
+            "answer": "Check each label’s contraindications or DM our aesthetician with your trimester."
           }
         ]
       }

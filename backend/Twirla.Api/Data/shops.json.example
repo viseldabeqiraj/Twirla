@@ -2,7 +2,9 @@
   "shops": [
     {
       "shopId": "shopname-randomid123",
+      "slug": "shopname",
       "enabled": true,
+      "expiresAt": "2028-01-01T00:00:00Z",
       "mode": "Wheel",
       "branding": {
         "primaryColor": "#FF6B6B",
