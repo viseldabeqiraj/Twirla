@@ -43,6 +43,7 @@ export function mergeLandingDraft(
     howToOrder: draft.howToOrder ?? base.howToOrder,
     about: draft.about ? { ...(base.about ?? {}), ...draft.about } : base.about,
     particlesBackground: draft.particlesBackground ?? base.particlesBackground,
+    spotPalette: draft.spotPalette ?? base.spotPalette,
   };
 }
 

@@ -84,6 +84,10 @@ export function drawRunnerFrame(
   const { width, height, characterY, obstacles, groundY, scorePopFrames = 0 } = frame;
   const accent = (theme.accent ?? DEFAULT_RUNNER_THEME.accent) as string;
   const highlight = (theme.highlight ?? DEFAULT_RUNNER_THEME.highlight) as string;
+  const skyHorizon = (theme.skyHorizon ??
+    theme.highlight ??
+    DEFAULT_RUNNER_THEME.skyHorizon ??
+    DEFAULT_RUNNER_THEME.highlight) as string;
   const ground = (theme.ground ?? DEFAULT_RUNNER_THEME.ground) as string;
   const obstacleColor = (theme.obstacleColor ?? DEFAULT_RUNNER_THEME.obstacleColor) as string;
 
@@ -93,22 +97,24 @@ export function drawRunnerFrame(
   const groundHeight = height - groundTop;
   const time = Date.now() / 1000;
 
-  // Background gradient from theme (shop branding when provided)
-  const gradOffset = Math.sin(time * 0.15) * 20;
-  const bgGrad = ctx.createLinearGradient(0, gradOffset, 0, height + gradOffset);
-  bgGrad.addColorStop(0, highlight);
-  bgGrad.addColorStop(0.4 + Math.sin(time * 0.2) * 0.05, ground);
-  bgGrad.addColorStop(1, ground);
+  // Sky only: stay light through the horizon — `ground` is painted in the band below `groundTop`
+  const gradOffset = Math.sin(time * 0.15) * 12;
+  const bgGrad = ctx.createLinearGradient(0, gradOffset, 0, groundTop + gradOffset);
+  bgGrad.addColorStop(0, '#ffffff');
+  bgGrad.addColorStop(0.14, highlight);
+  bgGrad.addColorStop(0.52, highlight);
+  bgGrad.addColorStop(0.88, skyHorizon);
+  bgGrad.addColorStop(1, skyHorizon);
   ctx.fillStyle = bgGrad;
-  ctx.fillRect(0, 0, width, height);
+  ctx.fillRect(0, 0, width, groundTop + 4);
 
   // Clouds (soft, slow drift)
   const cloudBase = (t: number, seed: number) => (t * 8 + seed * 37) % (width + 80) - 40;
   const clouds = [
-    { y: height * 0.15, scale: 1, seed: 0 },
-    { y: height * 0.08, scale: 0.7, seed: 11 },
-    { y: height * 0.22, scale: 0.85, seed: 23 },
-    { y: height * 0.05, scale: 0.55, seed: 47 },
+    { y: groundTop * 0.24, scale: 1, seed: 0 },
+    { y: groundTop * 0.1, scale: 0.7, seed: 11 },
+    { y: groundTop * 0.32, scale: 0.85, seed: 23 },
+    { y: groundTop * 0.06, scale: 0.55, seed: 47 },
   ];
   ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
   clouds.forEach((c) => {
@@ -122,20 +128,20 @@ export function drawRunnerFrame(
     ctx.fill();
   });
 
-  // Horizon line (accent with low opacity)
-  const accentRgb = hexToRgb(accent);
-  ctx.strokeStyle = accentRgb ? `rgba(${accentRgb.join(',')}, 0.12)` : 'rgba(219, 39, 119, 0.12)';
-  ctx.lineWidth = 1;
+  // Horizon line (separates light sky from dark ground strip)
+  const groundRgb = hexToRgb(ground);
+  ctx.strokeStyle = groundRgb ? `rgba(${groundRgb.join(',')}, 0.42)` : 'rgba(15, 23, 42, 0.42)';
+  ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(0, groundTop - 2);
   ctx.lineTo(width + 20, groundTop - 2);
   ctx.stroke();
 
-  // Floating bubbles (more, slower)
+  // Floating bubbles (more, slower) — keep above mid-sky so they never read as ground grit
   const t = time * 0.8;
   for (let i = 0; i < 9; i++) {
     const px = ((t * 25 + i * 47) % (width + 60)) - 30;
-    const py = (groundTop - 50 - (i * 22) % 60) + Math.sin(t + i * 0.7) * 8;
+    const py = (groundTop * 0.42 - (i * 22) % (groundTop * 0.35)) + Math.sin(t + i * 0.7) * 8;
     const alpha = 0.06 + (i % 3) * 0.04 + Math.sin(time * 2 + i) * 0.02;
     const highlightRgb = hexToRgb(highlight);
     const bubbleRgb = highlightRgb ? highlightRgb.join(',') : '244, 114, 182';
@@ -144,10 +150,10 @@ export function drawRunnerFrame(
     ctx.arc(px, py, 5 + (i % 2) * 3, 0, Math.PI * 2);
     ctx.fill();
   }
-  // Small sparkles (twinkle)
+  // Small sparkles (twinkle) — upper sky only
   for (let i = 0; i < 12; i++) {
     const sx = ((t * 15 + i * 31) % (width + 20)) - 10;
-    const sy = (groundTop - 80 - (i * 13) % 70) + Math.cos(time * 1.5 + i * 0.5) * 5;
+    const sy = (groundTop * 0.68 - (i * 13) % (groundTop * 0.5)) + Math.cos(time * 1.5 + i * 0.5) * 5;
     const twinkle = (Math.sin(time * 4 + i * 1.2) + 1) * 0.5;
     ctx.fillStyle = `rgba(255, 255, 255, ${0.15 * twinkle})`;
     ctx.beginPath();

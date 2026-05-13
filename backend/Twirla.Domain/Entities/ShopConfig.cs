@@ -66,6 +66,14 @@ public enum ExperienceMode
     Countdown
 }
 
+public class SpotPaletteConfig
+{
+    public string? Deep { get; set; }
+    public string? Muted { get; set; }
+    public string? Wash { get; set; }
+    public string? Accent { get; set; }
+}
+
 public class BrandingConfig
 {
     public string PrimaryColor { get; set; } = "#000000";
@@ -73,6 +81,7 @@ public class BrandingConfig
     public string? LogoUrl { get; set; }
     public string? BrandName { get; set; }
     public string? AccentColor { get; set; }
+    public SpotPaletteConfig? SpotPalette { get; set; }
     public ThemeConfig? Theme { get; set; }
 }
 

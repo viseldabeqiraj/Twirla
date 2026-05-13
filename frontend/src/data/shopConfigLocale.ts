@@ -1,4 +1,5 @@
 import type { ShopCampaignPageConfig } from '../types/ShopCampaign';
+import type { ShopSpotPalette } from '../types/ShopSpotPalette';
 import type {
   FAQItemConfig,
   FeaturedProductConfig,
@@ -52,6 +53,10 @@ export function deepMergeCampaign(
       o.particlesBackground != null
         ? { ...(base.particlesBackground ?? {}), ...(o.particlesBackground as object) }
         : base.particlesBackground,
+    spotPalette:
+      o.spotPalette != null && typeof o.spotPalette === 'object'
+        ? { ...(base.spotPalette ?? ({} as ShopSpotPalette)), ...(o.spotPalette as ShopSpotPalette) }
+        : base.spotPalette,
   };
 }
 

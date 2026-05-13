@@ -1096,15 +1096,21 @@
       "adminToken": "astra-accessories-admin-6d2a9e5c7f84",
       "playCooldownHours": 24,
       "branding": {
-        "primaryColor": "#0c0a09",
-        "secondaryColor": "#1c1917",
-        "accentColor": "#C48B8E",
+        "primaryColor": "#D5A419",
+        "secondaryColor": "#0E1526",
+        "accentColor": "#393F53",
+        "spotPalette": {
+          "deep": "#0E1526",
+          "muted": "#393F53",
+          "wash": "#E6F0FF",
+          "accent": "#D5A419"
+        },
         "logoUrl": "/logos/astra-accessories.png",
         "brandName": "Astra Accessories",
         "backgroundMode": "dark",
         "theme": {
           "backgroundPattern": "aurora",
-          "surfaceStyle": "glass",
+          "surfaceStyle": "solid",
           "ambientMotion": "shimmer",
           "borderRadius": 18,
           "buttonRadius": 12
@@ -1147,14 +1153,14 @@
         ]
       },
       "scratch": {
-        "overlayColor": "#44403c",
+        "overlayColor": "#393F53",
         "overlayText": "Reveal your courtesy",
         "revealText": "Priority appointment window",
         "revealSubtitle": "Mention code ASTRA-SCRATCH when you DM"
       },
       "tapHearts": {
         "heartsToTap": 8,
-        "heartColor": "#C48B8E",
+        "heartColor": "#D5A419",
         "revealText": "Astra hearts sequence complete",
         "revealSubtitle": "DM ASTRA-HEARTS — polishing cloth on us"
       },
@@ -1180,7 +1186,7 @@
       "campaign": {
         "layoutTemplate": "game-first",
         "fontPairId": "modern-tech",
-        "accentColor": "#C48B8E",
+        "accentColor": "#D5A419",
         "featuredGame": "Scratch",
         "experiencesSlug": "astra-accessories",
         "particlesBackground": {
@@ -1189,8 +1195,8 @@
           "linkDistance": 152,
           "dotSize": 2.72,
           "speed": 0.38,
-          "color": "#C48B8E",
-          "accentColor": "#e8c4b8"
+          "color": "#D5A419",
+          "accentColor": "#E6F0FF"
         },
         "hero": {
           "headline": "Gold that reads quiet.",
@@ -1220,7 +1226,6 @@
         },
         "social": {
           "instagram": "https://instagram.com/astra.accessories",
-          "website": "https://example.com/astra-accessories",
           "email": "concierge@astraaccessories.example"
         },
         "featuredProducts": [
@@ -1228,8 +1233,8 @@
             "id": "aa-1",
             "title": "Channel-set band — 18k yellow",
             "description": "FG VS diamonds, comfort fit.",
-            "price": "£2,400",
-            "imageUrl": "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=600&q=80",
+            "price": "2,400 ALL",
+            "imageUrl": "https://www.dylanoaks.com/cdn/shop/files/3cm_Letter_Bar_Necklace_Gold_1_2500x2500_crop_center.jpg?v=1767806576",
             "ctaLabel": "Ask availability",
             "ctaUrl": "https://instagram.com/astra.accessories"
           },
@@ -1237,7 +1242,7 @@
             "id": "aa-2",
             "title": "Snake chain — 2.4mm",
             "description": "Lobster clasp, mirror polish.",
-            "price": "£680",
+            "price": "1,000 ALL",
             "imageUrl": "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600&q=80",
             "ctaLabel": "Ask availability",
             "ctaUrl": "https://instagram.com/astra.accessories"

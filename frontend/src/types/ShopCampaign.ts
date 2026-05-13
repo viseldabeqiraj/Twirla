@@ -11,6 +11,7 @@ import type {
   TrustBadgeConfig,
   ValuePropositionConfig,
 } from './ShopLandingConfig';
+import type { ShopSpotPalette } from './ShopSpotPalette';
 
 /** Mirrors ExperienceMode strings from shops.json (avoids circular import with ShopConfig). */
 export type CampaignExperienceMode =
@@ -53,6 +54,8 @@ export interface ShopCampaignPageConfig {
   faq?: FAQItemConfig[];
   /** Optional linked-particles layer on `/shop/:slug` (see ParticlesBackgroundConfig). */
   particlesBackground?: ParticlesBackgroundConfig;
+  /** Optional four-color palette (overrides `branding.spotPalette` when set). */
+  spotPalette?: ShopSpotPalette;
   /**
    * Localized campaign overlays keyed by locale (`sq`, future locales).
    * Deep-merged in `applyShopConfigLanguage` when `getShopLandingConfig(..., lang)` matches.

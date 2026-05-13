@@ -68,6 +68,13 @@ export default function ShopLandingPage() {
   const fontPair = config?.fontPairId ?? 'default';
   const layout = config?.layoutTemplate ?? 'product-focused';
 
+  const hasFullSpotPalette = Boolean(
+    config?.spotPalette?.deep &&
+      config?.spotPalette?.muted &&
+      config?.spotPalette?.wash &&
+      config?.spotPalette?.accent,
+  );
+
   const themeInput = useMemo(
     () => ({
       primaryColor: primary,
@@ -75,8 +82,17 @@ export default function ShopLandingPage() {
       accentColor: accent,
       backgroundMode: bgMode as 'light' | 'dark',
       logoBackgroundColor: config?.logoBackgroundColor,
+      spotPalette: hasFullSpotPalette ? config!.spotPalette : undefined,
     }),
-    [primary, secondary, accent, bgMode, config?.logoBackgroundColor],
+    [
+      primary,
+      secondary,
+      accent,
+      bgMode,
+      config?.logoBackgroundColor,
+      hasFullSpotPalette,
+      config?.spotPalette,
+    ],
   );
   const { tokens, cssVars } = useComputedShopTheme(themeInput);
 
@@ -149,6 +165,7 @@ export default function ShopLandingPage() {
         data-layout={layout}
         data-font-pair={fontPair}
         data-bg-mode={bgMode}
+        data-spot-palette={hasFullSpotPalette ? '1' : undefined}
         style={cssVars as React.CSSProperties}
       >
         <header className="shop-landing-app-header">

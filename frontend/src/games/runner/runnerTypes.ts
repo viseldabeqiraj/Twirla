@@ -33,10 +33,12 @@ export const DEFAULT_RUNNER_OUTCOMES: RunnerGameOutcome[] = [
 export interface RunnerTheme {
   /** Background gradient (e.g. soft beige-pink) */
   background?: string;
-  /** Accent color (e.g. pink/magenta) */
+  /** Character + UI accent */
   accent?: string;
-  /** Lighter highlight */
+  /** Upper sky (light) */
   highlight?: string;
+  /** Lower sky just above horizon — stays light; never use `ground` here */
+  skyHorizon?: string;
   /** Ground/surface color */
   ground?: string;
   /** Obstacle color */
@@ -47,7 +49,8 @@ export interface RunnerTheme {
 export const DEFAULT_RUNNER_THEME: RunnerTheme = {
   background: 'linear-gradient(180deg, #fdf2f8 0%, #fce7f3 50%, #fbcfe8 100%)',
   accent: '#db2777',
-  highlight: '#f472b6',
+  highlight: '#f8fafc',
+  skyHorizon: '#fce7f3',
   ground: '#fbcfe8',
   obstacleColor: '#be185d',
 };

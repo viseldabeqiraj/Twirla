@@ -29,6 +29,14 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   const theme = branding.theme || {};
 
   const bgMode = branding.backgroundMode ?? (theme.backgroundPattern === 'dark' ? 'dark' : 'light');
+  const spotPalette =
+    branding.spotPalette?.deep &&
+    branding.spotPalette?.muted &&
+    branding.spotPalette?.wash &&
+    branding.spotPalette?.accent
+      ? branding.spotPalette
+      : undefined;
+
   const themeInput = useMemo(
     () => ({
       primaryColor: branding.primaryColor,
@@ -36,8 +44,16 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       accentColor: branding.accentColor,
       backgroundMode: bgMode as 'light' | 'dark',
       logoBackgroundColor: branding.logoBackgroundColor,
+      spotPalette,
     }),
-    [branding.primaryColor, branding.secondaryColor, branding.accentColor, bgMode, branding.logoBackgroundColor],
+    [
+      branding.primaryColor,
+      branding.secondaryColor,
+      branding.accentColor,
+      bgMode,
+      branding.logoBackgroundColor,
+      spotPalette,
+    ],
   );
   const { cssVars } = useComputedShopTheme(themeInput);
 
@@ -97,11 +113,14 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
             experienceMode="Runner"
             config={{
               outcomes: config.runnerGame?.outcomes,
-              theme: runnerThemeFromBranding({
-                primaryColor: branding.primaryColor,
-                secondaryColor: branding.secondaryColor,
-                accentColor: branding.accentColor,
-              }),
+              theme: runnerThemeFromBranding(
+                {
+                  primaryColor: branding.primaryColor,
+                  secondaryColor: branding.secondaryColor,
+                  accentColor: branding.accentColor,
+                },
+                spotPalette,
+              ),
               ctaLabel: text.ctaText,
               ctaUrl: cta.url,
             }}

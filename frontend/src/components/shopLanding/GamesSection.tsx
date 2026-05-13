@@ -51,7 +51,11 @@ export default function GamesSection({
             {sectionTitle?.trim() || t('campaign.featuredGame')}
           </h2>
           <p className="shop-featured-game-intro">{t('landing.gamesIntro')}</p>
-          <AnimatedGameCard to={featuredTo} featured className="shop-featured-game-card">
+          <AnimatedGameCard
+            to={featuredTo}
+            featured
+            className={`shop-featured-game-card shop-featured-game-card--${featuredMeta.path}`}
+          >
             <span className="shop-featured-game-emoji" aria-hidden>
               {featuredMeta.emoji}
             </span>
@@ -75,7 +79,11 @@ export default function GamesSection({
                 if (!meta) return null;
                 const to = `/${meta.path}/${shopName}/${uniqueId}`;
                 return (
-                  <AnimatedGameCard key={mode} to={to} className="shop-game-card">
+                  <AnimatedGameCard
+                    key={mode}
+                    to={to}
+                    className={`shop-game-card shop-game-card--${meta.path}`}
+                  >
                     <span className="shop-game-emoji">{meta.emoji}</span>
                     <span className="shop-game-label">{t(meta.key)}</span>
                   </AnimatedGameCard>

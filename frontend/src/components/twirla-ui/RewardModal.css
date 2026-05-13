@@ -37,7 +37,8 @@
   letter-spacing: var(--tw-letter-reward, 0.04em);
   text-transform: none;
   line-height: 1.15;
-  color: var(--tw-heading-color, #0f172a);
+  /* Card surface is always light-tinted; do not use page heading tokens (dark shops use light headings). */
+  color: #0f172a;
 }
 
 .surface-neon .tw-reward-modal__title {
@@ -48,7 +49,7 @@
   margin: 0 0 var(--tw-space-md, 1rem);
   font-size: var(--tw-font-body);
   font-weight: var(--tw-weight-body);
-  color: var(--tw-body-color, #475569);
+  color: #475569;
   line-height: 1.5;
 }
 

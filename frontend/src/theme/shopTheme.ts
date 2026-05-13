@@ -125,6 +125,8 @@ function deriveAccent(primary: string): string {
 // Theme token computation
 // ---------------------------------------------------------------------------
 
+import type { ShopSpotPalette } from '../types/ShopSpotPalette';
+
 export type BackgroundMode = 'light' | 'dark';
 
 export interface ShopThemeInput {
@@ -133,6 +135,8 @@ export interface ShopThemeInput {
   accentColor?: string;
   backgroundMode?: BackgroundMode;
   logoBackgroundColor?: string;
+  /** When set with `backgroundMode: "dark"`, drives contrast + `--shop-palette-*` tokens. */
+  spotPalette?: ShopSpotPalette;
 }
 
 export interface ShopThemeTokens {
@@ -155,9 +159,54 @@ export interface ShopThemeTokens {
   primaryDark: string;
   surfaceTint: string;
   logoBackground: string;
+  /** Present when the shop defines a four-color spot palette. */
+  spotPalette?: ShopSpotPalette;
+}
+
+function isFullSpotPalette(p?: ShopSpotPalette): p is ShopSpotPalette {
+  return Boolean(p?.deep && p?.muted && p?.wash && p?.accent);
+}
+
+function buildDarkSpotPaletteTheme(
+  p: ShopSpotPalette,
+  input: ShopThemeInput,
+): ShopThemeTokens {
+  const primary = p.accent;
+  const secondary = p.deep;
+  const accent = p.muted;
+  const mode: BackgroundMode = 'dark';
+
+  const primaryLight = lighten(primary, 0.22);
+  const primaryDark = darken(primary, 0.12);
+  const surfaceTint = mix(p.deep, p.muted, 0.55);
+
+  return {
+    primary,
+    secondary,
+    accent,
+    backgroundMode: mode,
+    pageBackground: `linear-gradient(180deg, ${mix(p.deep, '#000000', 0.45)} 0%, ${mix(p.muted, p.deep, 0.35)} 48%, ${mix(p.deep, '#020617', 0.25)} 100%)`,
+    cardBackground: `color-mix(in srgb, ${mix(p.muted, p.deep, 0.28)} 82%, transparent)`,
+    buttonGradient: buildGradient(primary, secondary),
+    buttonTextColor: getContrastText(primary),
+    headingColor: p.wash,
+    bodyTextColor: mix(p.wash, p.muted, 0.26),
+    borderColor: mix(p.muted, p.accent, 0.42),
+    subtleGlowColor: mix(p.accent, p.wash, 0.48),
+    mutedTextColor: mix(p.wash, p.muted, 0.5),
+    primaryLight,
+    primaryDark,
+    surfaceTint,
+    logoBackground: input.logoBackgroundColor || mix(p.deep, p.accent, 0.68),
+    spotPalette: p,
+  };
 }
 
 export function getShopTheme(input: ShopThemeInput): ShopThemeTokens {
+  if (isFullSpotPalette(input.spotPalette) && input.backgroundMode === 'dark') {
+    return buildDarkSpotPaletteTheme(input.spotPalette, input);
+  }
+
   const primary = input.primaryColor;
   const secondary = ensureColorContrast(primary, input.secondaryColor);
   const accent = input.accentColor || deriveAccent(primary);
@@ -198,13 +247,23 @@ export function getShopTheme(input: ShopThemeInput): ShopThemeTokens {
     logoBackground:
       input.logoBackgroundColor ||
       (isLight ? mix(primary, '#ffffff', 0.88) : mix(primary, '#0f172a', 0.7)),
+    spotPalette: isFullSpotPalette(input.spotPalette) ? input.spotPalette : undefined,
+  };
+}
+
+function spotPaletteCssVars(p: ShopSpotPalette): Record<string, string> {
+  return {
+    '--shop-palette-deep': p.deep,
+    '--shop-palette-muted': p.muted,
+    '--shop-palette-wash': p.wash,
+    '--shop-palette-accent': p.accent,
   };
 }
 
 export function themeTokensToCssVars(
   tokens: ShopThemeTokens,
 ): Record<string, string> {
-  return {
+  const base: Record<string, string> = {
     // Derived theme tokens
     '--tw-primary': tokens.primary,
     '--tw-secondary': tokens.secondary,
@@ -232,4 +291,8 @@ export function themeTokensToCssVars(
     '--secondary-color': tokens.secondary,
     '--accent-color': tokens.accent,
   };
+  if (tokens.spotPalette) {
+    return { ...base, ...spotPaletteCssVars(tokens.spotPalette) };
+  }
+  return base;
 }

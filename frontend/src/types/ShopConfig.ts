@@ -61,12 +61,16 @@ export interface ThemeConfig {
   buttonRadius?: number;
 }
 
+import type { ShopSpotPalette } from './ShopSpotPalette';
+
 export interface BrandingConfig {
   primaryColor: string;
   secondaryColor: string;
   logoUrl?: string;
   brandName?: string;
   accentColor?: string;
+  /** Optional four-color palette (see `ShopSpotPalette`). */
+  spotPalette?: ShopSpotPalette;
   /** "light" (default) — warm off-white page; "dark" — deep navy / charcoal. */
   backgroundMode?: 'light' | 'dark';
   /** Explicit logo container color; derived from primary when omitted. */

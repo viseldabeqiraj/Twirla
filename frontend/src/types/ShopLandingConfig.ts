@@ -1,4 +1,5 @@
 import { ExperienceMode } from './ShopConfig';
+import type { ShopSpotPalette } from './ShopSpotPalette';
 
 /** Games that can appear on the public campaign landing when enabled for the shop. */
 export const PUBLIC_CAMPAIGN_GAMES: ExperienceMode[] = [
@@ -72,6 +73,8 @@ export interface ShopLandingConfig {
   howToOrder?: HowToOrderConfig;
   /** Third brand color (buttons, accents); falls back to primary if omitted */
   accentColor?: string;
+  /** Optional four-color palette (from branding or campaign merge). */
+  spotPalette?: ShopSpotPalette;
   /** Page background mode: "light" (default) or "dark" */
   backgroundMode?: 'light' | 'dark';
   /** Explicit logo container color */
