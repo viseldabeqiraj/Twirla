@@ -464,8 +464,8 @@ export const SHOP_SQ_FALLBACKS: Record<string, ShopSqFallback> = {
         body: 'Astra Accessories kombinon stilin me eksperiencën. Klientët luajnë, fitojnë oferta apo dhurata dhe porosisin direkt në DM.',
       },
       howToOrder: {
-        heading: 'Me porosi ose gati për veshje',
-        body: '1) Luaj një nga lojërat 🎮 2) Fito ofertë ose surprizë 🎁 3) Na dërgo kodin në DM për të bërë porosinë.',
+        heading: 'Një eksperiencë ndryshe blerjeje',
+        body: '1) Luaj një nga lojërat 🎮 2) Fito ofertë ose surprizë 🎁 3) Na dërgo kodin e fituar në DM ose screenshotpër të bërë porosinë.',
         primaryCtaLabel: 'DM në Instagram',
       },
       about: {
