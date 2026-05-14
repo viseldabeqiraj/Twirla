@@ -67,9 +67,15 @@ function omitCampaignTranslations(c: ShopCampaignPageConfig): ShopCampaignPageCo
   return rest;
 }
 
+/** True if JSON `translations[lang]` has at least one non-empty string (empty `{}` is false). */
+function translationSliceHasContent(tr: object | undefined): boolean {
+  if (!tr || typeof tr !== 'object') return false;
+  return Object.values(tr).some((v) => typeof v === 'string' && v.trim().length > 0);
+}
+
 function mergeText(text: TextConfig, lang: string, fb?: Partial<TextConfig>): TextConfig {
   const tr = text.translations?.[lang];
-  if (tr && lang !== 'en') {
+  if (tr && lang !== 'en' && translationSliceHasContent(tr)) {
     return {
       ...text,
       title: tr.title || text.title,
@@ -88,7 +94,7 @@ function mergeText(text: TextConfig, lang: string, fb?: Partial<TextConfig>): Te
 function mergeWheel(wheel: WheelConfig, lang: string, fbPrizes?: Partial<PrizeConfig>[]): WheelConfig {
   const prizes = wheel.prizes.map((p, i) => {
     const ptr = p.translations?.[lang];
-    if (ptr && lang !== 'en') {
+    if (ptr && lang !== 'en' && translationSliceHasContent(ptr)) {
       return {
         ...p,
         label: ptr.label || p.label,
@@ -110,7 +116,7 @@ function mergeTapHearts(
   fb?: Partial<TapHeartsConfig>
 ): TapHeartsConfig {
   const tr = th.translations?.[lang];
-  if (tr && lang !== 'en') {
+  if (tr && lang !== 'en' && translationSliceHasContent(tr)) {
     return {
       ...th,
       revealText: tr.revealText || th.revealText,
@@ -125,7 +131,7 @@ function mergeTapHearts(
 
 function mergeScratch(sc: ScratchConfig, lang: string, fb?: Partial<ScratchConfig>): ScratchConfig {
   const tr = sc.translations?.[lang];
-  if (tr && lang !== 'en') {
+  if (tr && lang !== 'en' && translationSliceHasContent(tr)) {
     return {
       ...sc,
       overlayText: tr.overlayText || sc.overlayText,
@@ -141,7 +147,7 @@ function mergeScratch(sc: ScratchConfig, lang: string, fb?: Partial<ScratchConfi
 
 function mergeCountdown(cd: CountdownConfig, lang: string, fb?: Partial<CountdownConfig>): CountdownConfig {
   const tr = cd.translations?.[lang];
-  if (tr && lang !== 'en') {
+  if (tr && lang !== 'en' && translationSliceHasContent(tr)) {
     return {
       ...cd,
       endMessage: tr.endMessage || cd.endMessage,
@@ -155,7 +161,7 @@ function mergeCountdown(cd: CountdownConfig, lang: string, fb?: Partial<Countdow
 
 function mergeMemory(mem: MemoryMatchConfig, lang: string, fb?: Partial<MemoryMatchConfig>): MemoryMatchConfig {
   const tr = mem.translations?.[lang];
-  if (tr && lang !== 'en') {
+  if (tr && lang !== 'en' && translationSliceHasContent(tr)) {
     return {
       ...mem,
       revealText: tr.revealText || mem.revealText,

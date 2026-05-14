@@ -780,7 +780,7 @@
       "text": {
         "title": "Memory match — reveal your jewel perk",
         "subtitle": "Match pairs of icons from our collections. Sharp focus wins.",
-        "ctaText": "Book a private viewing",
+        "ctaText": "Na shkruaj",
         "resultTitle": "Flawless recall",
         "resultSubtitle": "Your exclusive code is below — treat it like a jewel."
       },
@@ -1119,9 +1119,18 @@
       "text": {
         "title": "Scratch to reveal your gesture",
         "subtitle": "Fine jewellery & accessories — one courtesy play per guest.",
-        "ctaText": "Book a private viewing",
+        "ctaText": "Contact us via DM",
         "resultTitle": "A pleasure.",
-        "resultSubtitle": "Your courtesy is noted below."
+        "resultSubtitle": "Your courtesy is noted below.",
+        "translations": {
+          "sq": {
+            "title": "Gërvisht ose luaj për surprizën tënde",
+            "subtitle": "Bizhuteri dhe aksesorë — një lojë falas për vizitor.",
+            "ctaText": "Na shkruaj në DM",
+            "resultTitle": "Faleminderit!",
+            "resultSubtitle": "Oferta jote është më poshtë."
+          }
+        }
       },
       "cta": {
         "url": "https://instagram.com/astra.accessories"
@@ -1130,25 +1139,72 @@
         "allowRepeatSpins": false,
         "prizes": [
           {
-            "label": "Complimentary sizing consult",
-            "weight": 30,
-            "description": "30 minutes, Mayfair atelier."
-          },
-          {
-            "label": "£50 toward bespoke engraving",
-            "weight": 25,
-            "description": "Applies to orders over £600."
-          },
-          {
-            "label": "Champagne at pickup",
+            "label": "Free delivery",
             "weight": 20,
-            "description": "When collecting any order over £800."
+            "description": "Tracked shipping on your next order.",
+            "translations": {
+              "sq": {
+                "label": "Dërgesë falas",
+                "description": "Dërgesë me gjurmim në porosinë tënde të radhës."
+              }
+            }
           },
           {
-            "label": "Visit us another time",
-            "weight": 25,
+            "label": "Surprise gift",
+            "weight": 18,
+            "description": "A small thank-you from us in your parcel.",
+            "translations": {
+              "sq": {
+                "label": "Dhuratë surprizë",
+                "description": "Një falënderim i vogël nga ne në paketë."
+              }
+            }
+          },
+          {
+            "label": "10% off your order",
+            "weight": 15,
+            "description": "Valid on accessories and jewellery (details via DM).",
+            "translations": {
+              "sq": {
+                "label": "10% zbritje në porosi",
+                "description": "Vlen për aksesorë dhe bizhuteri (detajet në DM)."
+              }
+            }
+          },
+          {
+            "label": "15% off your order",
+            "weight": 12,
+            "description": "Our stronger thank-you — accessories & jewellery (details via DM).",
+            "translations": {
+              "sq": {
+                "label": "15% zbritje në porosi",
+                "description": "Falënderim më i fortë — aksesorë dhe bizhuteri (detajet në DM)."
+              }
+            }
+          },
+          {
+            "label": "Try again tomorrow",
+            "weight": 18,
             "isWinning": false,
-            "description": "Our concierge will welcome you soon."
+            "description": "No prize today — spin again after cooldown.",
+            "translations": {
+              "sq": {
+                "label": "Provo përsëri nesër",
+                "description": "Sot pa çmim — kthehu pas afatit të lojës."
+              }
+            }
+          },
+          {
+            "label": "Not this round",
+            "weight": 17,
+            "isWinning": false,
+            "description": "Close one — better luck on your next visit.",
+            "translations": {
+              "sq": {
+                "label": "Jo në këtë raund",
+                "description": "Pak fat — provo herën tjetër."
+              }
+            }
           }
         ]
       },
@@ -1167,7 +1223,7 @@
       "countdown": {
         "endAt": "2028-02-14T18:00:00Z",
         "endMessage": "Valentine capsule appointments open.",
-        "showCtaBeforeEnd": true
+        "showCtaBeforeEnd": false
       },
       "memory": {
         "pairCount": 5,

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
@@ -7,6 +7,7 @@ import Confetti from '../Confetti';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
+import GesturePrizeWheel, { buildWheelSegmentColors } from './GesturePrizeWheel';
 import './WheelExperience.css';
 
 interface WheelExperienceProps {
@@ -14,19 +15,59 @@ interface WheelExperienceProps {
 }
 
 export default function WheelExperience({ config }: WheelExperienceProps) {
-  const { wheel, shopId } = config;
+  const wheel = config.wheel;
+  const { shopId } = config;
   const { t } = useTranslation();
   const [hasSpun, setHasSpun] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
+  const [awaitingReveal, setAwaitingReveal] = useState(false);
   const [selectedPrize, setSelectedPrize] = useState<string | null>(null);
-  const [selectedPrizeIndex, setSelectedPrizeIndex] = useState<number | null>(null);
   const [showResult, setShowResult] = useState(false);
-  const [wheelRotation, setWheelRotation] = useState(0);
   const [showBlockedTooltip, setShowBlockedTooltip] = useState(false);
-  const [buttonShake, setButtonShake] = useState(false);
+  const [hintShake, setHintShake] = useState(false);
   const hasTrackedFinish = useRef(false);
   const [finishCode, setFinishCode] = useState<string | null>(null);
   const rewardTrackedRef = useRef(false);
+  const [wheelSize, setWheelSize] = useState(260);
+
+  const isWinningPrize = useCallback(
+    (prizeLabel: string): boolean => {
+      if (!wheel) return true;
+      const prize = wheel.prizes.find((p) => p.label === prizeLabel);
+      if (!prize) return true;
+
+      if (prize.isWinning !== undefined && prize.isWinning !== null) {
+        return prize.isWinning;
+      }
+
+      const losingPatterns = [
+        'try again',
+        'better luck',
+        'no prize',
+        'nothing',
+        'unlucky',
+        'sorry',
+        'no win',
+        'not this time',
+        'visit us another time',
+        'try again tomorrow',
+        'provo përsëri nesër',
+        'not this round',
+        'jo në këtë raund',
+      ];
+      const labelLower = prizeLabel.toLowerCase().trim();
+      const isLosing = losingPatterns.includes(labelLower);
+      return !isLosing;
+    },
+    [wheel],
+  );
+
+  useEffect(() => {
+    const q = () => setWheelSize(Math.min(288, Math.max(220, window.innerWidth - 52)));
+    q();
+    window.addEventListener('resize', q);
+    return () => window.removeEventListener('resize', q);
+  }, []);
 
   useEffect(() => {
     if (!wheel) return;
@@ -37,6 +78,15 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     }
     if (rewardTrackedRef.current) return;
     rewardTrackedRef.current = true;
+
+    const won = isWinningPrize(selectedPrize);
+    trackEvent(shopId, 'game_finish', { mode: 'Wheel' });
+
+    if (!won) {
+      setFinishCode(null);
+      return;
+    }
+
     const code = generateDiscountCode({
       shopSlug: config.slug ?? shopId,
       shopId,
@@ -44,144 +94,114 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     });
     setFinishCode(code);
     persistRewardCodeMeta({ code, generatedAt: Date.now(), shopId, game: 'Wheel' });
-    trackEvent(shopId, 'game_finish', { mode: 'Wheel' });
     trackEvent(shopId, 'reward_won', { mode: 'Wheel' });
     trackEvent(shopId, 'reward_generated', { mode: 'Wheel', couponCode: code });
-  }, [showResult, selectedPrize, shopId, config.slug, wheel]);
+  }, [showResult, selectedPrize, shopId, config.slug, wheel, isWinningPrize]);
 
-  // TEMP (testing): daily cooldown disabled.
-  // const playStatus = canUserPlay(shopId, playCooldownHours);
-  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
+  /** Wire from play-status API later; keep branch reachable for TypeScript. */
+  const cooldownBlocked = false;
+  const cooldownHoursRemaining: number | null = null;
 
-  if (!wheel) return null;
+  const labels = useMemo(() => wheel?.prizes.map((p) => p.label) ?? [], [wheel]);
 
-  const selectPrize = (): { label: string; index: number } => {
+  const segColors = useMemo(
+    () =>
+      wheel
+        ? buildWheelSegmentColors(
+            wheel.prizes.length,
+            config.branding.primaryColor,
+            config.branding.secondaryColor,
+            config.branding.accentColor,
+          )
+        : [],
+    [
+      wheel,
+      config.branding.primaryColor,
+      config.branding.secondaryColor,
+      config.branding.accentColor,
+    ],
+  );
+
+  const pickWinnerIndex = useCallback(() => {
+    if (!wheel) return 0;
     const totalWeight = wheel.prizes.reduce((sum, prize) => sum + prize.weight, 0);
     let random = Math.random() * totalWeight;
-    
     for (let i = 0; i < wheel.prizes.length; i++) {
-      const prize = wheel.prizes[i];
-      random -= prize.weight;
-      if (random <= 0) {
-        return { label: prize.label, index: i };
-      }
+      random -= wheel.prizes[i].weight;
+      if (random <= 0) return i;
     }
-    
-    return { label: wheel.prizes[0].label, index: 0 };
-  };
+    return 0;
+  }, [wheel]);
 
-  // Determine if a prize is winning or losing
-  const isWinningPrize = (prizeLabel: string): boolean => {
-    const prize = wheel.prizes.find(p => p.label === prizeLabel);
-    if (!prize) return true; // Default to winning if prize not found
-    
-    // If explicitly set, use that value
-    if (prize.isWinning !== undefined && prize.isWinning !== null) {
-      return prize.isWinning;
-    }
-    
-    // Auto-detect: only mark as losing if label EXACTLY matches losing patterns
-    // This prevents false positives (e.g., "20% Off" should never match "off" in "no prize")
-    const losingPatterns = [
-      'try again',
-      'better luck',
-      'no prize',
-      'nothing',
-      'unlucky',
-      'sorry',
-      'no win',
-      'not this time'
-    ];
-    const labelLower = prizeLabel.toLowerCase().trim();
-    
-    // Only match if label is exactly a losing pattern (case-insensitive)
-    // This is very strict to avoid false positives
-    const isLosing = losingPatterns.includes(labelLower);
-    
-    // Default to winning (most prizes like discounts, free shipping, etc. are winning)
-    return !isLosing;
-  };
-
-  const resetRound = () => {
-    setShowResult(false);
-    setSelectedPrize(null);
-    setSelectedPrizeIndex(null);
-    setWheelRotation(0);
-    rewardTrackedRef.current = false;
-    setFinishCode(null);
-  };
-
-  const handleSpin = () => {
-    if (isSpinning) return;
-
-    // Check if user can play (cooldown check)
-    if (!playStatus.canPlay) {
-      setButtonShake(true);
+  const handleSpinStart = useCallback((): boolean => {
+    if (!wheel) return false;
+    if (cooldownBlocked) {
+      setHintShake(true);
       setShowBlockedTooltip(true);
-      setTimeout(() => setButtonShake(false), 500);
+      setTimeout(() => setHintShake(false), 500);
       setTimeout(() => setShowBlockedTooltip(false), 3000);
-      return;
+      return false;
     }
-    
-    // Check if already spun and repeat not allowed
     if (hasSpun && !wheel.allowRepeatSpins) {
-      setButtonShake(true);
+      setHintShake(true);
       setShowBlockedTooltip(true);
-      setTimeout(() => setButtonShake(false), 500);
+      setTimeout(() => setHintShake(false), 500);
       setTimeout(() => setShowBlockedTooltip(false), 3000);
-      return;
+      return false;
     }
-
     setIsSpinning(true);
     setShowResult(false);
     setSelectedPrize(null);
-    setSelectedPrizeIndex(null);
-    setWheelRotation(0); // Reset to 0 for new spin
     setShowBlockedTooltip(false);
     hasTrackedFinish.current = false;
     trackEvent(shopId, 'game_start', { mode: 'Wheel' });
+    return true;
+  }, [cooldownBlocked, hasSpun, shopId, wheel]);
 
-    const { label, index } = selectPrize();
-    setSelectedPrizeIndex(index); // Set immediately so wheel knows where to stop
-    
-    // Calculate final rotation
-    const sliceAngle = 360 / wheel.prizes.length;
-    const sliceCenterAngle = index * sliceAngle + sliceAngle / 2;
-    const rotation = 360 - sliceCenterAngle;
-    const finalRotation = 1080 + rotation;
-    
-    // Start spin animation - transition from 0 to final rotation
-    requestAnimationFrame(() => {
-      setWheelRotation(finalRotation);
-    });
-    
-    // Spin animation duration
-    setTimeout(() => {
+  const handleWheelSettled = useCallback(
+    (winnerIndex: number) => {
+      if (!wheel) return;
+      const prize = wheel.prizes[winnerIndex];
+      const label = prize?.label ?? wheel.prizes[0].label;
+      setSelectedPrize(label);
       setIsSpinning(false);
-      // Wait 2 seconds after wheel stops before showing result
-      setTimeout(() => {
-        setSelectedPrize(label);
+      setAwaitingReveal(true);
+      window.setTimeout(() => {
         setShowResult(true);
         setHasSpun(true);
+        setAwaitingReveal(false);
         if (!hasTrackedFinish.current) {
           hasTrackedFinish.current = true;
         }
         recordPlay(shopId);
-      }, 2000);
-    }, 2000);
+      }, 1700);
+    },
+    [shopId, wheel],
+  );
+
+  const resetRound = () => {
+    setShowResult(false);
+    setSelectedPrize(null);
+    rewardTrackedRef.current = false;
+    setFinishCode(null);
+    hasTrackedFinish.current = false;
   };
+
+  if (!wheel) return null;
 
   if (showResult && selectedPrize) {
     const isWinning = isWinningPrize(selectedPrize);
-    const prize = wheel.prizes.find(p => p.label === selectedPrize);
-    
-    const title = isWinning ? selectedPrize : t('reward.consolationHeadline', { pct: String(5) });
+    const prize = wheel.prizes.find((p) => p.label === selectedPrize);
+
+    const title = isWinning ? selectedPrize : t('wheel.noWinTitle');
     const description = isWinning
       ? prize?.description ?? undefined
-      : t('reward.consolationWheel', { label: selectedPrize });
+      : `${t('wheel.noWinLanded', { label: selectedPrize })}\n\n${t('wheel.noWinMessage')}`;
 
     return (
-      <div className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-winning wheel-result-consolation'}`}>
+      <div
+        className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-winning wheel-result-consolation'}`}
+      >
         <Confetti count={isWinning ? 40 : 18} />
         <RewardModal
           title={title}
@@ -203,18 +223,15 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     );
   }
 
-  // Show blocked message if user can't play
-  if (!playStatus.canPlay) {
-    const hoursText = playStatus.hoursRemaining === 1 
-      ? t('wheel.hour') 
-      : t('wheel.hours');
+  if (cooldownBlocked) {
+    const hoursText = cooldownHoursRemaining === 1 ? t('wheel.hour') : t('wheel.hours');
     return (
       <div className="wheel-message">
         <p>{t('wheel.alreadyPlayed')}</p>
         <p className="cooldown-message">
-          {t('wheel.comeBackIn', { 
-            hours: playStatus.hoursRemaining?.toString() || '0',
-            hoursText 
+          {t('wheel.comeBackIn', {
+            hours: cooldownHoursRemaining != null ? String(cooldownHoursRemaining) : '0',
+            hoursText,
           })}
         </p>
       </div>
@@ -229,100 +246,28 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
     );
   }
 
-  // Build conic-gradient for wheel background
-  const buildConicGradient = () => {
-    const sliceAngle = 360 / wheel.prizes.length;
-    const stops: string[] = [];
-    
-    wheel.prizes.forEach((_, index) => {
-      const startAngle = sliceAngle * index;
-      const color = index % 2 === 0 
-        ? config.branding.primaryColor 
-        : config.branding.secondaryColor;
-      stops.push(`${color} ${startAngle}deg`);
-      stops.push(`${color} ${startAngle + sliceAngle}deg`);
-    });
-    
-    // Combine conic gradient with radial gradient for center highlight
-    return `radial-gradient(circle at center, rgba(255, 255, 255, 0.1) 0%, transparent 50%), conic-gradient(${stops.join(', ')})`;
-  };
-
+  const wheelLocked = isSpinning || awaitingReveal;
 
   return (
-    <div className="wheel-container">
-      <div className="wheel-wrapper">
-        <div className="wheel-pointer">▼</div>
-        <div 
-          className={`wheel ${isSpinning ? 'spinning' : ''} ${selectedPrizeIndex !== null && !isSpinning ? 'stopped' : ''}`}
-          data-prizes-count={wheel.prizes.length}
-          style={{
-            background: buildConicGradient(),
-            transform: `rotate(${wheelRotation}deg)`,
-            transition: isSpinning 
-              ? 'transform 2s cubic-bezier(0.25, 0.1, 0.25, 1)'
-              : selectedPrizeIndex !== null && !isSpinning
-              ? 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94)'
-              : 'none',
-            filter: isSpinning ? 'blur(1.5px)' : 'blur(0px)',
-            willChange: isSpinning ? 'transform, filter' : 'auto',
-            ...(selectedPrizeIndex !== null && !isSpinning ? {
-              '--slice-angle': `${360 / wheel.prizes.length}deg`,
-              '--start-angle': `${(360 / wheel.prizes.length) * selectedPrizeIndex}deg`,
-            } : {})
-          } as React.CSSProperties}
-        >
-        {wheel.prizes.map((prize, index) => {
-          const sliceAngle = 360 / wheel.prizes.length;
-          const startAngle = sliceAngle * index;
-          const midAngle = startAngle + sliceAngle / 2;
-          const isWinningSlice = selectedPrizeIndex === index && !isSpinning;
-          
-          // Adjust radius based on number of prizes (max 6)
-          const numPrizes = Math.min(wheel.prizes.length, 6);
-          const radius = numPrizes <= 4 ? 38 : numPrizes === 5 ? 36 : 35;
-          const angleRad = ((midAngle - 90) * Math.PI) / 180;
-          const x = 50 + radius * Math.cos(angleRad);
-          const y = 50 + radius * Math.sin(angleRad);
-          
-          return (
-            <div
-              key={index}
-              className={`wheel-label ${isWinningSlice ? 'winning' : ''}`}
-              style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                transform: `translate(-50%, -50%) rotate(${midAngle}deg)`,
-              } as React.CSSProperties}
-            >
-              {prize.iconUrl && (
-                <img src={prize.iconUrl} alt={prize.label} className="prize-icon" />
-              )}
-              <span className="slice-label">
-                {prize.label}
-              </span>
-            </div>
-          );
-        })}
-        </div>
-      </div>
+    <div className={`wheel-container ${hintShake ? 'wheel-container--shake-hint' : ''}`}>
+      <GesturePrizeWheel
+        labels={labels}
+        colors={segColors}
+        size={wheelSize}
+        disabled={wheelLocked}
+        pickWinnerIndex={pickWinnerIndex}
+        onSpinStart={handleSpinStart}
+        onSettled={handleWheelSettled}
+      />
+      <p className={`wheel-drag-hint ${hintShake ? 'wheel-drag-hint--pulse' : ''}`}>{t('wheel.dragHint')}</p>
       <div className="wheel-prize-strip">
         {wheel.prizes.map((prize, idx) => (
-          <span key={idx} className="wheel-prize-chip">{prize.label}</span>
+          <span key={idx} className="wheel-prize-chip">
+            {prize.label}
+          </span>
         ))}
       </div>
-      <div className="spin-button-container">
-        <button 
-          className={`spin-button ${buttonShake ? 'shake' : ''}`}
-          onClick={handleSpin}
-          disabled={isSpinning}
-        >
-          {isSpinning ? t('wheel.spinning') : t('wheel.spinButton')}
-        </button>
-        {showBlockedTooltip && (
-          <div className="blocked-tooltip">{t('wheel.thanksParticipating')}</div>
-        )}
-      </div>
+      {showBlockedTooltip && <div className="blocked-tooltip">{t('wheel.thanksParticipating')}</div>}
     </div>
   );
 }
-

@@ -93,8 +93,10 @@
     "alreadyTried": "You already tried! Screenshot & DM us 💕",
     "thanksParticipating": "You've already played! Thanks for participating.",
     "noWinTitle": "Better luck next time!",
+    "noWinLanded": "You landed on \"{{label}}\".",
     "noWinMessage": "Don't give up! Try again next time. 💪",
-    "spinAgain": "Spin again"
+    "spinAgain": "Spin again",
+    "dragHint": "Flick the wheel quickly with your finger or mouse to spin."
   },
   "tapHearts": {
     "title": "Catch the Prize",

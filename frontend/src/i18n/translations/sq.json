@@ -93,8 +93,10 @@
     "alreadyTried": "Ke provuar tashmë! Bëj screenshot dhe na shkruaj 💕",
     "thanksParticipating": "Ke luajtur tashmë! Faleminderit për pjesëmarrjen.",
     "noWinTitle": "Fat më të mirë herën tjetër!",
+    "noWinLanded": "Dole te \"{{label}}\".",
     "noWinMessage": "Mos u dorëzo! Provo përsëri herën tjetër. 💪",
-    "spinAgain": "Rrotullo përsëri"
+    "spinAgain": "Rrotullo përsëri",
+    "dragHint": "Lësho rrotullën shpejt me gisht ose maus për ta rrotulluar."
   },
   "tapHearts": {
     "title": "Kap Çmimin",

@@ -426,17 +426,19 @@ export const SHOP_SQ_FALLBACKS: Record<string, ShopSqFallback> = {
   },
   'astra-accessories': {
     text: {
-      title: 'Gërvisht për të zbuluar gjestin tënd',
-      subtitle: 'Bizhuteri dhe aksesorë të mirë — një lojë mirësjelljeje për vizitor.',
-      ctaText: 'Rezervo shikim privat',
-      resultTitle: 'Kënaqësi.',
-      resultSubtitle: 'Mirësjellja jote është shënuar më poshtë.',
+      title: 'Gërvisht ose luaj për surprizën tënde',
+      subtitle: 'Bizhuteri dhe aksesorë — një lojë falas për vizitor.',
+      ctaText: 'Na shkruaj në DM',
+      resultTitle: 'Faleminderit!',
+      resultSubtitle: 'Oferta jote është më poshtë.',
     },
     wheelPrizes: [
-      { label: 'Konsultë falas për masën', description: '30 minuta, atelje në Mayfair.' },
-      { label: '50 £ për gravurë me porosi', description: 'Vlen për porosi mbi 600 £.' },
-      { label: 'Shaampanjë në marrje', description: 'Kur mbledh porosi mbi 800 £.' },
-      { label: 'Na vizito një herë tjetër', description: 'Konçierji ju pret së shpejti.' },
+      { label: 'Dërgesë falas', description: 'Dërgesë me gjurmim në porosinë tënde të radhës.' },
+      { label: 'Dhuratë surprizë', description: 'Një falënderim i vogël nga ne në paketë.' },
+      { label: '10% zbritje në porosi', description: 'Vlen për aksesorë dhe bizhuteri (detajet në DM).' },
+      { label: '15% zbritje në porosi', description: 'Falënderim më i fortë — aksesorë dhe bizhuteri (detajet në DM).' },
+      { label: 'Provo përsëri nesër', description: 'Sot pa çmim — kthehu pas afatit të lojës.' },
+      { label: 'Jo në këtë raund', description: 'Pak fat — provo herën tjetër.' },
     ],
     scratch: {
       overlayText: 'Zbuloje mirësjelljen',
@@ -465,8 +467,8 @@ export const SHOP_SQ_FALLBACKS: Record<string, ShopSqFallback> = {
       },
       howToOrder: {
         heading: 'Një eksperiencë ndryshe blerjeje',
-        body: '1) Luaj një nga lojërat 🎮 2) Fito ofertë ose surprizë 🎁 3) Na dërgo kodin e fituar në DM ose screenshotpër të bërë porosinë.',
-        primaryCtaLabel: 'DM në Instagram',
+        body: '1) Luaj një nga lojërat 🎮 2) Fito ofertë ose surprizë 🎁 3) Na dërgo kodin e fituar në DM ose screenshot për të bërë porosinë.',
+        primaryCtaLabel: 'Na shkruaj në DM',
       },
       about: {
         whatWeSell: 'Varëse, byzylykë, unaza, aksesorë fashion & dhurata.',

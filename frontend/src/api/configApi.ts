@@ -127,7 +127,7 @@ export async function fetchShopConfig(shopId: string, mode?: string, language?: 
       // Try by slug (e.g. "pinkster-main" → slug "pinkster")
       const slugMatch = shopId.match(/^([a-z0-9-]+)-([a-z0-9]+)$/i);
       if (slugMatch) {
-        return loadFromStaticJsonBySlug(slugMatch[1], mode);
+        return loadFromStaticJsonBySlug(slugMatch[1], mode, language);
       }
       throw e instanceof Error ? e : new Error('Shop not found');
     }
