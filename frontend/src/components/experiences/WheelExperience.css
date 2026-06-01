@@ -1,4 +1,4 @@
-.wheel-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.wheel-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; min-height: 0; }
 .wheel-container--shake-hint { animation: wheel-hint-shake 0.45s ease; }
 @keyframes wheel-hint-shake {
   20% { transform: translateX(-5px); }
@@ -11,7 +11,7 @@
   max-width: 22rem;
   text-align: center;
   font-size: 0.82rem;
-  line-height: 1.35;
+  line-height: 1.4;
   color: #64748b;
 }
 .wheel-drag-hint--pulse { animation: wheel-hint-pulse 0.55s ease; }
@@ -26,8 +26,31 @@
 .wheel-label { position: absolute; width: 88px; text-align: center; font-size: .75rem; font-weight: 700; color: #fff; text-shadow: 0 1px 5px rgba(0,0,0,.65); }
 .slice-label { display: block; line-height: 1.2; }
 
-.wheel-prize-strip { display: flex; gap: .35rem; flex-wrap: wrap; justify-content: center; }
-.wheel-prize-chip { font-size: .7rem; background: rgba(255,255,255,.8); border: 1px solid rgba(148,163,184,.4); padding: .22rem .5rem; border-radius: 999px; }
+.wheel-prize-strip {
+  display: flex;
+  gap: 0.35rem 0.45rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 100%;
+  padding: 0.1rem 0;
+}
+.wheel-prize-chip {
+  font-size: 0.72rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  line-height: 1.35;
+}
+
+@media (max-height: 680px) {
+  .wheel-drag-hint { font-size: 0.78rem; }
+  .wheel-prize-chip { font-size: 0.68rem; padding: 0.18rem 0.48rem; }
+}
+
+@media (max-height: 580px) {
+  .wheel-prize-strip { display: none; }
+}
 .skill-meter-wrap{width:100%;max-width:260px;text-align:center}
 .skill-meter-label{font-size:.78rem;color:#64748b;margin-bottom:.25rem}
 .skill-meter{position:relative;height:8px;background:#e2e8f0;border-radius:999px}

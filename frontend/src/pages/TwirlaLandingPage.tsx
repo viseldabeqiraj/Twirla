@@ -23,7 +23,7 @@ const DEMO_SHOPS = [
     name: 'Urban Glow',
     slug: 'urban-glow',
     logo: resolveAssetUrl('/logos/urban-glow.png'),
-    description: 'Dyqan kozmetike me lojë gërvishtjeje dhe branding personalizuar.',
+    description: 'Dyqan kozmetike me skincare, makeup dhe zbritje — luaj për kode ekskluzive në DM.',
     visualClass: 'tw-work-card-visual--urban',
     featured: false,
   },

@@ -102,6 +102,12 @@ export default function ExperiencePage() {
   );
   const { cssVars } = useComputedShopTheme(themeInput);
 
+  useEffect(() => {
+    const appContent = document.querySelector('.app-layout > .app-content');
+    appContent?.classList.add('app-content--experience');
+    return () => appContent?.classList.remove('app-content--experience');
+  }, []);
+
   if (loading) {
     return <AppLoader message={t('landing.loading')} variant="full" />;
   }

@@ -511,82 +511,111 @@ export const SHOP_SQ_FALLBACKS: Record<string, ShopSqFallback> = {
   },
   'urban-glow': {
     text: {
-      title: 'Kap capsule-at e glow-it',
+      title: 'Luaj dhe zhblloko ofertën tënde',
       subtitle:
-        'Prek çdo capsule — grim dhe kujdes për lëkurën nga Urban Glow, pa propagandë për mbushës të kotë në formulë.',
-      ctaText: 'Ndërto rutinën',
-      resultTitle: 'Fitore për lëkurën!',
-      resultSubtitle: 'Përfitimi yt është gati — mund ta përdorësh tani.',
+        'Grim, kujdes për lëkurën dhe produktet më të kërkuara nga Urban Glow — fito zbritje dhe porosit përmes DM në Instagram.',
+      ctaText: 'Porosit në DM',
+      resultTitle: 'Glow i zhbllokuar!',
+      resultSubtitle: 'Oferta jote është gati — na dërgo kodin në DM për të porositur.',
     },
     wheelPrizes: [
-      { label: 'Serum peptide në madhësi udhëtimi', description: 'Sa kohë ka stok.' },
-      { label: '20% zbritje për tre SPF', description: 'Paketë e plotë rutine.' },
-      { label: 'Thirrje konsultë lëkure falas', description: '15 minuta me estetisten tonë.' },
-      { label: 'Provo përsëri më vonë', description: 'Na vizito pasi të kalojë periudha e pritjes.' },
+      { label: '15% zbritje në porosi', description: 'Vlen për të gjithë grimrin dhe kujdesin për lëkurën (detajet në DM).' },
+      { label: 'Dërgesë falas', description: 'Për porosi mbi 2,000 ALL.' },
+      { label: 'Shkelqyes buzësh mini falas', description: 'Shkelqyes buzësh Rose Quartz në madhësi udhëtimi — sa kohë ka stok.' },
+      { label: '10% zbritje për set skincare', description: 'Paketë pastrues + serum Vitamin C.' },
+      { label: 'Provo përsëri nesër', description: 'Sot pa çmim — kthehu pas afatit të lojës.' },
+      { label: 'Jo në këtë raund', description: 'Pak fat — provo herën tjetër.' },
     ],
     tapHearts: {
-      revealText: 'Mostër deluxe krem barrierë',
-      revealSubtitle: 'DM URBAN-GLOW-HEARTS dhe adresa e dërgesës',
+      revealText: 'UG-HEARTS — 12% zbritje për produktet e buzëve',
+      revealSubtitle: 'Dërgo screenshot + kodin në DM brenda 7 ditëve',
     },
     scratch: {
-      overlayText: 'Gërvisht për të zbuluar përfitimin',
-      revealText: '25% zbritje për pastruesin e mikrobiomit',
-      revealSubtitle: 'Kodi UG-SCRATCH-25 — një përdorim për familje',
+      overlayText: 'Gërvisht për ofertën tënde',
+      revealText: '20% zbritje për serum Vitamin C',
+      revealSubtitle: 'Kodi UG-SCRATCH-20 — një përdorim për klient',
     },
     countdown: {
-      endMessage: 'Risia e barrierës për pranverën niset së pari për anëtarët.',
+      endMessage:
+        'Shitja Spring Glow mbaron së shpejti — fituesit e lojës marrin edhe 5% shtesë nëse porosisin para kohës.',
     },
     memory: {
-      revealSubtitle: '12% zbritje për shportën — dërgo foto në DM brenda 5 ditëve.',
+      revealSubtitle: '10% zbritje për shportën — dërgo screenshot në DM brenda 5 ditëve.',
     },
     campaign: {
-      featuredSectionTitle: 'Të preferuarat nga studioja',
-      gamesSectionTitle: 'Provo një përfitim',
+      featuredSectionTitle: 'Zgjedhjet e shitjes së pranverës',
+      gamesSectionTitle: 'Fito zbritje',
       hero: {
-        headline: 'Grim me rigorozitet laboratori.',
+        headline: 'Grim që të bën të dukesh e shkëlqyer.',
         tagline:
-          'Baza që vë lëkurën së pari, pigmentë që qëndrojnë dhe SPF që do të duash të vesh çdo ditë.',
-        ctaLabel: 'Ndërto rutinën time',
+          'Grim për çdo ditë, skincare viral dhe drop-e të limituara — luaj një herë dhe zhblloko ofertën vetëm në DM.',
+        ctaLabel: 'Luaj dhe porosit në DM',
       },
       valueProposition: {
-        headline: 'Çdo formulë testohet në persona me lëkurë të ndjeshme.',
-        body: 'Urban Glow publikon INCI të plotë dhe përqindjet e aktivëve — pa fshehje aromash, pa vaj mineral si mbushës.',
+        headline: 'Produkte origjinale, çmime të qarta.',
+        body: 'Urban Glow sjell K-beauty trend dhe essentials nga farmaci evropiane — çmime në ALL, paketa me zbritje dhe flash sale çdo javë në Instagram.',
       },
       howToOrder: {
-        heading: 'Dërgojmë nga Los Anxhelesi',
-        body: '1) Bli online ose na shkruaj në DM për ndihmë me nuancën. 2) Për produktet ndaj nxehtësisë, përdorim paketim të izoluar. 3) Abonohu dhe kurse 12% në ripërdorimet.',
-        primaryCtaLabel: 'Dyqani në Instagram',
+        heading: 'Porosit në 3 hapa',
+        body: '1) Luaj dhe fito kodin e zbritjes. 2) Na shkruaj në Instagram me kodin ose screenshot. 3) Paguaj në dorëzim kudo në Shqipëri.',
+        primaryCtaLabel: 'Porosit në DM',
       },
       about: {
-        whatWeSell: 'Grim i pastër, krem barrierë, serum me niacinamide, SPF mineral.',
+        whatWeSell: 'Shkelqyes buzësh, serum, fondotint, maskara, SPF dhe sete skincare.',
         aboutUs:
-          'Themeluar nga dy kimiste kozmetike pas një dekade në kërkim dhe zhvillim — Urban Glow shet vetëm drejtpërdrejt te klienti.',
-        physicalAddress: 'Marrje në studio të premte pasdite',
+          'Urban Glow është dyqani yt i bukurisë në Instagram — produkte trend, përgjigje të shpejta në DM dhe dërgesa në gjithë vendin.',
+        physicalAddress: 'Dyqan online • Dërgesa në gjithë Shqipërinë',
+        city: 'Tiranë',
+        country: 'Shqipëri',
       },
       featuredProducts: [
         {
-          title: 'Krem barrierë rikuperimi — 50 ml',
-          description: 'Ceramide NP dhe kolesteroli në raport 3:1:1.',
-          ctaLabel: 'Shto përmes DM',
+          title: 'Shkelqyes buzësh hidratues Rose Quartz',
+          description: 'Shkëlqim pa ngjitje · Shitje pranverore',
+          price: '850 ALL (ishte 1,000)',
+          ctaLabel: 'Porosit në DM',
         },
         {
-          title: 'SPF mineral 50 — nuancë e hollë',
-          description: 'Vetëm zink; formulë e përshtatshme për riffet korale.',
-          ctaLabel: 'Shto përmes DM',
+          title: 'Serum ndriçues Vitamin C — 30 ml',
+          description: 'Barazon tonin · 15% zbritje me kod loje',
+          price: '1,200 ALL',
+          ctaLabel: 'Porosit në DM',
+        },
+        {
+          title: 'Fondotint Soft Matte — 24 orë',
+          description: '12 nuanca · Sponxhë falas me porosi në DM',
+          price: '1,450 ALL',
+          ctaLabel: 'Porosit në DM',
+        },
+        {
+          title: 'Maskara Volume & Curl — e zezë',
+          description: 'Rezistente ndaj smudgit · 2 copë për 1,700 ALL',
+          price: '950 ALL',
+          ctaLabel: 'Porosit në DM',
         },
       ],
       testimonials: [
         {
-          quote: 'Më në fund një SPF që nuk më djeg sytë — dhe nuanca duket lëkurë e vërtetë.',
-          author: 'Ingrid M.',
-          role: 'Abonente',
+          quote:
+            'Porosita shkelqyesin e buzëve në DM pas 15% zbritjes — erdhi për dy ditë dhe nuanca është perfekte.',
+          author: 'Elira K.',
+          role: 'Kliente, Tiranë',
         },
       ],
-      trustBadges: [{ label: 'Në përputhje me BE-në' }, { label: 'Dërgesë e ftohtë në verë' }],
+      trustBadges: [
+        { label: 'Dërgesa në gjithë Shqipërinë' },
+        { label: 'Pagesë në dorëzim' },
+        { label: 'Produkte origjinale' },
+      ],
       faq: [
         {
-          question: 'A janë produktet të sigurta në shtatzëni?',
-          answer: 'Kontrollo kundërindikacionet për çdo etiketë ose na shkruaj estetistes me tremujorin tënd.',
+          question: 'Si e përdor kodin e zbritjes?',
+          answer:
+            'Na shkruaj në Instagram me kodin e fituar ose screenshot të rezultatit — e aplikojmë para konfirmimit të porosisë.',
+        },
+        {
+          question: 'A janë produktet origjinale?',
+          answer: 'Po. I marrim nga distributorë të autorizuar në BE dhe japim kod loti me kërkesë.',
         },
       ],
     },

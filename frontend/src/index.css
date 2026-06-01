@@ -72,6 +72,26 @@ body {
   .app-content.app-content--marketing {
     padding-bottom: 0;
   }
+
+  /* Game experiences: fit card in viewport */
+  .app-content.app-content--experience {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: max(48px, env(safe-area-inset-bottom, 0px) + 44px);
+  }
+}
+
+.app-content.app-content--experience {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 769px) {
+  .app-content.app-content--experience {
+    padding-bottom: 0;
+  }
 }
 
 button {

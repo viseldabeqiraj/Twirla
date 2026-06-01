@@ -175,7 +175,12 @@
 
 /* ── Hero ── */
 .tw-hero {
-  padding: clamp(20px, 3vw, 40px) 0 clamp(64px, 10vw, 120px);
+  padding: clamp(20px, 3vw, 40px) 0 clamp(24px, 3vw, 40px);
+}
+
+/* Tighter handoff to first section — internal component spacing unchanged */
+.tw-hero + .tw-section {
+  padding-top: clamp(40px, 5vw, 56px);
 }
 
 .tw-hero-grid {
@@ -791,7 +796,11 @@
 
   .tw-hero {
     padding-top: clamp(24px, 5vw, 40px);
-    padding-bottom: clamp(48px, 8vw, 80px);
+    padding-bottom: clamp(20px, 4vw, 32px);
+  }
+
+  .tw-hero + .tw-section {
+    padding-top: clamp(32px, 6vw, 48px);
   }
 
   .tw-header-inner {

@@ -63,10 +63,17 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   );
 
   useEffect(() => {
-    const q = () => setWheelSize(Math.min(288, Math.max(220, window.innerWidth - 52)));
-    q();
-    window.addEventListener('resize', q);
-    return () => window.removeEventListener('resize', q);
+    const computeSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const byWidth = Math.min(288, Math.max(200, width - 52));
+      const chrome = width <= 768 ? 388 : 358;
+      const byHeight = Math.max(168, height - chrome);
+      setWheelSize(Math.min(byWidth, byHeight));
+    };
+    computeSize();
+    window.addEventListener('resize', computeSize);
+    return () => window.removeEventListener('resize', computeSize);
   }, []);
 
   useEffect(() => {
