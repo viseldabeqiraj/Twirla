@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import AdminPage from './pages/AdminPage';
 import ExperiencePage from './pages/ExperiencePage';
 import HomePage from './pages/HomePage';
@@ -6,12 +6,16 @@ import RunnerPage from './pages/RunnerPage';
 import ShopLandingPage from './pages/ShopLandingPage';
 import ShopCampaignSetupPage from './pages/ShopCampaignSetupPage';
 import CampaignSetupGatePage from './pages/CampaignSetupGatePage';
+import TwirlaLandingPage from './pages/TwirlaLandingPage';
 import TwirlaFooter from './components/TwirlaFooter';
 
-function App() {
+function AppRoutes() {
+  const { pathname } = useLocation();
+  const hideFooter = pathname === '/';
+
   return (
     <div className="app-layout">
-      <div className="app-content">
+      <div className={`app-content${hideFooter ? ' app-content--marketing' : ''}`}>
         <Routes>
           <Route path="/admin/:slug" element={<AdminPage />} />
           <Route path="/setup/campaign" element={<CampaignSetupGatePage />} />
@@ -19,12 +23,17 @@ function App() {
           <Route path="/shop/:shopSlug" element={<ShopLandingPage />} />
           <Route path="/:mode/:shopName/:uniqueId" element={<ExperiencePage />} />
           <Route path="/runner" element={<RunnerPage />} />
-          <Route path="/" element={<HomePage />} />
+          <Route path="/play" element={<HomePage />} />
+          <Route path="/" element={<TwirlaLandingPage />} />
         </Routes>
       </div>
-      <TwirlaFooter />
+      {!hideFooter && <TwirlaFooter />}
     </div>
   );
+}
+
+function App() {
+  return <AppRoutes />;
 }
 
 export default App;

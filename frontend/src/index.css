@@ -67,6 +67,11 @@ body {
   .app-content.app-content--home-teaser {
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }
+
+  /* Marketing landing: own footer, no global sticky footer padding */
+  .app-content.app-content--marketing {
+    padding-bottom: 0;
+  }
 }
 
 button {

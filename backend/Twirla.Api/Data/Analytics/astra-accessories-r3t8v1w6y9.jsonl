@@ -106,3 +106,5 @@
 {"event":"reward_won","timestampUtc":"2026-05-14T20:35:03.6352649Z","visitorId":"v_1778193824881_grcbt0um1","sessionId":"s_1778193824881_yrjr2p13","value":null,"mode":"Wheel","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-05-14T20:35:09.0547172Z","visitorId":"v_1778193824881_grcbt0um1","sessionId":"s_1778193824881_yrjr2p13","value":null,"mode":"Wheel","couponCode":null}
 {"event":"page_view","timestampUtc":"2026-05-14T20:35:09.0792231Z","visitorId":"v_1778193824881_grcbt0um1","sessionId":"s_1778193824881_yrjr2p13","value":null,"mode":"Wheel","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-05-14T22:35:42.5867266Z","visitorId":"v_1778193824881_grcbt0um1","sessionId":"s_1778193824881_yrjr2p13","value":null,"mode":"Wheel","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-05-14T22:35:42.8208972Z","visitorId":"v_1778193824881_grcbt0um1","sessionId":"s_1778193824881_yrjr2p13","value":null,"mode":"Wheel","couponCode":null}
