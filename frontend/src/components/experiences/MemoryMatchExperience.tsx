@@ -3,7 +3,7 @@ import type { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
-import Confetti from '../Confetti';
+import RewardCelebration from '../RewardCelebration';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -324,10 +324,10 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
       )}
 
       {lost && (
-        <div className="memory-match-lose">
-          <Confetti count={20} />
+        <RewardCelebration className="memory-match-lose" celebrate={false}>
           <RewardModal
             title={t('reward.consolationHeadline', { pct: String(5) })}
+            sparkles={false}
             description={`${lostReason === 'time' ? t('memoryMatch.loseTime') : t('memoryMatch.loseMistakes')} ${t('memoryMatch.consolationCarry', { text: memory.revealText })}`}
             discountCode={finishCode}
             ctaUrl={cta.url}
@@ -349,12 +349,11 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
               mistakes: String(mistakes),
             })}
           </p>
-        </div>
+        </RewardCelebration>
       )}
 
       {won && (
-        <div className="memory-match-win">
-          <Confetti count={36} />
+        <RewardCelebration className="memory-match-win" confettiCount={36}>
           <RewardModal
             title={text.resultTitle}
             description={[text.resultSubtitle, memory.revealText, memory.revealSubtitle].filter(Boolean).join(' · ')}
@@ -387,7 +386,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
               </>
             }
           />
-        </div>
+        </RewardCelebration>
       )}
     </div>
   );

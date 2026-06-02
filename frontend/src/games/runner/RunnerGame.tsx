@@ -4,7 +4,7 @@ import type { RunnerGameConfig } from './runnerTypes';
 import { DEFAULT_RUNNER_OUTCOMES, DEFAULT_RUNNER_THEME } from './runnerTypes';
 import { useRunnerGame, type RunnerFrameState } from './useRunnerGame';
 import { drawRunnerFrame } from './runnerDraw';
-import Confetti from '../../components/Confetti';
+import RewardCelebration from '../../components/RewardCelebration';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
 import { trackEvent } from '../../api/analyticsApi';
@@ -54,6 +54,8 @@ export default function RunnerGame(props: RunnerGameProps) {
     () => (state.reward ? normalizeRunnerReward(state.reward, t) : null),
     [state.reward, t]
   );
+
+  const celebrateResult = state.reward != null && !state.reward.isNoWin;
 
   const rafRef = useRef<number>(0);
   const [replayFading, setReplayFading] = useState(false);
@@ -267,15 +269,17 @@ export default function RunnerGame(props: RunnerGameProps) {
         )}
 
         {state.uiState === 'gameover' && displayReward && (
-          <div
+          <RewardCelebration
             className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''}`}
+            celebrate={celebrateResult}
+            confettiCount={22}
           >
-            <Confetti count={22} />
             <h2 className="runner-gameover-title">{t('runner.gameOver')}</h2>
             <RewardModal
               title={displayReward.headline}
               description={displayReward.body ?? undefined}
               discountCode={finishCode}
+              sparkles={celebrateResult}
               ctaUrl={config.ctaUrl || '#'}
               ctaLabel={config.ctaLabel ?? t('runner.claimReward')}
               copyLabel={t('campaign.copyCode')}
@@ -292,7 +296,7 @@ export default function RunnerGame(props: RunnerGameProps) {
             <p className="runner-gameover-best">
               {t('runner.best')}: {state.bestScore}
             </p>
-          </div>
+          </RewardCelebration>
         )}
       </div>
     </div>

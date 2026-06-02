@@ -18,6 +18,8 @@ export interface RewardModalProps {
   gameMode: string;
   extraActions?: React.ReactNode;
   onCtaClick?: () => void;
+  /** Sparkle backdrop on the reward card (off for no-win / loss states) */
+  sparkles?: boolean;
 }
 
 export default function RewardModal({
@@ -32,6 +34,7 @@ export default function RewardModal({
   gameMode,
   extraActions,
   onCtaClick,
+  sparkles = true,
 }: RewardModalProps) {
   const [copied, setCopied] = useState(false);
   const reduceMotion = useReducedMotion();
@@ -55,7 +58,7 @@ export default function RewardModal({
   };
 
   return (
-    <RewardRevealAnimation sparkles className="tw-reward-modal">
+    <RewardRevealAnimation sparkles={sparkles} className="tw-reward-modal">
       <div className="tw-reward-modal__card tw-reward-modal__card--glow">
         <h3 className="tw-reward-modal__title">{title}</h3>
         {description ? <p className="tw-reward-modal__desc">{description}</p> : null}

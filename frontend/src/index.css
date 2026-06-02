@@ -88,9 +88,19 @@ body {
   flex-direction: column;
 }
 
+.app-content.app-content--experience.app-content--experience-scroll {
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
 @media (min-width: 769px) {
   .app-content.app-content--experience {
     padding-bottom: 0;
+  }
+
+  .app-content.app-content--experience.app-content--experience-scroll {
+    padding-bottom: max(48px, env(safe-area-inset-bottom, 0px) + 44px);
   }
 }
 

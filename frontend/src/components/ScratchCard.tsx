@@ -8,12 +8,14 @@ const SUSPENSE_MS = 260;
 const FADE_MS = 320;
 
 export interface ScratchCardProps {
-  /** Content shown under the scratch layer (and after reveal) */
-  hiddenContent: React.ReactNode;
+  /** Content shown under the scratch layer (and after reveal unless revealToModal) */
+  hiddenContent?: React.ReactNode;
   /** Percentage scratched (0–100) that triggers auto full reveal */
   revealThreshold?: number;
   /** Called when the reveal animation is complete (e.g. for confetti) */
   onReveal?: () => void;
+  /** Foil fades out and onReveal runs without showing hiddenContent (for shared RewardModal flow) */
+  revealToModal?: boolean;
   /** Text drawn on the foil layer, centered (e.g. "Scratch here") */
   instructionText?: string;
   /** Optional instruction above the card (if not using instructionText on foil) */
@@ -35,6 +37,7 @@ export default function ScratchCard({
   aspectRatio = '16/10',
   onFirstTouch,
   celebration,
+  revealToModal = false,
 }: ScratchCardProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -68,11 +71,25 @@ export default function ScratchCard({
 
     const w = rect.width;
     const h = rect.height;
+    const bleed = 2;
+    const edgeInset = 3;
+    const shell = canvas.closest('.scratch-card-container');
+    const radiusPx = shell ? parseFloat(getComputedStyle(shell).borderTopLeftRadius) : 20;
+    const cornerR = Number.isFinite(radiusPx) && radiusPx > 0 ? radiusPx : 20;
 
     const rnd = (seed: number) => {
       const x = Math.sin(seed * 12.9898) * 43758.5453;
       return x - Math.floor(x);
     };
+
+    ctx.save();
+    if (typeof (ctx as CanvasRenderingContext2D & { roundRect?: unknown }).roundRect === 'function') {
+      ctx.beginPath();
+      ctx.roundRect(0, 0, w, h, cornerR);
+      ctx.clip();
+    }
+
+    const fillFull = () => ctx.fillRect(-bleed, -bleed, w + bleed * 2, h + bleed * 2);
 
     // 1. Silver metallic base with richer contrast
     const base = ctx.createLinearGradient(0, 0, w, h);
@@ -86,7 +103,7 @@ export default function ScratchCard({
     base.addColorStop(0.85, '#e3e7ee');
     base.addColorStop(1, '#767981');
     ctx.fillStyle = base;
-    ctx.fillRect(0, 0, w, h);
+    fillFull();
 
     // 2. Holographic iridescent layer — subtle rainbow tint
     ctx.save();
@@ -99,7 +116,7 @@ export default function ScratchCard({
     holo.addColorStop(0.8, '#fbbf24');
     holo.addColorStop(1, '#fb7185');
     ctx.fillStyle = holo;
-    ctx.fillRect(0, 0, w, h);
+    fillFull();
     ctx.restore();
 
     // 3. Second holographic band (cross direction for depth)
@@ -111,7 +128,7 @@ export default function ScratchCard({
     holo2.addColorStop(0.6, '#fda4af');
     holo2.addColorStop(1, '#86efac');
     ctx.fillStyle = holo2;
-    ctx.fillRect(0, 0, w, h);
+    fillFull();
     ctx.restore();
 
     // 4. Diagonal metallic shift — light/shadow bands
@@ -121,7 +138,7 @@ export default function ScratchCard({
     shift.addColorStop(0.65, 'rgba(0,0,0,0.08)');
     shift.addColorStop(1, 'rgba(255,255,255,0.2)');
     ctx.fillStyle = shift;
-    ctx.fillRect(0, 0, w, h);
+    fillFull();
 
     // 5. Pearl sheen highlight
     const sheen = ctx.createRadialGradient(w * 0.28, h * 0.2, 0, w * 0.5, h * 0.5, w * 0.9);
@@ -129,19 +146,20 @@ export default function ScratchCard({
     sheen.addColorStop(0.35, 'rgba(255,255,255,0.12)');
     sheen.addColorStop(1, 'rgba(255,255,255,0)');
     ctx.fillStyle = sheen;
-    ctx.fillRect(0, 0, w, h);
+    fillFull();
 
-    // 6. Brushed-metal diagonal lines
+    // 6. Brushed-metal diagonal lines (inset so strokes do not stack on top/bottom edges)
     ctx.save();
     ctx.globalAlpha = 0.06;
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 0.8;
     const step = 5;
     const angle = (32 * Math.PI) / 180;
+    const innerH = h - edgeInset * 2;
     for (let i = -h; i < w + h; i += step) {
       ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i + h * Math.tan(angle), h);
+      ctx.moveTo(i, edgeInset);
+      ctx.lineTo(i + innerH * Math.tan(angle), h - edgeInset);
       ctx.stroke();
     }
     ctx.restore();
@@ -154,8 +172,8 @@ export default function ScratchCard({
     const angle2 = (-25 * Math.PI) / 180;
     for (let i = -h; i < w + h; i += step * 2) {
       ctx.beginPath();
-      ctx.moveTo(i, 0);
-      ctx.lineTo(i + h * Math.tan(angle2), h);
+      ctx.moveTo(i, edgeInset);
+      ctx.lineTo(i + innerH * Math.tan(angle2), h - edgeInset);
       ctx.stroke();
     }
     ctx.restore();
@@ -208,6 +226,8 @@ export default function ScratchCard({
     }
     ctx.restore();
 
+    ctx.restore(); /* roundRect clip */
+
     // Instruction text is rendered as an HTML overlay (scratch-card-instruction-pulse)
     // so we skip drawing it on the canvas to avoid duplication.
 
@@ -228,14 +248,10 @@ export default function ScratchCard({
     return () => ro.disconnect();
   }, [drawOverlay]);
 
-  const getScratchPosition = useCallback((e: React.TouchEvent | React.MouseEvent) => {
+  const getScratchPosition = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
-    if ('touches' in e) {
-      const t = e.touches[0];
-      return { x: t.clientX - rect.left, y: t.clientY - rect.top };
-    }
     return { x: e.clientX - rect.left, y: e.clientY - rect.top };
   }, []);
 
@@ -314,9 +330,10 @@ export default function ScratchCard({
     [isRevealed, isRevealing, revealThreshold, getRevealedPercent]
   );
 
-  const handleStart = useCallback(
-    (e: React.TouchEvent | React.MouseEvent) => {
-      e.preventDefault();
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.button !== 0) return;
+      e.currentTarget.setPointerCapture(e.pointerId);
       setShowInstructionPulse(false);
       setIsPressing(true);
       if (!hasFiredFirstTouchRef.current) {
@@ -327,79 +344,59 @@ export default function ScratchCard({
       if (pos) {
         isScratchingRef.current = true;
         lastRef.current = pos;
-        setIsTouchPointer('touches' in e);
+        setIsTouchPointer(e.pointerType === 'touch');
         setCoinVisible(true);
         updateCoinPointer(pos);
-        scratchAt(pos.x, pos.y, 'touches' in e);
+        scratchAt(pos.x, pos.y, e.pointerType === 'touch');
       }
     },
-    [getScratchPosition, scratchAt, onFirstTouch, updateCoinPointer]
+    [getScratchPosition, scratchAt, onFirstTouch, updateCoinPointer],
   );
 
-  const handleMove = useCallback(
-    (e: React.TouchEvent | React.MouseEvent) => {
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
       const pos = getScratchPosition(e);
       if (!pos) return;
 
       if (isScratchingRef.current && lastRef.current) {
-        e.preventDefault();
-        setIsTouchPointer('touches' in e);
+        setIsTouchPointer(e.pointerType === 'touch');
         updateCoinPointer(pos);
-        drawLine(lastRef.current, pos, 'touches' in e);
+        drawLine(lastRef.current, pos, e.pointerType === 'touch');
         lastRef.current = pos;
-      } else if (!('touches' in e)) {
+      } else if (e.pointerType === 'mouse') {
         setCoinVisible(true);
         updateCoinPointer(pos);
       }
     },
-    [getScratchPosition, drawLine, updateCoinPointer]
+    [getScratchPosition, drawLine, updateCoinPointer],
   );
 
-  const handleEnd = useCallback(() => {
+  const handlePointerUp = useCallback((e: React.PointerEvent<HTMLCanvasElement>) => {
+    if (e.currentTarget.hasPointerCapture(e.pointerId)) {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    }
     isScratchingRef.current = false;
     lastRef.current = null;
     setIsPressing(false);
     setCoinVisible(false);
-    document.body.style.overflow = '';
   }, []);
 
-  const handleMouseEnter = useCallback(
-    (e: React.MouseEvent) => {
+  const handlePointerEnter = useCallback(
+    (e: React.PointerEvent<HTMLCanvasElement>) => {
+      if (e.pointerType !== 'mouse') return;
       const pos = getScratchPosition(e);
       if (pos) {
         updateCoinPointer(pos);
         setCoinVisible(true);
       }
     },
-    [getScratchPosition, updateCoinPointer]
+    [getScratchPosition, updateCoinPointer],
   );
 
-  // Prevent page scroll when touching the scratch canvas (passive: false so preventDefault works)
-  const canvasWrapRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const wrap = canvasWrapRef.current;
-    if (!wrap) return;
-    const onTouchStart = (e: TouchEvent) => {
-      e.preventDefault();
-      document.body.style.overflow = 'hidden';
-    };
-    const onTouchMove = (e: TouchEvent) => {
-      if (isScratchingRef.current) e.preventDefault();
-    };
-    const onTouchEnd = () => {
-      document.body.style.overflow = '';
-    };
-    wrap.addEventListener('touchstart', onTouchStart, { passive: false, capture: true });
-    wrap.addEventListener('touchmove', onTouchMove, { passive: false, capture: true });
-    wrap.addEventListener('touchend', onTouchEnd, { capture: true });
-    wrap.addEventListener('touchcancel', onTouchEnd, { capture: true });
-    return () => {
-      wrap.removeEventListener('touchstart', onTouchStart, { capture: true });
-      wrap.removeEventListener('touchmove', onTouchMove, { capture: true });
-      wrap.removeEventListener('touchend', onTouchEnd, { capture: true });
-      wrap.removeEventListener('touchcancel', onTouchEnd, { capture: true });
-      document.body.style.overflow = '';
-    };
+  const handlePointerLeave = useCallback(() => {
+    if (!isScratchingRef.current) {
+      setCoinVisible(false);
+    }
   }, []);
 
   // Reveal sequence: suspense -> fade foil -> reveal complete -> onReveal (confetti)
@@ -407,20 +404,23 @@ export default function ScratchCard({
     if (!isRevealing) return;
     const t1 = setTimeout(() => setFadeOut(true), SUSPENSE_MS);
     const t2 = setTimeout(() => {
-      setIsRevealed(true);
+      if (!revealToModal) {
+        setIsRevealed(true);
+      }
       onReveal?.();
     }, SUSPENSE_MS + FADE_MS);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
     };
-  }, [isRevealing, onReveal]);
+  }, [isRevealing, onReveal, revealToModal]);
 
   return (
     <div className="scratch-card-wrap" ref={containerRef}>
       {instruction != null && !instructionText && (
         <p className="scratch-card-instruction">{instruction}</p>
       )}
+      <div className="scratch-card-shadow">
       <div
         className={`scratch-card-container ${isRevealed ? 'scratch-card-container--revealed' : ''}`}
         style={{ aspectRatio }}
@@ -432,7 +432,6 @@ export default function ScratchCard({
           {!isRevealed && (
             <div
               className={`scratch-card-canvas-wrap ${!isPressing && !fadeOut ? 'scratch-card-canvas-wrap--idle' : ''}`}
-              ref={canvasWrapRef}
             >
               {instructionText && showInstructionPulse && (
                 <span className="scratch-card-instruction-pulse" aria-hidden="true">
@@ -442,15 +441,12 @@ export default function ScratchCard({
               <canvas
                 ref={canvasRef}
                 className={`scratch-card-canvas ${fadeOut ? 'scratch-card-canvas--fade' : ''}`}
-                onMouseDown={handleStart}
-                onMouseMove={handleMove}
-                onMouseUp={handleEnd}
-                onMouseLeave={handleEnd}
-                onMouseEnter={handleMouseEnter}
-                onTouchStart={handleStart}
-                onTouchMove={handleMove}
-                onTouchEnd={handleEnd}
-                style={{ touchAction: 'none' }}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                onPointerEnter={handlePointerEnter}
+                onPointerLeave={handlePointerLeave}
               />
               <div className="scratch-card-shine" aria-hidden="true" />
               <div
@@ -468,6 +464,7 @@ export default function ScratchCard({
             </div>
           ) : null}
         </div>
+      </div>
       </div>
     </div>
   );

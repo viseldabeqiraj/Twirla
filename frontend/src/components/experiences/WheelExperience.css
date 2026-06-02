@@ -1,4 +1,4 @@
-.wheel-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; min-height: 0; }
+.wheel-container { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; min-height: 0; overflow: visible; }
 .wheel-container--shake-hint { animation: wheel-hint-shake 0.45s ease; }
 @keyframes wheel-hint-shake {
   20% { transform: translateX(-5px); }

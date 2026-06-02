@@ -3,7 +3,7 @@ import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
-import Confetti from '../Confetti';
+import RewardCelebration from '../RewardCelebration';
 import ScratchCard from '../ScratchCard';
 import RewardModal from '../twirla-ui/RewardModal';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -16,7 +16,6 @@ interface ScratchExperienceProps {
 export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const { scratch, text, shopId, branding, cta } = config;
   const { t } = useTranslation();
-  const [showConfetti, setShowConfetti] = useState(false);
   const [showRewardPanel, setShowRewardPanel] = useState(false);
   const [finishCode, setFinishCode] = useState<string | null>(null);
   const rewardTrackedRef = useRef(false);
@@ -40,7 +39,6 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   const handleReveal = () => {
-    setShowConfetti(true);
     setShowRewardPanel(true);
     trackEvent(shopId, 'game_finish', { mode: 'Scratch' });
     recordPlay(shopId);
@@ -65,8 +63,39 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
     );
   }
 
-  const rewardTitle = t('scratch.rewardPanelTitle');
-  const rewardDescription = [scratch.revealText, scratch.revealSubtitle].filter(Boolean).join(' · ');
+  const rewardTitle = scratch.revealText;
+  const rewardDescription = scratch.revealSubtitle;
+
+  if (showRewardPanel) {
+    return (
+      <div
+        className="scratch-experience-wrap"
+        style={
+          {
+            '--scratch-primary': branding.primaryColor,
+            '--scratch-secondary': branding.secondaryColor,
+          } as React.CSSProperties
+        }
+      >
+        <RewardCelebration
+          className="scratch-reward-panel wheel-result wheel-result-winning"
+          confettiCount={40}
+        >
+          <RewardModal
+            title={rewardTitle}
+            description={rewardDescription}
+            discountCode={finishCode}
+            ctaUrl={cta.url}
+            ctaLabel={text.ctaText}
+            copyLabel={t('campaign.copyCode')}
+            copiedLabel={t('reward.copied')}
+            shopId={shopId}
+            gameMode="Scratch"
+          />
+        </RewardCelebration>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -82,32 +111,18 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
         instructionText={t('scratch.scratchHere')}
         hiddenContent={
           <div className="scratch-reveal scratch-reveal-content">
-            <h2 className="scratch-reveal-title">{t('scratch.revealedTitle')}</h2>
             <p className="scratch-reveal-text">{scratch.revealText}</p>
-            {scratch.revealSubtitle && <p className="scratch-reveal-detail">{scratch.revealSubtitle}</p>}
+            {scratch.revealSubtitle ? (
+              <p className="scratch-reveal-detail">{scratch.revealSubtitle}</p>
+            ) : null}
           </div>
         }
         revealThreshold={90}
+        revealToModal
         onReveal={handleReveal}
         onFirstTouch={handleFirstTouch}
         aspectRatio="16/10"
-        celebration={showConfetti ? <Confetti count={40} /> : undefined}
       />
-      {showRewardPanel ? (
-        <div className="scratch-reward-panel">
-          <RewardModal
-            title={rewardTitle}
-            description={rewardDescription}
-            discountCode={finishCode}
-            ctaUrl={cta.url}
-            ctaLabel={text.ctaText}
-            copyLabel={t('campaign.copyCode')}
-            copiedLabel={t('reward.copied')}
-            shopId={shopId}
-            gameMode="Scratch"
-          />
-        </div>
-      ) : null}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
-import Confetti from '../Confetti';
+import RewardCelebration from '../RewardCelebration';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -67,7 +67,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
       const width = window.innerWidth;
       const height = window.innerHeight;
       const byWidth = Math.min(288, Math.max(200, width - 52));
-      const chrome = width <= 768 ? 388 : 358;
+      const chrome = width <= 768 ? 418 : 388;
       const byHeight = Math.max(168, height - chrome);
       setWheelSize(Math.min(byWidth, byHeight));
     };
@@ -206,14 +206,16 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
       : `${t('wheel.noWinLanded', { label: selectedPrize })}\n\n${t('wheel.noWinMessage')}`;
 
     return (
-      <div
-        className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-winning wheel-result-consolation'}`}
+      <RewardCelebration
+        className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-consolation'}`}
+        celebrate={isWinning}
+        confettiCount={40}
       >
-        <Confetti count={isWinning ? 40 : 18} />
         <RewardModal
           title={title}
           description={description}
           discountCode={finishCode}
+          sparkles={isWinning}
           ctaUrl={config.cta.url}
           ctaLabel={config.text.ctaText}
           copyLabel={t('campaign.copyCode')}
@@ -226,7 +228,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
             </PrimaryButton>
           }
         />
-      </div>
+      </RewardCelebration>
     );
   }
 

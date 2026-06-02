@@ -3,7 +3,7 @@ import { ShopConfig } from '../../types/ShopConfig';
 import { recordPlay } from '../../utils/playTracking';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
-import Confetti from '../Confetti';
+import RewardCelebration from '../RewardCelebration';
 import './CountdownExperience.css';
 
 interface CountdownExperienceProps {
@@ -123,14 +123,11 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
 
   if (hasEnded || !timeRemaining) {
     return (
-      <div className="countdown-ended" style={{ position: 'relative' }}>
-        <Confetti />
-        <h2 className="end-title" style={{ position: 'relative', zIndex: 1 }}>{text.resultTitle}</h2>
-        <p className="end-message" style={{ position: 'relative', zIndex: 1 }}>{countdown.endMessage}</p>
-        {text.resultSubtitle && (
-          <p className="end-subtitle" style={{ position: 'relative', zIndex: 1 }}>{text.resultSubtitle}</p>
-        )}
-      </div>
+      <RewardCelebration className="countdown-ended" confettiCount={50}>
+        <h2 className="end-title">{text.resultTitle}</h2>
+        <p className="end-message">{countdown.endMessage}</p>
+        {text.resultSubtitle && <p className="end-subtitle">{text.resultSubtitle}</p>}
+      </RewardCelebration>
     );
   }
 

@@ -1,3 +1,14 @@
+/* Outer shell reserves space for the pointer so it is never clipped */
+.gesture-prize-wheel-shell {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding-top: 30px;
+  overflow: visible;
+}
+
 .gesture-prize-wheel {
   position: relative;
   margin: 0 auto;
@@ -5,6 +16,7 @@
   cursor: grab;
   user-select: none;
   -webkit-user-select: none;
+  flex-shrink: 0;
   box-shadow:
     0 18px 44px rgba(2, 6, 23, 0.28),
     0 0 0 1px rgba(255, 255, 255, 0.12) inset;
@@ -45,18 +57,38 @@
 
 .gesture-prize-wheel__pointer {
   position: absolute;
-  top: -18px;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 5;
   pointer-events: none;
-  filter: drop-shadow(0 4px 12px rgba(2, 6, 23, 0.45));
+  width: 40px;
+  height: 28px;
 }
 
-.gesture-prize-wheel__pointer-icon {
-  font-size: clamp(22px, 5vw, 30px);
-  color: #f8fafc;
-  line-height: 1;
+.gesture-prize-wheel__pointer-outline,
+.gesture-prize-wheel__pointer-triangle {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+}
+
+.gesture-prize-wheel__pointer-outline {
+  border-top: 24px solid #fff;
+  filter: drop-shadow(0 2px 8px rgba(15, 23, 42, 0.35));
+}
+
+.gesture-prize-wheel__pointer-triangle {
+  bottom: 2px;
+  border-left-width: 13px;
+  border-right-width: 13px;
+  border-top: 20px solid var(--primary-color, #db2777);
 }
 
 @keyframes gesture-wheel-spin-glow {

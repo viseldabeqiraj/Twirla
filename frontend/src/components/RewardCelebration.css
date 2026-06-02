@@ -1,0 +1,42 @@
+.reward-celebration {
+  position: relative;
+  overflow: visible;
+  isolation: isolate;
+}
+
+.reward-celebration .confetti-container {
+  z-index: 50;
+}
+
+.reward-celebration-mood {
+  position: absolute;
+  top: -0.15rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 45;
+  pointer-events: none;
+}
+
+.reward-celebration-mood-emoji {
+  display: block;
+  font-size: clamp(2.25rem, 10vw, 3rem);
+  line-height: 1;
+  filter: drop-shadow(0 4px 10px rgba(15, 23, 42, 0.12));
+  animation: reward-loss-mood-bob 2.4s ease-in-out infinite;
+}
+
+@keyframes reward-loss-mood-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reward-celebration-mood-emoji {
+    animation: none;
+  }
+}

@@ -247,6 +247,11 @@
   padding: 0;
 }
 
+.memory-match-win.reward-celebration,
+.memory-match-lose.reward-celebration {
+  overflow: visible;
+}
+
 .memory-match-lose-title {
   margin: 0 0 0.35rem;
   font-size: 1.15rem;

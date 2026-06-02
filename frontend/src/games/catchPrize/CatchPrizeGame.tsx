@@ -3,7 +3,7 @@ import { useTranslation } from '../../i18n/i18n';
 import { useCatchPrizeGame } from './useCatchPrizeGame';
 import type { FallingItemKind } from './catchPrize.types';
 import type { TapHeartsOutcome } from '../../types/ShopConfig';
-import Confetti from '../../components/Confetti';
+import RewardCelebration from '../../components/RewardCelebration';
 import GameStatsBar from '../../components/twirla-ui/GameStatsBar';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
@@ -53,6 +53,8 @@ export default function CatchPrizeGame({
     () => (state.endOutcome ? normalizeTapHeartsReward(state.endOutcome, t) : null),
     [state.endOutcome, t]
   );
+
+  const celebrateResult = state.endOutcome != null && !state.endOutcome.isNoWin;
 
   useEffect(() => {
     if (state.phase === 'playing' && !hasFiredStart.current) {
@@ -186,13 +188,13 @@ export default function CatchPrizeGame({
       )}
 
       {state.phase === 'ended' && displayOutcome && (
-        <div className="catch-prize-ended">
-          <Confetti count={28} />
+        <RewardCelebration className="catch-prize-ended" celebrate={celebrateResult} confettiCount={28}>
           <h2 className="catch-prize-gameover">{t('catchPrize.gameOver')}</h2>
           <RewardModal
             title={displayOutcome.headline}
             description={displayOutcome.description}
             discountCode={finishCode}
+            sparkles={celebrateResult}
             ctaUrl={ctaUrl}
             ctaLabel={ctaLabel ?? t('catchPrize.claimReward')}
             copyLabel={t('campaign.copyCode')}
@@ -205,7 +207,7 @@ export default function CatchPrizeGame({
               </PrimaryButton>
             }
           />
-        </div>
+        </RewardCelebration>
       )}
     </div>
   );

@@ -6,6 +6,14 @@
   margin: 0 auto;
 }
 
+/* Shadow on a rounded clip shell — avoids rectangular halo in card corners */
+.scratch-card-shadow {
+  width: 100%;
+  border-radius: var(--scratch-radius, 20px);
+  filter: drop-shadow(0 8px 20px rgba(15, 23, 42, 0.14))
+    drop-shadow(0 18px 40px rgba(15, 23, 42, 0.12));
+}
+
 .scratch-card-instruction {
   text-align: center;
   font-size: 0.88rem;
@@ -15,25 +23,25 @@
 }
 
 .scratch-card-container {
+  --scratch-radius: 20px;
+  position: relative;
   width: 100%;
-  border-radius: 20px;
+  aspect-ratio: 16 / 10;
+  border-radius: var(--scratch-radius);
   overflow: hidden;
-  box-shadow:
-    0 4px 6px rgba(0, 0, 0, 0.08),
-    0 12px 28px rgba(0, 0, 0, 0.15),
-    0 24px 56px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(0, 0, 0, 0.06);
-  background: linear-gradient(135deg, #ff4fa3 0%, #7b5cff 100%);
+  /* Foil-toned fill so square layout box never shows page/white in rounded corners */
+  background: linear-gradient(145deg, #d4d8e0 0%, #8e9199 42%, #c5cad3 100%);
+  box-shadow: none;
+  isolation: isolate;
+  clip-path: inset(0 round var(--scratch-radius));
 }
 
 .scratch-card-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  display: grid;
-  place-items: center;
-  transition: transform 0.2s var(--tw-ease-out, ease-out);
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  transition: filter 0.12s var(--tw-ease-out, ease-out);
 }
 
 .scratch-card-content {
@@ -47,6 +55,14 @@
   text-align: center;
   pointer-events: none;
   z-index: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--scratch-radius));
+  background: linear-gradient(
+    130deg,
+    color-mix(in srgb, var(--scratch-primary, #db2777) 72%, #1a0a12),
+    color-mix(in srgb, var(--scratch-secondary, #be185d) 68%, #0f172a)
+  );
+  color: #fff;
 }
 
 .scratch-card-celebration {
@@ -78,9 +94,11 @@
   inset: 0;
   z-index: 1;
   overflow: hidden;
+  border-radius: inherit;
   touch-action: none;
   -webkit-user-select: none;
   user-select: none;
+  clip-path: inset(0 round var(--scratch-radius));
 }
 
 /* Instruction text overlay: pulse hint */
@@ -122,7 +140,13 @@
   inset: 0;
   width: 100%;
   height: 100%;
+  display: block;
+  border: none;
+  outline: none;
+  border-radius: inherit;
   cursor: none;
+  z-index: 1;
+  touch-action: none;
   transition: opacity 0.35s ease-out;
 }
 
@@ -135,6 +159,7 @@
 .scratch-card-shine {
   position: absolute;
   inset: 0;
+  border-radius: inherit;
   pointer-events: none;
   z-index: 2;
   background:
@@ -235,23 +260,19 @@
   transition: filter 0.12s var(--tw-ease-out, ease-out);
 }
 
-/* Glow pulse on reveal */
-.scratch-card-container--revealed {
+/* Glow pulse on reveal — on shadow shell so it follows rounded silhouette */
+.scratch-card-shadow:has(.scratch-card-container--revealed) {
   animation: scratch-card-reveal-glow 2.8s var(--tw-ease-in-out, ease-in-out) infinite alternate;
 }
 
 @keyframes scratch-card-reveal-glow {
   from {
-    box-shadow:
-      0 4px 6px rgba(0, 0, 0, 0.08),
-      0 12px 28px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(255, 255, 255, 0.12);
+    filter: drop-shadow(0 8px 20px rgba(15, 23, 42, 0.14))
+      drop-shadow(0 18px 40px rgba(15, 23, 42, 0.12));
   }
   to {
-    box-shadow:
-      0 6px 10px rgba(0, 0, 0, 0.1),
-      0 16px 36px rgba(124, 58, 237, 0.12),
-      0 0 0 1px rgba(255, 255, 255, 0.18);
+    filter: drop-shadow(0 10px 24px rgba(124, 58, 237, 0.18))
+      drop-shadow(0 22px 48px rgba(15, 23, 42, 0.14));
   }
 }
 
@@ -278,7 +299,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .scratch-card-container--revealed {
+  .scratch-card-shadow:has(.scratch-card-container--revealed) {
     animation: none;
   }
   .scratch-card-shine {

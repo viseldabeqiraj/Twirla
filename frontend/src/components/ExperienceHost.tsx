@@ -21,11 +21,16 @@ interface ExperienceHostProps {
   config: ShopConfig;
 }
 
+const RESULT_SELECTOR =
+  '.wheel-result, .countdown-ended, .runner-gameover, .catch-prize-ended, .memory-match-win, .memory-match-lose, .scratch-reward-panel';
+
 export default function ExperienceHost({ config }: ExperienceHostProps) {
   const { branding, text, cta, mode, shopId } = config;
   const { t } = useTranslation();
   const [shouldPulse, setShouldPulse] = useState(false);
+  const [hasResult, setHasResult] = useState(false);
   const experienceContentRef = useRef<HTMLDivElement>(null);
+  const hostRef = useRef<HTMLDivElement>(null);
   const theme = branding.theme || {};
 
   const bgMode = branding.backgroundMode ?? (theme.backgroundPattern === 'dark' ? 'dark' : 'light');
@@ -79,10 +84,10 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
         setShouldPulse(false);
         return;
       }
-      const hasResult = root.querySelector(
-        '.wheel-result, .scratch-reveal, .countdown-ended, .runner-gameover, .catch-prize-ended, .memory-match-win, .memory-match-lose, .scratch-reward-panel'
-      );
-      if (hasResult) {
+      const hasResultEl = root.querySelector(RESULT_SELECTOR);
+      const showResult = Boolean(hasResultEl);
+      setHasResult(showResult);
+      if (showResult) {
         setShouldPulse(true);
         if (pulseClear) clearTimeout(pulseClear);
         pulseClear = setTimeout(() => setShouldPulse(false), 10000);
@@ -102,6 +107,22 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       if (pulseClear) clearTimeout(pulseClear);
     };
   }, [mode]);
+
+  useEffect(() => {
+    const wrap = hostRef.current?.closest('.experience-page-wrap');
+    const appContent = document.querySelector('.app-layout > .app-content');
+    if (hasResult) {
+      wrap?.classList.add('experience-page-wrap--scrollable');
+      appContent?.classList.add('app-content--experience-scroll');
+    } else {
+      wrap?.classList.remove('experience-page-wrap--scrollable');
+      appContent?.classList.remove('app-content--experience-scroll');
+    }
+    return () => {
+      wrap?.classList.remove('experience-page-wrap--scrollable');
+      appContent?.classList.remove('app-content--experience-scroll');
+    };
+  }, [hasResult]);
 
   const renderExperience = () => {
     switch (mode) {
@@ -151,7 +172,8 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   return (
     <ShopThemeProvider input={themeInput}>
     <div
-      className={`experience-host pattern-${theme.backgroundPattern || 'gradient'} surface-${theme.surfaceStyle || 'glass'} ambient-${theme.ambientMotion ?? 'none'}`}
+      ref={hostRef}
+      className={`experience-host pattern-${theme.backgroundPattern || 'gradient'} surface-${theme.surfaceStyle || 'glass'} ambient-${theme.ambientMotion ?? 'none'}${hasResult ? ' experience-host--has-result' : ''}`}
       style={hostStyle}
     >
       <div className="orb orb-a" />

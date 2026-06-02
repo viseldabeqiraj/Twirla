@@ -363,20 +363,23 @@ export default function GesturePrizeWheel({
   }
 
   return (
-    <div
-      ref={wrapRef}
-      className={`gesture-prize-wheel ${phase === 'spinning' ? 'gesture-prize-wheel--spinning' : ''} ${
-        rimPulse ? 'gesture-prize-wheel--pulse' : ''
-      } ${hintShake ? 'gesture-prize-wheel--shake' : ''} ${disabled ? 'gesture-prize-wheel--disabled' : ''}`}
-      style={{ width: size, height: size, touchAction: 'none' }}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={endDrag}
-      onPointerCancel={endDrag}
-    >
-      <canvas ref={canvasRef} className="gesture-prize-wheel__canvas" aria-hidden />
+    <div className="gesture-prize-wheel-shell" style={{ width: size }}>
       <div className="gesture-prize-wheel__pointer" aria-hidden>
-        <span className="gesture-prize-wheel__pointer-icon">▼</span>
+        <span className="gesture-prize-wheel__pointer-outline" />
+        <span className="gesture-prize-wheel__pointer-triangle" />
+      </div>
+      <div
+        ref={wrapRef}
+        className={`gesture-prize-wheel ${phase === 'spinning' ? 'gesture-prize-wheel--spinning' : ''} ${
+          rimPulse ? 'gesture-prize-wheel--pulse' : ''
+        } ${hintShake ? 'gesture-prize-wheel--shake' : ''} ${disabled ? 'gesture-prize-wheel--disabled' : ''}`}
+        style={{ width: size, height: size, touchAction: 'none' }}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={endDrag}
+        onPointerCancel={endDrag}
+      >
+        <canvas ref={canvasRef} className="gesture-prize-wheel__canvas" aria-hidden />
       </div>
     </div>
   );

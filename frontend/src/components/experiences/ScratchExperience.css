@@ -12,16 +12,50 @@
 .scratch-reveal .reveal-content { border-radius: 12px; padding: .95rem; background: linear-gradient(120deg, var(--primary-color), var(--secondary-color)); color: #fff; }
 
 /* Reveal content when using shared ScratchCard (in experiences) */
-.scratch-experience-wrap .scratch-reveal-content { color: #fff; padding: 0.5rem; }
-.scratch-experience-wrap .scratch-reveal-title { font-size: 1.35rem; font-weight: 800; margin: 0 0 0.35rem; }
+.scratch-experience-wrap .scratch-reveal-content {
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+.scratch-experience-wrap .scratch-reveal-title { font-size: clamp(1.1rem, 4vw, 1.35rem); font-weight: 800; margin: 0 0 0.35rem; }
 .scratch-experience-wrap .scratch-reveal-subtitle { font-size: 0.95rem; opacity: .95; margin: 0 0 0.25rem; }
-.scratch-experience-wrap .scratch-reveal-text { font-size: 1.2rem; font-weight: 700; margin: 0; }
+.scratch-experience-wrap .scratch-reveal-text { font-size: clamp(1rem, 3.5vw, 1.2rem); font-weight: 700; margin: 0; }
 .scratch-experience-wrap .scratch-reveal-detail { font-size: 0.85rem; opacity: .9; margin: 0.35rem 0 0; }
 
-.scratch-reward-panel {
-  margin-top: var(--tw-space-md, 1rem);
+.scratch-experience-wrap {
   width: 100%;
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.65rem;
+}
+
+.scratch-experience-wrap .scratch-card-wrap {
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.scratch-experience-wrap .scratch-card-shadow {
+  border-radius: 20px;
+}
+
+.scratch-experience-wrap .scratch-card-container {
+  --scratch-radius: 20px;
+}
+
+.scratch-reward-panel {
+  width: 100%;
+  margin-top: 0;
+  flex-shrink: 0;
+}
+
+/* Same framed win panel as wheel / other games */
+.scratch-experience-wrap .scratch-reward-panel.wheel-result {
+  margin-top: 0;
 }

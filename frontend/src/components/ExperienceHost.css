@@ -3,9 +3,10 @@
   min-height: 0;
   position: relative;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: clamp(0.25rem, 1.5vh, 0.5rem) 1rem 0;
+  padding: clamp(0.5rem, 2.5vh, 1rem) clamp(0.75rem, 3vw, 1rem);
   overflow: hidden;
   font-family: var(--app-font);
   background: radial-gradient(1200px 500px at 15% -10%, color-mix(in srgb, var(--secondary-color) 45%, transparent), transparent),
@@ -13,16 +14,13 @@
     linear-gradient(135deg, color-mix(in srgb, var(--primary-color) 72%, #0f172a), color-mix(in srgb, var(--secondary-color) 65%, #111827));
 }
 
-/* Desktop: card sits just below nav — no dead band above footer */
 @media (min-width: 769px) {
   .experience-host {
-    align-items: center;
-    justify-content: flex-start;
-    padding: clamp(0.25rem, 1.5vh, 0.5rem) 1rem 0;
+    padding: clamp(0.65rem, 2.5vh, 1.15rem) 1rem;
   }
   .experience-container {
     padding: 0.5rem 1rem 0.55rem;
-    margin: 0 auto;
+    margin: auto;
     width: 100%;
     max-width: 520px;
     max-height: 100%;
@@ -70,8 +68,9 @@
   padding: 0.85rem 1.25rem 0.9rem;
   position: relative;
   z-index: 1;
-  margin: 0 auto;
+  margin: auto;
   box-sizing: border-box;
+  flex-shrink: 0;
   /* Card spacing from background: margin so it looks like a distinct card */
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
@@ -135,6 +134,10 @@
   overflow: hidden;
   box-sizing: border-box;
 }
+
+.experience-content:has(.wheel-container) {
+  overflow: visible;
+}
 .experience-content > * {
   width: 100%;
   max-width: 100%;
@@ -175,18 +178,59 @@
 .twirla-app-button { margin-top: .45rem; display: inline-flex; gap: .45rem; opacity: .8; font-size: .8rem; flex-shrink: 0; }
 .twirla-app-button-logo { height: 14px; }
 
-/* Mobile: center card in remaining viewport below nav */
+/* After win: card grows with reward UI — page scrolls, softer backdrop */
+.experience-host--has-result {
+  overflow: visible;
+  flex: 1 1 0%;
+  min-height: 0;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.5rem, 2.5vh, 1rem) clamp(0.75rem, 3vw, 1rem);
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--primary-color) 14%, #f8fafc) 0%,
+    color-mix(in srgb, var(--secondary-color) 10%, #f1f5f9) 48%,
+    #f8fafc 100%
+  );
+}
+
+.experience-host--has-result .orb {
+  opacity: 0.08;
+}
+
+.experience-host--has-result .experience-container {
+  max-height: none;
+  overflow: visible;
+  flex: 0 1 auto;
+  width: 100%;
+  margin: auto;
+}
+
+.experience-host--has-result .experience-content {
+  overflow: visible;
+  flex: 0 1 auto;
+  justify-content: flex-start;
+  min-height: 0;
+}
+
+.experience-host--has-result .cta-button,
+.experience-host--has-result .twirla-app-button {
+  flex-shrink: 0;
+}
+
+.experience-host--has-result .experience-container {
+  padding-bottom: 0.85rem;
+}
+
 @media (max-width: 768px) {
   .experience-host {
-    padding: 0.35rem 0.75rem 0;
-    align-items: center;
-    justify-content: flex-start;
+    padding: clamp(0.45rem, 2vh, 0.85rem) 0.75rem;
     box-sizing: border-box;
   }
   .experience-container {
     max-width: 100%;
     width: 100%;
-    margin: 0 auto;
+    margin: auto;
     padding: 0.75rem 0.85rem 0.65rem;
     border-radius: 20px;
     box-sizing: border-box;
@@ -214,7 +258,7 @@
 }
 
 @media (max-width: 520px) {
-  .experience-host { padding: 0.25rem 0.5rem 0.2rem; }
+  .experience-host { padding: clamp(0.4rem, 1.75vh, 0.75rem) 0.5rem; }
   .experience-container {
     padding: 0.65rem 0.7rem 0.55rem;
     border-radius: 18px;

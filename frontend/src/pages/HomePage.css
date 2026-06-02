@@ -78,6 +78,8 @@
 .home-scratch-section {
   position: relative;
   margin: 1.35rem 0 0;
+  --scratch-primary: #e11d74;
+  --scratch-secondary: #7b5cff;
   /* Insets the whole card from the column edges (foil is full-bleed inside the wrap; content padding alone does not shrink the visible card). */
   padding: 0 clamp(1.25rem, 5vw, 2rem);
   width: 100%;
@@ -112,16 +114,15 @@
     0 0 1px rgba(255, 255, 255, 0.25);
 }
 
-/* Card shell — depth + soft top light */
-.home-scratch-section .scratch-card-container {
-  background: linear-gradient(145deg, #fd79a7 0%, #e11d74 38%, #7b5cff 100%);
+/* Card shell — depth + soft top light (brand frame is the foil itself, not a outer box) */
+.home-scratch-section .scratch-card-shadow {
   border-radius: 22px;
-  box-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.1),
-    0 14px 32px rgba(15, 23, 42, 0.14),
-    0 28px 56px rgba(91, 33, 182, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-    0 1px 0 rgba(255, 255, 255, 0.38) inset;
+  filter: drop-shadow(0 8px 22px rgba(15, 23, 42, 0.14))
+    drop-shadow(0 20px 48px rgba(91, 33, 182, 0.18));
+}
+
+.home-scratch-section .scratch-card-container {
+  --scratch-radius: 22px;
 }
 
 .home-scratch-section .scratch-card-content {
