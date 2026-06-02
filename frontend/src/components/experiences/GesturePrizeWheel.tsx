@@ -6,7 +6,7 @@
  * https://www.npmjs.com/package/react-wheel-of-prizes for a button-driven reference implementation.
  */
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { getContrastText, mix } from '../../theme/shopTheme';
+import { getContrastText } from '../../theme/shopTheme';
 import './GesturePrizeWheel.css';
 
 export interface GesturePrizeWheelProps {
@@ -88,16 +88,8 @@ export function buildWheelSegmentColors(
   secondary: string,
   accent?: string,
 ): string[] {
-  const a = accent ?? primary;
-  const variants = [
-    primary,
-    secondary,
-    a,
-    mix(primary, '#ffffff', 0.22),
-    mix(secondary, '#ffffff', 0.18),
-    mix(a, '#0f172a', 0.12),
-  ];
-  return Array.from({ length: count }, (_, i) => variants[i % variants.length]);
+  const palette = [primary, secondary, accent ?? primary];
+  return Array.from({ length: count }, (_, i) => palette[i % palette.length]);
 }
 
 export default function GesturePrizeWheel({
