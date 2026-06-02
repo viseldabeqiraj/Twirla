@@ -268,7 +268,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
         onSpinStart={handleSpinStart}
         onSettled={handleWheelSettled}
       />
-      <p className={`wheel-drag-hint ${hintShake ? 'wheel-drag-hint--pulse' : ''}`}>{t('wheel.dragHint')}</p>
       <div className="wheel-prize-strip">
         {wheel.prizes.map((prize, idx) => (
           <span key={idx} className="wheel-prize-chip">

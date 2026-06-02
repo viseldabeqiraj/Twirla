@@ -157,3 +157,5 @@
 {"event":"page_view","timestampUtc":"2026-06-02T16:45:08.9158074Z","visitorId":"v_1780418362842_vihfovo9s","sessionId":"s_1780418362842_5917ca94","value":null,"mode":"Wheel","couponCode":null}
 {"event":"game_start","timestampUtc":"2026-06-02T16:45:10.7988313Z","visitorId":"v_1780418362842_vihfovo9s","sessionId":"s_1780418362842_5917ca94","value":null,"mode":"Wheel","couponCode":null}
 {"event":"game_finish","timestampUtc":"2026-06-02T16:45:16.5731399Z","visitorId":"v_1780418362842_vihfovo9s","sessionId":"s_1780418362842_5917ca94","value":null,"mode":"Wheel","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-06-02T16:54:33.7745574Z","visitorId":"v_1780418362842_vihfovo9s","sessionId":"s_1780418362842_5917ca94","value":null,"mode":"Wheel","couponCode":null}
+{"event":"page_view","timestampUtc":"2026-06-02T16:54:33.7856642Z","visitorId":"v_1780418362842_vihfovo9s","sessionId":"s_1780418362842_5917ca94","value":null,"mode":"Wheel","couponCode":null}
