@@ -52,3 +52,4 @@ backend/Twirla.Api/Data/Coupons/
 /backend/Twirla.Api/Properties
 *.zip
 /backend/publish
+/DATABASE.md
