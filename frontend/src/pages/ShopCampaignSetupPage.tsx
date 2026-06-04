@@ -8,7 +8,7 @@ import {
 } from '../data/shopLandingPlaceholder';
 import { shopConfigToLandingConfig } from '../data/shopConfigToLanding';
 import { applyShopConfigLanguage } from '../data/shopConfigLocale';
-import { fetchShopsFromJson, findEnabledShopByUrlSlug, isShopAccessible } from '../data/shopsJson';
+import { fetchShopCatalog, findEnabledShopByUrlSlug, isShopAccessible } from '../data/shopCatalog';
 import { useTranslation } from '../i18n/i18n';
 import type { LandingFontPairId, LandingLayoutTemplate, ShopLandingConfig } from '../types/ShopLandingConfig';
 import { PUBLIC_CAMPAIGN_GAMES } from '../types/ShopLandingConfig';
@@ -170,14 +170,14 @@ export default function ShopCampaignSetupPage() {
     let cancelled = false;
     (async () => {
       try {
-        const shops = await fetchShopsFromJson();
+        const shops = await fetchShopCatalog();
         if (cancelled) return;
         const template =
           findEnabledShopByUrlSlug(CAMPAIGN_PREVIEW_TEMPLATE_SLUG, shops) ??
           findEnabledShopByUrlSlug('demo', shops) ??
           shops.find(isShopAccessible);
         if (!template) {
-          setMessage({ type: 'err', text: t('campaignSetup.noShopsJson') });
+          setMessage({ type: 'err', text: t('campaignSetup.noShopCatalog') });
           setReady(true);
           return;
         }
@@ -202,7 +202,7 @@ export default function ShopCampaignSetupPage() {
         setReady(true);
       } catch {
         if (!cancelled) {
-          setMessage({ type: 'err', text: t('campaignSetup.noShopsJson') });
+          setMessage({ type: 'err', text: t('campaignSetup.noShopCatalog') });
           setReady(true);
         }
       }
@@ -232,7 +232,7 @@ export default function ShopCampaignSetupPage() {
     e.preventDefault();
     setMessage(null);
     if (!templateShop) {
-      setMessage({ type: 'err', text: t('campaignSetup.noShopsJson') });
+      setMessage({ type: 'err', text: t('campaignSetup.noShopCatalog') });
       return;
     }
 
@@ -287,7 +287,7 @@ export default function ShopCampaignSetupPage() {
 
     let resolvedTwirlaShopId: string | null = null;
     try {
-      const shops = await fetchShopsFromJson();
+      const shops = await fetchShopCatalog();
       const resolved = findEnabledShopByUrlSlug(expSlug, shops);
       resolvedTwirlaShopId = resolved?.shopId ?? null;
     } catch {

@@ -6,7 +6,7 @@ import type { RunnerGameOutcome } from '../../types/ShopConfig';
 
 export type { RunnerGameOutcome };
 
-/** Default outcomes when `runnerGame.outcomes` is omitted from shops.json. */
+/** Default outcomes when `runnerGame.outcomes` is omitted from shop config. */
 export const DEFAULT_RUNNER_OUTCOMES: RunnerGameOutcome[] = [
   {
     headline: 'You won: 5% off',
@@ -56,7 +56,7 @@ export const DEFAULT_RUNNER_THEME: RunnerTheme = {
 };
 
 export interface RunnerGameConfig {
-  /** Weighted random rows when the run ends (from `runnerGame.outcomes` in shops.json). */
+  /** Weighted random rows when the run ends (from `runnerGame.outcomes` in shop config). */
   outcomes?: RunnerGameOutcome[];
   theme?: RunnerTheme;
   /** CTA label after game over (e.g. "Claim reward" or "DM us") */

@@ -1,120 +1,32 @@
 {
   "shops": [
     {
-      "shopId": "shopname-randomid123",
-      "slug": "shopname",
-      "enabled": true,
-      "expiresAt": "2028-01-01T00:00:00Z",
-      "mode": "Wheel",
+      "shopId": "your-shop-unique-id",
+      "slug": "your-slug",
+      "name": "Your Shop Name",
+      "adminToken": "choose-a-long-random-secret",
+      "playCooldownHours": 24,
       "branding": {
-        "primaryColor": "#FF6B6B",
-        "secondaryColor": "#4ECDC4",
-        "logoUrl": null,
-        "brandName": "Shop Name",
-        "theme": {
-          "backgroundPattern": "gradient",
-          "surfaceStyle": "glass",
-          "ambientMotion": "none",
-          "ambientParticles": {
-            "enabled": true,
-            "shape": "orb",
-            "density": "few"
-          }
-        }
+        "primaryColor": "#000000",
+        "secondaryColor": "#ffffff",
+        "logoUrl": "/logos/your-logo.png",
+        "brandName": "Your Shop"
       },
       "text": {
-        "title": "Spin to Win!",
-        "subtitle": "Try your luck and win amazing prizes",
-        "ctaText": "DM us to claim your prize",
-        "resultTitle": "Congratulations!",
-        "resultSubtitle": "You've won a prize!"
+        "title": "Play to win!",
+        "subtitle": "Try your luck",
+        "ctaText": "DM us to claim",
+        "resultTitle": "You won!",
+        "resultSubtitle": "Thanks for playing"
       },
-      "cta": {
-        "url": "https://instagram.com/shopname"
-      },
+      "cta": { "url": "https://instagram.com/yourshop" },
       "wheel": {
         "allowRepeatSpins": false,
         "prizes": [
-          {
-            "label": "10% Off",
-            "weight": 30,
-            "iconUrl": null,
-            "description": "Get 10% off your next purchase"
-          },
-          {
-            "label": "20% Off",
-            "weight": 20,
-            "description": "Get 20% off your next purchase"
-          },
-          {
-            "label": "Free Shipping",
-            "weight": 25,
-            "description": "Free shipping on your order"
-          },
-          {
-            "label": "50% Off",
-            "weight": 10,
-            "description": "Get 50% off your next purchase"
-          },
-          {
-            "label": "Try Again",
-            "weight": 15,
-            "description": "Better luck next time!"
-          }
+          { "label": "10% Off", "weight": 50, "description": "On your next order" },
+          { "label": "Try Again", "weight": 50, "isWinning": false, "description": "Come back later" }
         ]
-      },
-      "tapHearts": {
-        "heartsToTap": 10,
-        "heartColor": "#db2777",
-        "revealText": "Round complete",
-        "revealSubtitle": "Optional subtitle shown elsewhere in the product",
-        "outcomes": [
-          {
-            "headline": "No prize this round",
-            "description": "Thanks for playing.",
-            "weight": 40,
-            "isNoWin": true
-          },
-          {
-            "headline": "10% off your order",
-            "description": "DM the shop with a screenshot.",
-            "weight": 35
-          },
-          {
-            "headline": "Code SAVE-15 at checkout",
-            "description": "One use per customer.",
-            "weight": 25
-          }
-        ]
-      },
-      "runnerGame": {
-        "outcomes": [
-          {
-            "headline": "No prize this run",
-            "body": "Thanks for playing.",
-            "weight": 45,
-            "isNoWin": true
-          },
-          {
-            "headline": "5% off",
-            "body": "Show this screen in-store.",
-            "weight": 35
-          },
-          {
-            "headline": "Free sticker pack",
-            "body": "Mention Twirla when you DM.",
-            "weight": 20
-          }
-        ]
-      },
-      "memory": {
-        "pairCount": 6,
-        "revealText": "WIN-CODE-10",
-        "revealSubtitle": "10% off — DM this code to the shop.",
-        "timeLimitSeconds": 120,
-        "maxMistakes": 18
       }
     }
   ]
 }
-

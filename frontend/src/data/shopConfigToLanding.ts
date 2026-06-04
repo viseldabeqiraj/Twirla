@@ -10,7 +10,7 @@ function parseCampaignMode(m?: CampaignExperienceMode): ExperienceMode | undefin
 }
 
 /**
- * Map a shop row from shops.json + URL slug to ShopLandingConfig.
+ * Map a shop config row + URL slug to ShopLandingConfig.
  * Landing copy and layout come from `shop.campaign` when present; otherwise sensible defaults from branding/text.
  */
 export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string): ShopLandingConfig {

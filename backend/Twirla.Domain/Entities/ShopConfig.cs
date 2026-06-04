@@ -13,6 +13,7 @@ public class ShopConfig
     public string? Name { get; set; }
     public string? AdminToken { get; set; }
     public int? PlayCooldownHours { get; set; } = 24;
+    public string? Mode { get; set; }
     public BrandingConfig Branding { get; set; } = new();
     public TextConfig Text { get; set; } = new();
     public CtaConfig Cta { get; set; } = new();
@@ -20,6 +21,9 @@ public class ShopConfig
     public TapHeartsConfig? TapHearts { get; set; }
     public ScratchConfig? Scratch { get; set; }
     public CountdownConfig? Countdown { get; set; }
+    public MemoryMatchConfig? Memory { get; set; }
+    public RunnerGameConfig? RunnerGame { get; set; }
+    public ShopCampaignConfig? Campaign { get; set; }
 
     public ExperienceMode? GetDefaultMode()
     {
@@ -27,6 +31,8 @@ public class ShopConfig
         if (TapHearts != null) return ExperienceMode.TapHearts;
         if (Scratch != null) return ExperienceMode.Scratch;
         if (Countdown != null) return ExperienceMode.Countdown;
+        if (Memory != null) return ExperienceMode.MemoryMatch;
+        if (RunnerGame != null) return ExperienceMode.Runner;
         return null;
     }
 
@@ -42,6 +48,7 @@ public class ShopConfig
             ExpiresAt = ExpiresAt,
             Slug = Slug,
             Name = Name,
+            AdminToken = AdminToken,
             PlayCooldownHours = PlayCooldownHours,
             Branding = Branding,
             Text = Text.GetForLanguage(language),
@@ -53,7 +60,10 @@ public class ShopConfig
             } : null,
             TapHearts = TapHearts?.GetForLanguage(language),
             Scratch = Scratch?.GetForLanguage(language),
-            Countdown = Countdown?.GetForLanguage(language)
+            Countdown = Countdown?.GetForLanguage(language),
+            Memory = Memory,
+            RunnerGame = RunnerGame,
+            Campaign = Campaign
         };
     }
 }
@@ -63,7 +73,9 @@ public enum ExperienceMode
     Wheel,
     TapHearts,
     Scratch,
-    Countdown
+    Countdown,
+    MemoryMatch,
+    Runner
 }
 
 public class SpotPaletteConfig
@@ -81,16 +93,27 @@ public class BrandingConfig
     public string? LogoUrl { get; set; }
     public string? BrandName { get; set; }
     public string? AccentColor { get; set; }
+    public string? BackgroundMode { get; set; }
+    public string? LogoBackgroundColor { get; set; }
     public SpotPaletteConfig? SpotPalette { get; set; }
     public ThemeConfig? Theme { get; set; }
+}
+
+public class AmbientParticlesConfig
+{
+    public bool? Enabled { get; set; }
+    public string? Shape { get; set; }
+    public string? Density { get; set; }
+    public string? Color { get; set; }
+    public string? AccentColor { get; set; }
 }
 
 public class ThemeConfig
 {
     public string? BackgroundPattern { get; set; }
     public string? SurfaceStyle { get; set; }
-    /// <summary>Optional motion layer on experience backgrounds (none, drift, pulse, shimmer).</summary>
     public string? AmbientMotion { get; set; }
+    public AmbientParticlesConfig? AmbientParticles { get; set; }
     public string? FontFamily { get; set; }
     public int? BorderRadius { get; set; }
     public int? ButtonRadius { get; set; }
@@ -103,6 +126,7 @@ public class TextConfig
     public string CtaText { get; set; } = string.Empty;
     public string ResultTitle { get; set; } = string.Empty;
     public string? ResultSubtitle { get; set; }
+    public int? MaxDiscountPercent { get; set; }
     public Dictionary<string, TextConfig>? Translations { get; set; }
 
     public TextConfig GetForLanguage(string? language)
@@ -169,12 +193,21 @@ public class PrizeConfig
     }
 }
 
+public class TapHeartsOutcome
+{
+    public string Headline { get; set; } = string.Empty;
+    public string? Description { get; set; }
+    public int Weight { get; set; }
+    public bool? IsNoWin { get; set; }
+}
+
 public class TapHeartsConfig
 {
     public int HeartsToTap { get; set; }
     public string HeartColor { get; set; } = "#FF0000";
     public string RevealText { get; set; } = string.Empty;
     public string? RevealSubtitle { get; set; }
+    public List<TapHeartsOutcome>? Outcomes { get; set; }
     public Dictionary<string, TapHeartsConfig>? Translations { get; set; }
 
     public TapHeartsConfig GetForLanguage(string? language)

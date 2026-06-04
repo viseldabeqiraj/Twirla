@@ -159,7 +159,7 @@ export default function TwirlaLandingPage() {
           <div className="tw-container tw-hero-grid">
             <div className="tw-hero-copy">
               <span className="tw-eyebrow">Për cdo biznes</span>
-              <h1>Kthe vizitorët në blerës me lojëra zbritjeje.</h1>
+              <h1>Kthe vizitorët në blerës me lojëra interaktive.</h1>
               <p>
                 Twirla i jep dyqanit tënd një mini landing page ku klientët luajnë,
                 fitojnë zbritje dhe ta dërgojnë kodin në DM për porosi.

@@ -13,7 +13,7 @@ import type {
 } from './ShopLandingConfig';
 import type { ShopSpotPalette } from './ShopSpotPalette';
 
-/** Mirrors ExperienceMode strings from shops.json (avoids circular import with ShopConfig). */
+/** Mirrors ExperienceMode strings from shop config (avoids circular import with ShopConfig). */
 export type CampaignExperienceMode =
   | 'Runner'
   | 'Wheel'

@@ -3,19 +3,19 @@ import type { ShopConfig } from '../types/ShopConfig';
 import { shopConfigToLandingConfig } from './shopConfigToLanding';
 import { applyShopConfigLanguage } from './shopConfigLocale';
 import {
-  fetchShopsFromJson,
+  fetchShopCatalog,
   findEnabledShopByUrlSlug,
   findShopByUrlSlug,
   isShopAccessible,
   isShopEnabled,
   isShopExpired,
-} from './shopsJson';
+} from './shopCatalog';
 
 /** Saved from /setup/campaign/form — opens at /shop/campaign-preview */
 export const CAMPAIGN_PREVIEW_SLUG = 'campaign-preview';
 export const CAMPAIGN_LANDING_STORAGE_KEY = 'twirla_campaign_landing_v1';
 
-/** Template shop slug for merging browser drafts (must exist in shops.json). */
+/** Template shop slug for merging browser drafts (must exist in shop catalog). */
 export const CAMPAIGN_PREVIEW_TEMPLATE_SLUG = 'demo-shop';
 
 export function mergeLandingDraft(
@@ -48,7 +48,7 @@ export function mergeLandingDraft(
 }
 
 /**
- * Resolve landing config from shops.json only (no hardcoded shop objects).
+ * Resolve landing config from the shop catalog API (no hardcoded shop objects).
  * `campaign-preview` merges optional localStorage draft over the template shop from JSON.
  * Pass the active UI `language` so `applyShopConfigLanguage` merges Albanian fallbacks and `campaign.translations`.
  */
@@ -56,7 +56,7 @@ export async function getShopLandingConfig(
   shopSlug: string,
   language: 'en' | 'sq' = 'en'
 ): Promise<ShopLandingConfig> {
-  const shops = await fetchShopsFromJson();
+  const shops = await fetchShopCatalog();
 
   if (shopSlug === CAMPAIGN_PREVIEW_SLUG) {
     const template =
@@ -64,7 +64,7 @@ export async function getShopLandingConfig(
       findEnabledShopByUrlSlug('demo', shops) ??
       shops.find(isShopAccessible);
     if (!template) {
-      throw new Error('shops.json has no accessible shops');
+      throw new Error('Shop catalog has no accessible shops');
     }
     const localized = applyShopConfigLanguage(template as ShopConfig, language);
     const base = shopConfigToLandingConfig(localized, CAMPAIGN_PREVIEW_SLUG);

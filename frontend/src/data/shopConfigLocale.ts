@@ -195,7 +195,7 @@ function mergeCampaignForLanguage(
 }
 
 /**
- * Applies `translations` blocks from shops.json plus Albanian fallbacks from `shopSqFallbacks.ts`.
+ * Applies `translations` blocks from shop config plus Albanian fallbacks from `shopSqFallbacks.ts`.
  * Use when serving static JSON or building landing config so SQ locale does not show English shop copy.
  */
 export function applyShopConfigLanguage(config: ShopConfig, lang: string): ShopConfig {

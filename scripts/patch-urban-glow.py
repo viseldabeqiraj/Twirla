@@ -338,11 +338,7 @@ URBAN_GLOW = {
 }
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = [
-    ROOT / "frontend/public/shops.json",
-    ROOT / "backend/Twirla.Api/Data/shops.json",
-    ROOT / "backend/Twirla.Api/Data/shops-prod.json",
-]
+FILES = []  # Shop catalog is in ShopSeedRegistry.cs; update via scripts/generate-shop-seed.py
 
 for path in FILES:
     data = json.loads(path.read_text(encoding="utf-8"))

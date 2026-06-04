@@ -1,30 +1,32 @@
 import type { ShopConfig } from '../types/ShopConfig';
+import { getApiBase } from '../config/api';
 
-export interface ShopsFilePayload {
+export interface ShopCatalogResponse {
   shops: ShopConfig[];
 }
 
 let cache: ShopConfig[] | null = null;
 
 /**
- * Load `/shops.json` (sync from backend `Data/shops-prod.json` for local dev / static hosting).
- * Call `clearShopsJsonCache()` after edits in the same tab if needed.
+ * Load all shop configs from the API (`GET /api/config/shops`).
+ * Call `clearShopCatalogCache()` after remote edits in the same tab if needed.
  */
-export async function fetchShopsFromJson(): Promise<ShopConfig[]> {
+export async function fetchShopCatalog(): Promise<ShopConfig[]> {
   if (cache) return cache;
-  const res = await fetch('/shops.json');
+  const base = getApiBase();
+  const res = await fetch(`${base}/api/config/shops`);
   if (!res.ok) {
-    throw new Error(`shops.json failed: ${res.status}`);
+    throw new Error(`Shop catalog failed: ${res.status}`);
   }
-  const data = (await res.json()) as ShopsFilePayload;
+  const data = (await res.json()) as ShopCatalogResponse;
   if (!data.shops || !Array.isArray(data.shops)) {
-    throw new Error('shops.json: invalid shape');
+    throw new Error('Shop catalog: invalid shape');
   }
   cache = data.shops;
   return cache;
 }
 
-export function clearShopsJsonCache(): void {
+export function clearShopCatalogCache(): void {
   cache = null;
 }
 
@@ -40,7 +42,7 @@ export function isShopExpired(shop: ShopConfig): boolean {
   return Date.now() >= t;
 }
 
-/** Enabled and not past optional expiresAt (client-side guard for static shops.json). */
+/** Enabled and not past optional expiresAt (client-side guard). */
 export function isShopAccessible(shop: ShopConfig): boolean {
   return isShopEnabled(shop) && !isShopExpired(shop);
 }

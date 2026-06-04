@@ -37,6 +37,18 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Shop config & legacy seed files (catalog is in ShopSeedRegistry.cs; tokens in appsettings.Secrets.json)
+backend/Twirla.Api/Data/shops.json
+backend/Twirla.Api/Data/shops-prod.json
+backend/Twirla.Infrastructure/Seeding/ShopSeedRegistry.cs
+backend/Twirla.Api/Data/Analytics/
+backend/Twirla.Api/Data/Coupons/
+
+# SQLite (local dev)
+**/twirla.db
+**/twirla.db-shm
+**/twirla.db-wal
+
 /backend/Twirla.Api/Properties
 *.zip
 /backend/publish

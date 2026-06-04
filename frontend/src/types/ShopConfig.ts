@@ -22,7 +22,7 @@ export interface ShopConfig {
   memory?: MemoryMatchConfig;
   /** Runner (/runner/...) — weighted end-of-round prize copy */
   runnerGame?: RunnerGameSettings;
-  /** Public campaign landing content (shops.json only — no hardcoded shops). */
+  /** Public campaign landing content (from API / database — no hardcoded shops). */
   campaign?: import('./ShopCampaign').ShopCampaignPageConfig;
 }
 

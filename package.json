@@ -2,7 +2,11 @@
   "name": "twirla",
   "private": true,
   "scripts": {
-    "build": "cd frontend && npm ci && npm run build"
+    "build": "cd frontend && npm ci && npm run build",
+    "db:migrate": "dotnet ef database update --project backend/Twirla.Infrastructure --startup-project backend/Twirla.Api",
+    "db:add-migration": "dotnet ef migrations add --project backend/Twirla.Infrastructure --startup-project backend/Twirla.Api",
+    "db:seed": "dotnet run --project backend/Twirla.Api -- --seed",
+    "db:reset": "node -e \"const fs=require('fs'),p='backend/Twirla.Api/twirla.db';['','-shm','-wal'].forEach(s=>{try{fs.unlinkSync(p+s)}catch{}})\" && npm run db:migrate && npm run db:seed"
   },
-  "description": "Twirla monorepo – build runs from frontend/"
+  "description": "Twirla monorepo"
 }

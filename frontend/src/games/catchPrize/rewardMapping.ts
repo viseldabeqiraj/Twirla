@@ -1,7 +1,7 @@
 import type { TapHeartsOutcome } from '../../types/ShopConfig';
 import { pickWeighted } from '../pickWeighted';
 
-/** Built-in outcomes when `tapHearts.outcomes` is omitted from shops.json. */
+/** Built-in outcomes when `tapHearts.outcomes` is omitted from shop config. */
 export const DEFAULT_CATCH_PRIZE_OUTCOMES: TapHeartsOutcome[] = [
   {
     headline: 'You won: 5% off',

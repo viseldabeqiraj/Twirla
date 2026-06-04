@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Twirla.Application;
 using Twirla.Application.Interfaces;
 using Twirla.Domain.Entities;
 
@@ -15,6 +16,16 @@ public class ConfigController : ControllerBase
         _configService = configService;
     }
 
+    /// <summary>GET /api/config/shops — All publicly accessible shop configs.</summary>
+    [HttpGet("shops")]
+    public IActionResult ListShops([FromQuery] string? lang)
+    {
+        var shops = _configService.GetAll()
+            .Select(s => s.GetForLanguage(lang).ForPublicApi())
+            .ToList();
+        return Ok(new { shops });
+    }
+
     /// <summary>GET /api/config/{shopId}?lang=</summary>
     [HttpGet("{shopId}")]
     public IActionResult GetConfig(string shopId, [FromQuery] string? lang)
@@ -23,7 +34,7 @@ public class ConfigController : ControllerBase
         if (config == null)
             return NotFound(new { error = "Shop configuration not found" });
 
-        return Ok(config.GetForLanguage(lang));
+        return Ok(config.GetForLanguage(lang).ForPublicApi());
     }
 
     /// <summary>GET /api/config/{shopId}/{mode}?lang=</summary>
@@ -37,19 +48,10 @@ public class ConfigController : ControllerBase
         if (!Enum.TryParse<ExperienceMode>(mode, true, out var experienceMode))
             return BadRequest(new { error = $"Invalid mode: {mode}" });
 
-        var hasMode = experienceMode switch
-        {
-            ExperienceMode.Wheel => config.Wheel != null,
-            ExperienceMode.TapHearts => config.TapHearts != null,
-            ExperienceMode.Scratch => config.Scratch != null,
-            ExperienceMode.Countdown => config.Countdown != null,
-            _ => false
-        };
-
-        if (!hasMode)
+        if (!ShopHasMode(config, experienceMode))
             return NotFound(new { error = $"Mode '{mode}' not configured for this shop" });
 
-        return Ok(config.GetForLanguage(lang));
+        return Ok(config.GetForLanguage(lang).ForPublicApi());
     }
 
     /// <summary>GET /api/config/by-slug/{slug}?lang= — Resolve shop by slug (e.g. pinkster, demo).</summary>
@@ -60,7 +62,7 @@ public class ConfigController : ControllerBase
         if (config == null)
             return NotFound(new { error = "Shop not found" });
 
-        return Ok(config.GetForLanguage(lang));
+        return Ok(config.GetForLanguage(lang).ForPublicApi());
     }
 
     /// <summary>GET /api/config/by-slug/{slug}/{mode}?lang=</summary>
@@ -74,18 +76,20 @@ public class ConfigController : ControllerBase
         if (!Enum.TryParse<ExperienceMode>(mode, true, out var experienceMode))
             return BadRequest(new { error = $"Invalid mode: {mode}" });
 
-        var hasMode = experienceMode switch
-        {
-            ExperienceMode.Wheel => config.Wheel != null,
-            ExperienceMode.TapHearts => config.TapHearts != null,
-            ExperienceMode.Scratch => config.Scratch != null,
-            ExperienceMode.Countdown => config.Countdown != null,
-            _ => false
-        };
-
-        if (!hasMode)
+        if (!ShopHasMode(config, experienceMode))
             return NotFound(new { error = $"Mode '{mode}' not configured for this shop" });
 
-        return Ok(config.GetForLanguage(lang));
+        return Ok(config.GetForLanguage(lang).ForPublicApi());
     }
+
+    private static bool ShopHasMode(ShopConfig config, ExperienceMode mode) => mode switch
+    {
+        ExperienceMode.Wheel => config.Wheel != null,
+        ExperienceMode.TapHearts => config.TapHearts != null,
+        ExperienceMode.Scratch => config.Scratch != null,
+        ExperienceMode.Countdown => config.Countdown != null,
+        ExperienceMode.MemoryMatch => config.Memory != null,
+        ExperienceMode.Runner => config.RunnerGame != null,
+        _ => false
+    };
 }
