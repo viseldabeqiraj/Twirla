@@ -33,7 +33,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
   const [shouldPulse, setShouldPulse] = useState(false);
   const [hasResult, setHasResult] = useState(false);
   const experienceContentRef = useRef<HTMLDivElement>(null);
-  const hostRef = useRef<HTMLDivElement>(null);
   const theme = branding.theme || {};
 
   const bgMode = branding.backgroundMode ?? (theme.backgroundPattern === 'dark' ? 'dark' : 'light');
@@ -135,23 +134,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
     };
   }, [mode]);
 
-  useEffect(() => {
-    const wrap = hostRef.current?.closest('.experience-page-wrap');
-    const appContent = document.querySelector('.app-layout > .app-content');
-    if (hasResult) {
-      wrap?.classList.add('experience-page-wrap--scrollable');
-      appContent?.classList.add('app-content--experience-scroll');
-      appContent?.scrollTo({ top: 0, behavior: 'auto' });
-    } else {
-      wrap?.classList.remove('experience-page-wrap--scrollable');
-      appContent?.classList.remove('app-content--experience-scroll');
-    }
-    return () => {
-      wrap?.classList.remove('experience-page-wrap--scrollable');
-      appContent?.classList.remove('app-content--experience-scroll');
-    };
-  }, [hasResult]);
-
   const renderExperience = () => {
     switch (mode) {
       case ExperienceMode.Runner:
@@ -201,7 +183,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
     <ShopThemeProvider input={themeInput}>
     <ShopExperienceProvider value={shopExperienceValue}>
     <div
-      ref={hostRef}
       className={`experience-host pattern-${theme.backgroundPattern || 'gradient'} surface-${theme.surfaceStyle || 'glass'} ambient-${theme.ambientMotion ?? 'none'}${hasResult ? ' experience-host--has-result' : ''}`}
       style={hostStyle}
     >
@@ -226,9 +207,6 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
 
         <h1 className="title">{getModeTitle()}</h1>
         {getModeSubtitle() && <p className="subtitle">{getModeSubtitle()}</p>}
-        {text.maxDiscountPercent != null && text.maxDiscountPercent > 0 ? (
-          <p className="experience-preplay">{t('games.prePlayDiscount', { pct: String(text.maxDiscountPercent) })}</p>
-        ) : null}
 
         <div className="experience-content" ref={experienceContentRef}>
           {blockedOnEntry ? (
@@ -238,21 +216,25 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
           )}
         </div>
 
-        <AnimatedPrimaryButton
-          href={cta.url}
-          external
-          block
-          pulse={shouldPulse}
-          className="cta-button"
-          onClick={() => trackEvent(shopId, 'cta_clicked', { mode: String(mode ?? '') })}
-        >
-          {shouldPulse ? t('campaign.dmToClaim') : text.ctaText}
-        </AnimatedPrimaryButton>
+        {(hasResult || blockedOnEntry) ? (
+          <>
+            <AnimatedPrimaryButton
+              href={cta.url}
+              external
+              block
+              pulse={shouldPulse}
+              className="cta-button"
+              onClick={() => trackEvent(shopId, 'cta_clicked', { mode: String(mode ?? '') })}
+            >
+              {shouldPulse ? t('campaign.dmToClaim') : text.ctaText}
+            </AnimatedPrimaryButton>
 
-        <a href="/" className="twirla-app-button">
-          <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-app-button-logo" />
-          {t('common.goToTwirlaApp')}
-        </a>
+            <a href="/" className="twirla-app-button">
+              <img src={resolveAssetUrl('/logos/twirla.png')} alt="Twirla" className="twirla-app-button-logo" />
+              {t('common.goToTwirlaApp')}
+            </a>
+          </>
+        ) : null}
       </motion.div>
       </HideRewardModalShopCtaContext.Provider>
     </div>

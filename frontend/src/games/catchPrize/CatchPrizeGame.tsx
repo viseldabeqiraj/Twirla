@@ -7,6 +7,8 @@ import RewardCelebration from '../../components/RewardCelebration';
 import GameStatsBar from '../../components/twirla-ui/GameStatsBar';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
+import GameIntroPreview from '../../components/GameIntroPreview';
+import { ExperienceMode } from '../../types/ShopConfig';
 import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -108,8 +110,8 @@ export default function CatchPrizeGame({
   return (
     <div className="catch-prize-game" style={{ '--catch-primary': primaryColor } as React.CSSProperties}>
       {state.phase === 'idle' && (
-        <div className="catch-prize-intro">
-          <h2 className="catch-prize-title">{t('catchPrize.title')}</h2>
+        <div className="catch-prize-intro experience-game-intro">
+          <GameIntroPreview mode={ExperienceMode.TapHearts} />
           <p className="catch-prize-instruction">{t('catchPrize.instruction')}</p>
           <PrimaryButton type="button" block pulse onClick={startCountdown}>
             {t('catchPrize.start')}
@@ -193,7 +195,6 @@ export default function CatchPrizeGame({
 
       {state.phase === 'ended' && displayOutcome && (
         <RewardCelebration className="catch-prize-ended" celebrate={celebrateResult} confettiCount={28}>
-          <h2 className="catch-prize-gameover">{t('catchPrize.gameOver')}</h2>
           <RewardModal
             title={displayOutcome.headline}
             description={displayOutcome.description}

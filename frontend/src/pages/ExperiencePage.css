@@ -1,4 +1,4 @@
-/* Experience page — viewport-fit during play; scroll when win/reward UI is shown */
+/* Experience page — fixed card shell; game area scrolls inside the card when needed */
 .experience-page-wrap {
   flex: 1 1 0%;
   min-height: 0;
@@ -11,22 +11,9 @@
   flex-shrink: 0;
 }
 
-.experience-page-wrap--scrollable {
-  overflow: visible;
-  flex: 0 0 auto;
-  min-height: auto;
-  height: auto;
-}
-
 .experience-page-wrap > .experience-host {
   flex: 1 1 0%;
   min-height: 0;
-}
-
-.experience-page-wrap--scrollable > .experience-host {
-  flex: 0 0 auto;
-  min-height: auto;
-  height: auto;
 }
 
 /* Experience error page */

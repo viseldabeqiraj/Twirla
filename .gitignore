@@ -1,6 +1,7 @@
 # .NET
 bin/
 obj/
+_efbuild/
 *.user
 *.suo
 *.cache

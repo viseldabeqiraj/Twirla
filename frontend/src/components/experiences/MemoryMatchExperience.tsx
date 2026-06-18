@@ -4,6 +4,8 @@ import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
+import GameIntroPreview from '../GameIntroPreview';
+import { ExperienceMode } from '../../types/ShopConfig';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -245,25 +247,24 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
 
   return (
     <div
-      className={`memory-match-wrap ${won ? 'memory-match-ended' : ''} ${lost ? 'memory-match-ended' : ''}`}
+      className={`memory-match-wrap ${started && !won && !lost ? 'memory-match-wrap--active' : ''} ${won ? 'memory-match-ended' : ''} ${lost ? 'memory-match-ended' : ''}`}
       style={
         {
           '--mm-primary': branding.primaryColor,
           '--mm-secondary': branding.secondaryColor,
           '--mm-accent': branding.accentColor ?? branding.primaryColor,
+          '--mm-deep': branding.spotPalette?.deep ?? branding.secondaryColor,
         } as React.CSSProperties
       }
     >
       {!started && (
-        <div className="memory-match-intro">
-          <p className="memory-match-intro-text">{t('memoryMatch.instruction')}</p>
-          <ul className="memory-match-rules">
-            <li>{t('memoryMatch.ruleTimeLimit', { seconds: String(timeLimitSec) })}</li>
-            {maxMistakes != null && maxMistakes > 0 ? (
-              <li>{t('memoryMatch.ruleMaxMistakes', { max: String(maxMistakes) })}</li>
-            ) : null}
-            <li>{t('memoryMatch.ruleMoves')}</li>
-          </ul>
+        <div className="memory-match-intro experience-game-intro">
+          <GameIntroPreview mode={ExperienceMode.MemoryMatch} />
+          <div className="memory-match-intro-copy">
+            <p className="memory-match-intro-text">{t('memoryMatch.instructionP1')}</p>
+            <p className="memory-match-intro-text">{t('memoryMatch.instructionP2')}</p>
+            <p className="memory-match-intro-text">{t('memoryMatch.instructionP3')}</p>
+          </div>
           <button type="button" className="memory-match-start" onClick={handleStart}>
             {t('memoryMatch.start')}
           </button>
@@ -271,7 +272,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
       )}
 
       {started && !won && !lost && (
-        <>
+        <div className="memory-match-play">
           <div className="memory-match-hud" aria-live="polite">
             <span className="memory-match-hud-item">
               {t('memoryMatch.pairsFound', { current: String(matchedPairCount), total: String(totalPairs) })}
@@ -306,9 +307,19 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
                   onClick={() => onCardClick(card.id)}
                 >
                   <span className="memory-card-inner">
-                    <span className="memory-card-back" aria-hidden />
+                    <span className="memory-card-back" aria-hidden>
+                      <span className="memory-card-mark memory-card-mark--light">
+                        <span className="memory-card-mark-letter">t</span>
+                      </span>
+                    </span>
                     <span className="memory-card-front" aria-hidden>
-                      {card.label}
+                      <span className="memory-card-sparkles" aria-hidden>
+                        <span className="memory-card-sparkle" />
+                        <span className="memory-card-sparkle" />
+                        <span className="memory-card-sparkle" />
+                        <span className="memory-card-sparkle" />
+                      </span>
+                      <span className="memory-card-symbol">{card.label}</span>
                     </span>
                   </span>
                 </button>
@@ -320,7 +331,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
               {t('memoryMatch.reset')}
             </button>
           ) : null}
-        </>
+        </div>
       )}
 
       {lost && (

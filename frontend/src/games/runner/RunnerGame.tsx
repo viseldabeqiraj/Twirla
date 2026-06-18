@@ -7,6 +7,8 @@ import { drawRunnerFrame } from './runnerDraw';
 import RewardCelebration from '../../components/RewardCelebration';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
+import GameIntroPreview from '../../components/GameIntroPreview';
+import { ExperienceMode } from '../../types/ShopConfig';
 import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
@@ -225,16 +227,8 @@ export default function RunnerGame(props: RunnerGameProps) {
     >
       <div className="runner-game-card">
         {state.uiState === 'intro' && (
-          <div className="runner-intro runner-state-enter">
-            <div className="runner-intro-preview" aria-hidden="true">
-              <div className="runner-intro-character">
-                <span className="runner-intro-eye runner-intro-eye-left" />
-                <span className="runner-intro-eye runner-intro-eye-right" />
-              </div>
-              <div className="runner-intro-ground" />
-              <div className="runner-intro-obstacle" />
-            </div>
-            <h2 className="runner-title">{config.title}</h2>
+          <div className="runner-intro runner-state-enter experience-game-intro">
+            <GameIntroPreview mode={ExperienceMode.Runner} />
             <p className="runner-instruction">{config.instruction}</p>
             <p className="runner-reward-hint">{t('runner.rewardHint')}</p>
             <PrimaryButton type="button" block pulse onClick={handleStartGame}>
@@ -278,7 +272,6 @@ export default function RunnerGame(props: RunnerGameProps) {
             celebrate={celebrateResult}
             confettiCount={22}
           >
-            <h2 className="runner-gameover-title">{t('runner.gameOver')}</h2>
             <RewardModal
               title={displayReward.headline}
               description={displayReward.body ?? undefined}
@@ -291,17 +284,16 @@ export default function RunnerGame(props: RunnerGameProps) {
               shopId={shopId}
               gameMode={gameMode}
               extraActions={
-                canReplay ? (
-                  <PrimaryButton type="button" variant="ghost" block onClick={handleReplay}>
-                    {t('runner.playAgain')}
-                  </PrimaryButton>
-                ) : null
+                <>
+                  <p className="runner-gameover-run-score">{t('runner.runScore', { n: state.score })}</p>
+                  {canReplay ? (
+                    <PrimaryButton type="button" variant="ghost" block onClick={handleReplay}>
+                      {t('runner.playAgain')}
+                    </PrimaryButton>
+                  ) : null}
+                </>
               }
             />
-            <p className="runner-gameover-run-score">{t('runner.runScore', { n: state.score })}</p>
-            <p className="runner-gameover-best">
-              {t('runner.best')}: {state.bestScore}
-            </p>
           </RewardCelebration>
         )}
       </div>

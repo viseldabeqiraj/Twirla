@@ -54,7 +54,22 @@
   border-color: var(--tw-border-color, rgba(148, 163, 184, 0.35));
 }
 
-/* Game over: one framed surface — reward card only (see .runner-gameover .tw-reward-modal__card) */
+/* Inside shop experience host — no nested card; title lives on the host shell */
+.experience-content .runner-game-card {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+  border-radius: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.surface-neon .experience-content .runner-game-card {
+  background: transparent;
+  border-color: transparent;
+}
+
 .runner-game-card:has(.runner-gameover) {
   border: none;
   box-shadow: none;
@@ -108,117 +123,31 @@
     min-height: auto;
     box-sizing: border-box;
   }
+  .experience-content .runner-game-card:not(:has(.runner-gameover)) {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0;
+  }
 }
 
-/* Intro */
-.runner-intro {
-  text-align: center;
-  padding: 0.5rem 0 1rem;
-}
-
-.runner-intro-preview {
-  position: relative;
-  width: 100%;
-  height: 72px;
-  margin-bottom: 0.75rem;
-  border-radius: 12px;
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--tw-surface-tint, #fef7fb) 88%, #ffffff) 0%,
-    color-mix(in srgb, var(--runner-highlight, #fce7f3) 55%, #ffffff) 100%
-  );
-  overflow: hidden;
-}
-
-.runner-intro-character {
-  position: absolute;
-  left: 28%;
-  bottom: 14px;
-  width: 28px;
-  height: 30px;
-  background: var(--runner-accent, #db2777);
-  border-radius: 10px;
-}
-
-.runner-intro-eye {
-  position: absolute;
-  top: 9px;
-  width: 6px;
-  height: 6px;
-  background: #fff;
-  border-radius: 50%;
-  animation: runnerIntroBlink 3.5s ease-in-out infinite;
-}
-
-.runner-intro-eye::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 2px;
-  height: 2px;
-  background: #334155;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.runner-intro-eye-left { left: 5px; }
-.runner-intro-eye-right { right: 5px; }
-
-@keyframes runnerIntroBlink {
-  0%, 92%, 100% { transform: scaleY(1); }
-  94%, 96% { transform: scaleY(0.08); }
-}
-
-.runner-intro-ground {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 12px;
-  background: var(--runner-highlight, #fbcfe8);
-  border-radius: 0 0 12px 12px;
-}
-
-.runner-intro-obstacle {
-  position: absolute;
-  right: 15%;
-  bottom: 14px;
-  width: 18px;
-  height: 24px;
-  background: var(--runner-accent, #be185d);
-  border-radius: 4px;
-  animation: runnerIntroObstacle 2.5s linear infinite;
-}
-
-@keyframes runnerIntroObstacle {
-  0% { transform: translateX(0); opacity: 1; }
-  85% { opacity: 1; }
-  100% { transform: translateX(-280px); opacity: 0; }
-}
-
-.runner-title {
-  font-size: clamp(1.5rem, 4.5vw, 1.85rem);
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0 0 0.5rem;
-  letter-spacing: -0.02em;
+/* Intro — matches shared experience-game-intro (host shows title) */
+.runner-intro.experience-game-intro {
+  text-align: left;
+  padding: 0;
 }
 
 .runner-instruction {
   color: #64748b;
   font-size: 0.95rem;
-  margin: 0 0 0.35rem;
+  margin: 0;
+  line-height: 1.55;
 }
 
 .runner-reward-hint {
   color: #94a3b8;
   font-size: 0.82rem;
-  margin: 0 0 1.25rem;
-}
-
-.surface-neon .runner-title {
-  color: var(--tw-heading-color, #f8fafc);
+  margin: 0;
+  line-height: 1.5;
 }
 
 .surface-neon .runner-instruction {
@@ -376,12 +305,13 @@
   vertical-align: top;
 }
 
-/* Game over */
+/* Game over — same reward surface as wheel / memory (RewardModal only) */
 .runner-gameover {
   text-align: center;
-  padding: 0.5rem 0 0.5rem;
+  padding: 0;
   position: relative;
   transition: opacity 0.28s ease-out;
+  width: 100%;
 }
 
 .runner-gameover.runner-replay-fade {
@@ -400,41 +330,18 @@
   80% { transform: translateX(4px); }
 }
 
-.runner-gameover-title {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #1e293b;
-  margin: 0 0 0.75rem;
+.runner-gameover .tw-reward-modal__actions .runner-gameover-run-score {
+  margin: 0;
 }
 
-.surface-neon .runner-gameover-title {
-  color: var(--tw-heading-color, #f8fafc);
+.runner-gameover-run-score {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0.35rem 0 0;
 }
 
-/* Single visible frame: reward card only */
-.runner-gameover .tw-reward-modal__card {
-  border: 1px solid color-mix(in srgb, var(--primary-color, #db2777) 22%, transparent);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
-    0 18px 44px color-mix(in srgb, var(--primary-color, #db2777) 18%, transparent);
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--primary-color, #db2777) 12%, #fff) 0%,
-    #fff 100%
-  );
-}
-
-.runner-gameover .tw-reward-modal__card--glow {
-  animation: tw-reward-glow 3.5s var(--tw-ease-in-out, ease-in-out) infinite alternate;
-}
-
-.surface-neon .runner-gameover .tw-reward-modal__card {
-  background: linear-gradient(
-    145deg,
-    color-mix(in srgb, var(--accent-color, #f472b6) 16%, #0f172a) 0%,
-    rgba(15, 23, 42, 0.94) 100%
-  );
-  border-color: color-mix(in srgb, var(--accent-color, #fff) 32%, transparent);
+.surface-neon .runner-gameover-run-score {
+  color: #94a3b8;
 }
 
 .runner-outcome {
@@ -471,33 +378,11 @@
   line-height: 1.4;
 }
 
-.runner-gameover-run-score {
-  margin: 0 0 1rem;
-  font-size: 0.82rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.surface-neon .runner-gameover-run-score {
-  color: var(--tw-muted-color, #cbd5e1);
-}
-
 .runner-gameover-actions {
   display: flex;
   flex-direction: column;
   gap: 0.65rem;
   align-items: center;
-}
-
-.runner-gameover-best {
-  margin: 0.75rem 0 0;
-  font-size: 0.8rem;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.surface-neon .runner-gameover-best {
-  color: var(--tw-muted-color, #cbd5e1);
 }
 
 .runner-btn-cta {
@@ -531,10 +416,10 @@
     padding: 0.35rem 0;
     align-items: flex-start;
   }
-  .runner-game-card:not(:has(.runner-gameover)) {
-    padding: 0.75rem 1rem;
+  .experience-content .runner-game-card:not(:has(.runner-gameover)) {
+    padding: 0;
   }
-  .runner-intro { padding: 0.35rem 0 0.6rem; }
+  .runner-intro.experience-game-intro { padding: 0; }
   .runner-canvas-wrap {
     min-height: clamp(190px, 34vh, 280px);
     height: clamp(190px, 34vh, 280px);

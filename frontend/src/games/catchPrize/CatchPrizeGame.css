@@ -33,27 +33,18 @@
   visibility: hidden;
 }
 
-.catch-prize-intro {
-  text-align: center;
-  padding: 1rem 0.5rem;
-}
-
-.catch-prize-title {
-  font-size: 1.35rem;
-  font-weight: 800;
-  margin: 0 0 0.5rem;
-  color: #1e293b;
-  letter-spacing: -0.02em;
+.catch-prize-intro.experience-game-intro {
+  text-align: left;
+  padding: 0;
+  width: 100%;
 }
 
 .catch-prize-instruction {
   font-size: 0.95rem;
   color: #64748b;
-  margin: 0 0 1.25rem;
-  line-height: 1.4;
-  max-width: 28ch;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 0;
+  line-height: 1.55;
+  max-width: none;
 }
 
 .catch-prize-btn-start {
@@ -231,11 +222,12 @@
   }
 }
 
-/* Ended / result */
+/* Ended / result — RewardModal only (shared experience shell) */
 .catch-prize-ended {
   position: relative;
   text-align: center;
-  padding: 1.5rem 1rem;
+  padding: 0;
+  width: 100%;
 }
 
 .catch-prize-gameover {

@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
-import { ShopConfig } from '../../types/ShopConfig';
+import { ShopConfig, ExperienceMode } from '../../types/ShopConfig';
 import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
+import GameIntroPreview from '../GameIntroPreview';
 import './CountdownExperience.css';
 
 interface CountdownExperienceProps {
@@ -118,6 +119,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
 
   return (
     <div className="countdown-container">
+      <GameIntroPreview mode={ExperienceMode.Countdown} className="experience-game-play-preview" />
       <div className="countdown-progress-track">
         <div className="countdown-progress-fill" style={{ width: `${progress}%` }} />
       </div>

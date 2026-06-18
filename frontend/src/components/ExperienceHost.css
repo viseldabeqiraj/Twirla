@@ -23,7 +23,9 @@
     margin: auto;
     width: 100%;
     max-width: 520px;
-    max-height: 100%;
+    height: min(calc(100dvh - 5rem), 640px);
+    min-height: min(calc(100dvh - 5rem), 640px);
+    max-height: min(calc(100dvh - 5rem), 640px);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -36,10 +38,11 @@
   .experience-preplay { margin-bottom: 0.35rem; flex-shrink: 0; }
   .experience-content {
     min-height: 0;
-    flex: 1 1 auto;
+    flex: 1 1 0;
     padding: 0.25rem 0.4rem;
     margin-bottom: 0.35rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   .cta-button {
     padding: 0.55rem 0.85rem;
@@ -60,7 +63,9 @@
 .experience-container {
   width: 100%;
   max-width: 560px;
-  max-height: 100%;
+  height: min(calc(100dvh - 8.25rem), 620px);
+  min-height: min(calc(100dvh - 8.25rem), 620px);
+  max-height: min(calc(100dvh - 8.25rem), 620px);
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -71,7 +76,6 @@
   margin: auto;
   box-sizing: border-box;
   flex-shrink: 0;
-  /* Card spacing from background: margin so it looks like a distinct card */
   box-shadow: 0 24px 56px rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(0, 0, 0, 0.04);
 }
 .surface-glass .experience-container {
@@ -97,8 +101,8 @@
 .brand-name { margin: 0; font-size: 1rem; color: color-mix(in srgb, var(--primary-color) 75%, #0f172a); }
 .surface-neon .brand-name { color: #e2e8f0; }
 
-.title { margin: 0 0 0.2rem; font-size: clamp(1.25rem, 4.2vw, 1.85rem); line-height: 1.1; letter-spacing: -0.02em; flex-shrink: 0; }
-.subtitle { margin: 0.2rem 0 0.45rem; color: #64748b; flex-shrink: 0; }
+.title { margin: 0 0 0.2rem; font-size: clamp(1.25rem, 4.2vw, 1.85rem); line-height: 1.15; letter-spacing: -0.02em; flex-shrink: 0; }
+.subtitle { margin: 0.35rem 0 0.65rem; color: #64748b; flex-shrink: 0; line-height: 1.55; }
 .surface-neon .subtitle { color: #cbd5e1; }
 
 .experience-preplay {
@@ -124,23 +128,66 @@
 /* Single card: game area is part of the main card, no nested card */
 .experience-content {
   min-height: 0;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   padding: 0.35rem 0 0.5rem;
   margin-bottom: 0.45rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
 .experience-content:has(.wheel-container) {
   overflow: visible;
 }
+
 .experience-content > * {
   width: 100%;
   max-width: 100%;
+}
+
+/* In-game instruction / rules blocks — shared game start layout */
+.experience-game-intro {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  text-align: left;
+  width: 100%;
+}
+
+.experience-game-intro p {
+  margin: 0;
+  line-height: 1.55;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.surface-neon .experience-game-intro p {
+  color: #cbd5e1;
+}
+
+.experience-game-intro-visual {
+  align-self: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+.experience-game-intro ul {
+  margin: 0;
+  padding-left: 1.15rem;
+  line-height: 1.55;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+/* Intro / pre-play: shop CTA hidden until result (see ExperienceHost.tsx) */
+.experience-container:has(.experience-game-intro) .cta-button,
+.experience-container:has(.experience-game-intro) .twirla-app-button {
+  display: none;
 }
 
 .experience-loss-footer {
@@ -178,49 +225,59 @@
 .twirla-app-button { margin-top: .45rem; display: inline-flex; gap: .45rem; opacity: .8; font-size: .8rem; flex-shrink: 0; }
 .twirla-app-button-logo { height: 14px; }
 
-/* After win: page scrolls from the top — no vertical flex centering (it hides the header) */
-.experience-host--has-result {
-  overflow: visible;
-  flex: 0 0 auto;
-  min-height: auto;
-  align-items: center;
-  justify-content: flex-start;
-  padding: clamp(0.5rem, 2.5vh, 1rem) clamp(0.75rem, 3vw, 1rem);
-  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem);
-  background: linear-gradient(
-    165deg,
-    color-mix(in srgb, var(--primary-color) 14%, #f8fafc) 0%,
-    color-mix(in srgb, var(--secondary-color) 10%, #f1f5f9) 48%,
-    #f8fafc 100%
-  );
-}
-
+/* After win/loss: same fixed card shell — compact header, scrollable game slot */
 .experience-host--has-result .orb {
-  opacity: 0.08;
+  opacity: 0.12;
 }
 
-.experience-host--has-result .experience-container {
-  max-height: none;
-  overflow: visible;
-  flex: 0 0 auto;
-  width: 100%;
-  margin: 0 auto;
+.experience-host--has-result .brand-head {
+  margin-bottom: 0.25rem;
+}
+
+.experience-host--has-result .logo {
+  width: 36px;
+  height: 36px;
+}
+
+.experience-host--has-result .title {
+  font-size: 1.1rem;
+  margin-bottom: 0.1rem;
+}
+
+.experience-host--has-result .subtitle,
+.experience-host--has-result .experience-preplay {
+  display: none;
 }
 
 .experience-host--has-result .experience-content {
-  overflow: visible;
-  flex: 0 1 auto;
-  justify-content: flex-start;
+  flex: 1 1 0;
   min-height: 0;
+  justify-content: flex-start;
+  align-items: stretch;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 0.25rem;
+  padding-top: 0.15rem;
 }
 
-.experience-host--has-result .cta-button,
+.experience-host--has-result .experience-content > * {
+  flex: 0 0 auto;
+  min-height: auto;
+  width: 100%;
+}
+
 .experience-host--has-result .twirla-app-button {
-  flex-shrink: 0;
+  margin-top: 0.2rem;
 }
 
-.experience-host--has-result .experience-container {
-  padding-bottom: 0.85rem;
+/* Unified result: one RewardModal surface (wheel, runner, catch, memory, scratch) */
+.experience-host--has-result .reward-celebration:has(.tw-reward-modal) {
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  overflow: visible;
 }
 
 @media (max-width: 768px) {
@@ -235,6 +292,9 @@
     padding: 0.75rem 0.85rem 0.65rem;
     border-radius: 20px;
     box-sizing: border-box;
+    height: min(calc(100dvh - 8.25rem), 620px);
+    min-height: min(calc(100dvh - 8.25rem), 620px);
+    max-height: min(calc(100dvh - 8.25rem), 620px);
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(0, 0, 0, 0.05);
   }
   .surface-glass .experience-container,
