@@ -8,7 +8,8 @@ public class ShopEntity
     public string? AdminToken { get; set; }
     public bool Enabled { get; set; } = true;
     public DateTimeOffset? ExpiresAt { get; set; }
-    public int PlayCooldownHours { get; set; } = 24;
+    public int PlayCooldownHours { get; set; } = 0;
+    public int CouponValidDays { get; set; } = 7;
     public string? Mode { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }

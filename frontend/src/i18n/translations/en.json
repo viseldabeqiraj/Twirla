@@ -26,7 +26,9 @@
     "copied": "Copied!",
     "consolationHeadline": "Better luck next time — here's {{pct}}% for today 🎉",
     "consolationSub": "Message the shop with this screen to claim your {{pct}}% perk.",
-    "consolationWheel": "You landed on “{{label}}”. You still get a small thank-you discount — tap below to claim."
+    "consolationWheel": "You landed on “{{label}}”. You still get a small thank-you discount — tap below to claim.",
+    "couponExpiresIn": "Use your code within {{days}} days!",
+    "couponExpiresHint": "This offer expires — message the shop before time runs out."
   },
   "landing": {
     "loading": "Loading…",

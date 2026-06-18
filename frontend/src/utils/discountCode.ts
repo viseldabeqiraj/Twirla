@@ -1,7 +1,5 @@
 import type { ExperienceMode } from '../types/ShopConfig';
 
-const CODE_YEAR = () => new Date().getFullYear();
-
 function randomSuffix(length = 4): string {
   const chars = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
   let s = '';
@@ -37,14 +35,27 @@ export interface DiscountCodeParams {
   gameMode: ExperienceMode | string;
 }
 
+/** Short prefix from slug (e.g. urban-glow → UG, zara-al → ZA). */
+function shopCodePrefix(slug: string, shopId: string): string {
+  const raw = (slug || shopId).trim();
+  const parts = raw.split(/[-_]/).filter(Boolean);
+  if (parts.length >= 2) {
+    const initials = parts
+      .map((p) => p[0] ?? '')
+      .join('')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '');
+    if (initials.length >= 2) return initials.slice(0, 4);
+  }
+  return sanitizeCodeSegment(raw, 4);
+}
+
 /**
- * TWIRLA-{YEAR}-{SHOP}-{GAME}-{RANDOM}
+ * Short redeem code, e.g. `UG-X7K2` (shop prefix + random).
  */
 export function generateDiscountCode(params: DiscountCodeParams): string {
-  const year = CODE_YEAR();
-  const shop = sanitizeCodeSegment(params.shopSlug || params.shopId);
-  const game = gameModeToCodeSegment(params.gameMode);
-  return `TWIRLA-${year}-${shop}-${game}-${randomSuffix(4)}`;
+  const prefix = shopCodePrefix(params.shopSlug, params.shopId);
+  return `${prefix}-${randomSuffix(4)}`;
 }
 
 const STORAGE_PREFIX = 'twirla_reward_code_';

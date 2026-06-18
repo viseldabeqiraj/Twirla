@@ -1,8 +1,10 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import AnimatedPrimaryButton from './AnimatedPrimaryButton';
 import RewardRevealAnimation from './RewardRevealAnimation';
 import { HideRewardModalShopCtaContext } from '../ExperienceRewardCtaContext';
+import { useShopExperience } from '../../context/ShopExperienceContext';
+import { useTranslation } from '../../i18n/i18n';
 import { trackEvent } from '../../api/analyticsApi';
 import './RewardModal.css';
 
@@ -39,6 +41,9 @@ export default function RewardModal({
   const [copied, setCopied] = useState(false);
   const reduceMotion = useReducedMotion();
   const hideShopCta = useContext(HideRewardModalShopCtaContext);
+  const { couponValidDays } = useShopExperience();
+  const { t } = useTranslation();
+  const showUrgency = Boolean(discountCode) && couponValidDays > 0;
 
   const handleCopy = async () => {
     if (!discountCode) return;
@@ -62,6 +67,28 @@ export default function RewardModal({
       <div className="tw-reward-modal__card tw-reward-modal__card--glow">
         <h3 className="tw-reward-modal__title">{title}</h3>
         {description ? <p className="tw-reward-modal__desc">{description}</p> : null}
+        {showUrgency ? (
+          <motion.div
+            className="tw-reward-modal__urgency"
+            role="status"
+            initial={reduceMotion ? false : { opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <motion.span
+              className="tw-reward-modal__urgency-icon"
+              aria-hidden
+              animate={reduceMotion ? undefined : { scale: [1, 1.12, 1] }}
+              transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              ⏳
+            </motion.span>
+            <span className="tw-reward-modal__urgency-text">
+              {t('reward.couponExpiresIn', { days: String(couponValidDays) })}
+            </span>
+            <span className="tw-reward-modal__urgency-sub">{t('reward.couponExpiresHint')}</span>
+          </motion.div>
+        ) : null}
         {discountCode ? <code className="tw-reward-modal__code">{discountCode}</code> : null}
         <div className="tw-reward-modal__actions">
           {discountCode ? (

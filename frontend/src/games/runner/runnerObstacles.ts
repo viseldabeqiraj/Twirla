@@ -19,6 +19,10 @@ export interface Obstacle {
 
 const KINDS: ObstacleKind[] = ['gift', 'spike', 'bag', 'tag'];
 
+export function randomObstacleGap(): number {
+  return OBSTACLE_MIN_GAP + Math.random() * (OBSTACLE_MAX_GAP - OBSTACLE_MIN_GAP);
+}
+
 export function createObstacle(canvasWidth: number, groundY: number): Obstacle {
   const height =
     OBSTACLE_MIN_HEIGHT +
@@ -36,8 +40,6 @@ export function createObstacle(canvasWidth: number, groundY: number): Obstacle {
 }
 
 export function getNextSpawnX(lastObstacleX: number | null): number {
-  const gap =
-    OBSTACLE_MIN_GAP +
-    Math.random() * (OBSTACLE_MAX_GAP - OBSTACLE_MIN_GAP);
+  const gap = randomObstacleGap();
   return lastObstacleX == null ? gap : lastObstacleX + gap;
 }

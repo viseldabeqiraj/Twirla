@@ -1,0 +1,35 @@
+.experience-already-played {
+  width: 100%;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  border-radius: 14px;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.28);
+}
+
+.experience-already-played-title {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #334155;
+}
+
+.experience-already-played-hint {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #64748b;
+}
+
+.surface-neon .experience-already-played {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.surface-neon .experience-already-played-title {
+  color: #f1f5f9;
+}
+
+.surface-neon .experience-already-played-hint {
+  color: #cbd5e1;
+}

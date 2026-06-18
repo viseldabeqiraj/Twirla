@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { recordPlay } from '../../utils/playTracking';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
@@ -20,6 +20,7 @@ interface TimeRemaining {
 export default function CountdownExperience({ config }: CountdownExperienceProps) {
   const { countdown, text, shopId } = config;
   const { t } = useTranslation();
+  const { markPlayed } = useShopExperience();
   const [timeRemaining, setTimeRemaining] = useState<TimeRemaining | null>(null);
   const [hasEnded, setHasEnded] = useState(false);
   const [hasRecordedPlay, setHasRecordedPlay] = useState(false);
@@ -30,10 +31,6 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
   const hasTrackedFinish = useRef(false);
 
   if (!countdown) return null;
-
-  // TEMP (testing): daily cooldown disabled.
-  // const playStatus = canUserPlay(shopId, playCooldownHours);
-  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
 
   useEffect(() => {
     const endDate = new Date(countdown.endAt);
@@ -92,34 +89,16 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
   
   // Record play and analytics when countdown ends (only if it ended while user was viewing)
   useEffect(() => {
-    if (hasEnded && !wasAlreadyEnded && playStatus.canPlay && !hasRecordedPlay) {
+    if (hasEnded && !wasAlreadyEnded && !hasRecordedPlay) {
       if (!hasTrackedFinish.current) {
         hasTrackedFinish.current = true;
         trackEvent(shopId, 'game_finish', { mode: 'Countdown' });
         trackEvent(shopId, 'reward_won', { mode: 'Countdown' });
       }
-      recordPlay(shopId);
+      markPlayed();
       setHasRecordedPlay(true);
     }
-  }, [hasEnded, wasAlreadyEnded, shopId, playStatus.canPlay, hasRecordedPlay]);
-
-  // Show blocked message if user can't play (but still show countdown)
-  if (!playStatus.canPlay && !hasEnded) {
-    const hoursText = playStatus.hoursRemaining === 1 
-      ? t('wheel.hour') 
-      : t('wheel.hours');
-    return (
-      <div className="countdown-message">
-        <p>{t('wheel.alreadyPlayed')}</p>
-        <p className="cooldown-message">
-          {t('wheel.comeBackIn', { 
-            hours: playStatus.hoursRemaining?.toString() || '0',
-            hoursText 
-          })}
-        </p>
-      </div>
-    );
-  }
+  }, [hasEnded, wasAlreadyEnded, shopId, hasRecordedPlay, markPlayed]);
 
   if (hasEnded || !timeRemaining) {
     return (

@@ -171,8 +171,8 @@ export default function ShopLandingPage() {
         <header className="shop-landing-app-header">
           <div className="shop-landing-app-header-inner">
             <div
-              className={`shop-landing-app-logo${hero.logoUrl ? ' shop-landing-app-logo--wordmark' : ''}`}
-              style={{ background: tokens.logoBackground }}
+              className={`shop-landing-app-logo${hero.logoUrl ? ' shop-landing-app-logo--image' : ''}`}
+              style={hero.logoUrl ? undefined : { background: tokens.logoBackground }}
             >
               {hero.logoUrl ? (
                 <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} referrerPolicy="no-referrer" />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ShopConfig, ExperienceMode } from '../types/ShopConfig';
 import { useTranslation } from '../i18n/i18n';
@@ -9,11 +9,14 @@ import CatchPrizeExperience from './experiences/CatchPrizeExperience';
 import ScratchExperience from './experiences/ScratchExperience';
 import CountdownExperience from './experiences/CountdownExperience';
 import MemoryMatchExperience from './experiences/MemoryMatchExperience';
+import AlreadyPlayedMessage from './experiences/AlreadyPlayedMessage';
 import RunnerGame from '../games/runner/RunnerGame';
 import AmbientParticles from './AmbientParticles';
 import AnimatedPrimaryButton from './twirla-ui/AnimatedPrimaryButton';
 import { HideRewardModalShopCtaContext } from './ExperienceRewardCtaContext';
 import { ShopThemeProvider, useComputedShopTheme } from '../theme/ShopThemeProvider';
+import { ShopExperienceProvider } from '../context/ShopExperienceContext';
+import { canUserPlay, recordPlay } from '../utils/playTracking';
 import { runnerThemeFromBranding } from '../utils/runnerThemeFromBranding';
 import './ExperienceHost.css';
 
@@ -61,6 +64,30 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
     ],
   );
   const { cssVars } = useComputedShopTheme(themeInput);
+
+  const playCooldownHours = config.playCooldownHours ?? 0;
+  const couponValidDays = config.couponValidDays ?? 7;
+  const initialPlayStatus = useMemo(
+    () => canUserPlay(shopId, playCooldownHours),
+    [shopId, playCooldownHours],
+  );
+  /** Block the whole game only when user already played before opening this page. */
+  const [blockedOnEntry] = useState(() => !initialPlayStatus.canPlay);
+  const [canReplay, setCanReplay] = useState(() => initialPlayStatus.canPlay);
+
+  const markPlayed = useCallback(() => {
+    recordPlay(shopId);
+    setCanReplay(false);
+  }, [shopId]);
+
+  const shopExperienceValue = useMemo(
+    () => ({
+      canReplay,
+      couponValidDays,
+      markPlayed,
+    }),
+    [canReplay, couponValidDays, markPlayed],
+  );
 
   const getModeTitle = () => {
     if (!mode) return text.title;
@@ -114,6 +141,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
     if (hasResult) {
       wrap?.classList.add('experience-page-wrap--scrollable');
       appContent?.classList.add('app-content--experience-scroll');
+      appContent?.scrollTo({ top: 0, behavior: 'auto' });
     } else {
       wrap?.classList.remove('experience-page-wrap--scrollable');
       appContent?.classList.remove('app-content--experience-scroll');
@@ -171,6 +199,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
 
   return (
     <ShopThemeProvider input={themeInput}>
+    <ShopExperienceProvider value={shopExperienceValue}>
     <div
       ref={hostRef}
       className={`experience-host pattern-${theme.backgroundPattern || 'gradient'} surface-${theme.surfaceStyle || 'glass'} ambient-${theme.ambientMotion ?? 'none'}${hasResult ? ' experience-host--has-result' : ''}`}
@@ -201,7 +230,13 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
           <p className="experience-preplay">{t('games.prePlayDiscount', { pct: String(text.maxDiscountPercent) })}</p>
         ) : null}
 
-        <div className="experience-content" ref={experienceContentRef}>{renderExperience()}</div>
+        <div className="experience-content" ref={experienceContentRef}>
+          {blockedOnEntry ? (
+            <AlreadyPlayedMessage playStatus={initialPlayStatus} />
+          ) : (
+            renderExperience()
+          )}
+        </div>
 
         <AnimatedPrimaryButton
           href={cta.url}
@@ -221,6 +256,7 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
       </motion.div>
       </HideRewardModalShopCtaContext.Provider>
     </div>
+    </ShopExperienceProvider>
     </ShopThemeProvider>
   );
 }

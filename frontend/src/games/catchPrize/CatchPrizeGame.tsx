@@ -7,6 +7,7 @@ import RewardCelebration from '../../components/RewardCelebration';
 import GameStatsBar from '../../components/twirla-ui/GameStatsBar';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
 import { normalizeTapHeartsReward } from '../../utils/rewardConsolation';
@@ -43,6 +44,7 @@ export default function CatchPrizeGame({
   onGameStart,
 }: CatchPrizeGameProps) {
   const { t } = useTranslation();
+  const { canReplay, markPlayed } = useShopExperience();
   const playAreaRef = useRef<HTMLDivElement>(null);
   const { state, startCountdown, handleTap, tryAgain } = useCatchPrizeGame(outcomes);
   const hasFiredStart = useRef(false);
@@ -80,8 +82,9 @@ export default function CatchPrizeGame({
       trackEvent(shopId, 'game_finish', { mode: gameMode });
       trackEvent(shopId, 'reward_won', { mode: gameMode });
       trackEvent(shopId, 'reward_generated', { mode: gameMode, couponCode: code });
+      markPlayed();
     }
-  }, [state.phase, displayOutcome, shopId, shopSlug, gameMode]);
+  }, [state.phase, displayOutcome, shopId, shopSlug, gameMode, markPlayed]);
 
   const onPlayAreaPointer = useCallback(
     (e: React.PointerEvent) => {
@@ -95,6 +98,7 @@ export default function CatchPrizeGame({
   );
 
   const handleTryAgain = () => {
+    if (!canReplay) return;
     hasFiredStart.current = false;
     finishTrackedRef.current = false;
     setFinishCode(null);
@@ -202,9 +206,11 @@ export default function CatchPrizeGame({
             shopId={shopId}
             gameMode={gameMode}
             extraActions={
-              <PrimaryButton type="button" variant="ghost" block onClick={handleTryAgain}>
-                {t('catchPrize.tryAgain')}
-              </PrimaryButton>
+              canReplay ? (
+                <PrimaryButton type="button" variant="ghost" block onClick={handleTryAgain}>
+                  {t('catchPrize.tryAgain')}
+                </PrimaryButton>
+              ) : null
             }
           />
         </RewardCelebration>

@@ -551,10 +551,16 @@ namespace Twirla.Infrastructure.Migrations
                         .HasColumnType("TEXT")
                         .HasColumnName("name");
 
+                    b.Property<int>("CouponValidDays")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasDefaultValue(7)
+                        .HasColumnName("coupon_valid_days");
+
                     b.Property<int>("PlayCooldownHours")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER")
-                        .HasDefaultValue(24)
+                        .HasDefaultValue(0)
                         .HasColumnName("play_cooldown_hours");
 
                     b.Property<string>("Slug")

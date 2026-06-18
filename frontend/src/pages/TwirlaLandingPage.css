@@ -578,6 +578,18 @@
   color: var(--tw-muted);
 }
 
+.tw-pricing-free-note {
+  margin: 0.75rem auto 0;
+  max-width: 36rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--tw-muted);
+}
+
+.tw-pricing-free-note strong {
+  color: var(--tw-text);
+}
+
 .tw-pricing-features {
   list-style: none;
   padding: 0;

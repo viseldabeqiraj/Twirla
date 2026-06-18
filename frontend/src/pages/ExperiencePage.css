@@ -13,8 +13,9 @@
 
 .experience-page-wrap--scrollable {
   overflow: visible;
-  flex: 1 1 0%;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: auto;
+  height: auto;
 }
 
 .experience-page-wrap > .experience-host {
@@ -23,8 +24,9 @@
 }
 
 .experience-page-wrap--scrollable > .experience-host {
-  flex: 1 1 0%;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: auto;
+  height: auto;
 }
 
 /* Experience error page */

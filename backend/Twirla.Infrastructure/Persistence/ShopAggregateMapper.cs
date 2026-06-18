@@ -16,6 +16,7 @@ internal static class ShopAggregateMapper
             Enabled = entity.Enabled,
             ExpiresAt = entity.ExpiresAt?.ToString("O"),
             PlayCooldownHours = entity.PlayCooldownHours,
+            CouponValidDays = entity.CouponValidDays,
             Mode = entity.Mode,
             Branding = MapBranding(entity.Branding),
             Text = MapText(entity.Text),
@@ -38,7 +39,8 @@ internal static class ShopAggregateMapper
         entity.AdminToken = config.AdminToken;
         entity.Enabled = config.Enabled != false;
         entity.ExpiresAt = ParseExpires(config.ExpiresAt);
-        entity.PlayCooldownHours = config.PlayCooldownHours ?? 24;
+        entity.PlayCooldownHours = config.PlayCooldownHours ?? 0;
+        entity.CouponValidDays = config.CouponValidDays ?? 7;
         entity.Mode = config.Mode;
 
         entity.Branding = MapBrandingEntity(config.Branding, entity.ShopId);

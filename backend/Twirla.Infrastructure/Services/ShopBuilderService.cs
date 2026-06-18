@@ -157,7 +157,8 @@ public sealed class ShopBuilderService
         else if (!string.IsNullOrWhiteSpace(config.AdminToken))
             config.AdminToken = config.AdminToken.Trim();
         config.Enabled ??= true;
-        config.PlayCooldownHours ??= 24;
+        config.PlayCooldownHours ??= 0;
+        config.CouponValidDays ??= 7;
         config.Branding ??= new BrandingConfig();
         config.Text ??= new TextConfig();
         config.Cta ??= new CtaConfig();

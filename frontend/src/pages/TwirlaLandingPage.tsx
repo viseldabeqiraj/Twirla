@@ -296,13 +296,16 @@ export default function TwirlaLandingPage() {
                 Po marrim disa dyqane të para për testim. Ti sjell produktet,
                 ne të krijojmë faqen me lojë.
               </p>
+              <p className="tw-pricing-free-note">
+                <strong>Falas për muajin e parë</strong> — pa kartë krediti. Pas trial-it, plane të thjeshta për dyqane të vogla.
+              </p>
             </div>
             <div className="tw-pricing-card">
               <div className="tw-pricing-header">
                 <h3>Early Access</h3>
                 <div className="tw-pricing-price">
                   <span className="tw-pricing-amount">Falas</span>
-                  <span className="tw-pricing-period">për dyqanet e para</span>
+                  <span className="tw-pricing-period">muajin e parë</span>
                 </div>
               </div>
               <ul className="tw-pricing-features">

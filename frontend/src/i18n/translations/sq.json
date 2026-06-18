@@ -26,7 +26,9 @@
     "copied": "U kopjua!",
     "consolationHeadline": "Fat më i mirë herën tjetër — ja {{pct}}% për sot 🎉",
     "consolationSub": "Shkruaj dyqanit me këtë ekran për të marrë {{pct}}%.",
-    "consolationWheel": "Dole te “{{label}}”. Ende merr një zbritje falënderimi — prek më poshtë për ta marrë."
+    "consolationWheel": "Dole te “{{label}}”. Ende merr një zbritje falënderimi — prek më poshtë për ta marrë.",
+    "couponExpiresIn": "Përdor kodin brenda {{days}} ditëve!",
+    "couponExpiresHint": "Oferta skadon — shkruaj dyqanit para se të mbarojë koha."
   },
   "landing": {
     "loading": "Duke u ngarkuar…",
@@ -89,7 +91,7 @@
     "alreadyPlayed": "Ke luajtur tashmë!",
     "comeBackIn": "Kthehu pas {{hours}} {{hoursText}} për të luajtur përsëri. 💕",
     "hour": "orë",
-    "hours": "orë",
+    "hours": "orësh",
     "alreadyTried": "Ke provuar tashmë! Bëj screenshot dhe na shkruaj 💕",
     "thanksParticipating": "Ke luajtur tashmë! Faleminderit për pjesëmarrjen.",
     "noWinTitle": "Fat më të mirë herën tjetër!",

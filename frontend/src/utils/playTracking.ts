@@ -12,29 +12,40 @@ export interface PlayStatus {
 }
 
 /**
- * Check if user can play based on cooldown period
+ * Check if user can play for this shop (any game mode shares one localStorage key).
+ * `cooldownHours <= 0` (default): one play ever per shop on this device.
+ * `cooldownHours > 0`: allow replay after that many hours.
  */
-export function canUserPlay(shopId: string, cooldownHours: number = 24): PlayStatus {
+export function canUserPlay(shopId: string, cooldownHours: number = 0): PlayStatus {
   const storageKey = `${STORAGE_PREFIX}${shopId}`;
   const lastPlayStr = localStorage.getItem(storageKey);
-  
+
   if (!lastPlayStr) {
     return {
       canPlay: true,
       lastPlayTime: null,
-      hoursRemaining: null
+      hoursRemaining: null,
     };
   }
-  
+
   const lastPlayTime = parseInt(lastPlayStr, 10);
+
+  if (cooldownHours <= 0) {
+    return {
+      canPlay: false,
+      lastPlayTime,
+      hoursRemaining: null,
+    };
+  }
+
   const now = Date.now();
   const hoursSincePlay = (now - lastPlayTime) / (1000 * 60 * 60);
   const hoursRemaining = cooldownHours - hoursSincePlay;
-  
+
   return {
     canPlay: hoursRemaining <= 0,
     lastPlayTime,
-    hoursRemaining: hoursRemaining > 0 ? Math.ceil(hoursRemaining) : null
+    hoursRemaining: hoursRemaining > 0 ? Math.ceil(hoursRemaining) : null,
   };
 }
 

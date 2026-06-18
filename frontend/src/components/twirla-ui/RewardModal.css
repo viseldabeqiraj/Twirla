@@ -54,6 +54,71 @@
   white-space: pre-line;
 }
 
+.tw-reward-modal__urgency {
+  margin: 0 0 var(--tw-space-md, 1rem);
+  padding: 0.65rem 0.75rem;
+  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, #f59e0b 18%, #fff) 0%,
+    color-mix(in srgb, #ef4444 10%, #fff) 100%
+  );
+  border: 1px solid color-mix(in srgb, #f59e0b 45%, transparent);
+  text-align: center;
+}
+
+.tw-reward-modal__urgency-icon {
+  display: block;
+  font-size: 1.35rem;
+  line-height: 1;
+  margin-bottom: 0.25rem;
+}
+
+.tw-reward-modal__urgency-text {
+  display: block;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: #9a3412;
+  letter-spacing: -0.01em;
+}
+
+.tw-reward-modal__urgency-sub {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #b45309;
+  line-height: 1.35;
+}
+
+.surface-neon .tw-reward-modal__urgency {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.22) 0%, rgba(239, 68, 68, 0.14) 100%);
+  border-color: rgba(251, 191, 36, 0.45);
+}
+
+.surface-neon .tw-reward-modal__urgency-text {
+  color: #fde68a;
+}
+
+.surface-neon .tw-reward-modal__urgency-sub {
+  color: #fcd34d;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tw-reward-modal__urgency {
+    animation: tw-reward-urgency-glow 2.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes tw-reward-urgency-glow {
+    from {
+      box-shadow: 0 0 0 rgba(245, 158, 11, 0);
+    }
+    to {
+      box-shadow: 0 0 18px color-mix(in srgb, #f59e0b 35%, transparent);
+    }
+  }
+}
+
 .surface-neon .tw-reward-modal__desc {
   color: #e2e8f0;
 }

@@ -5,6 +5,50 @@ import { darken, getRelativeLuminance, lighten, mix } from '../theme/shopTheme';
 /** Minimum perceived lightness gap between ground and runner/obstacle fills */
 const MIN_LUM_GAP = 0.14;
 
+function contrastRatio(a: string, b: string): number {
+  const la = getRelativeLuminance(a);
+  const lb = getRelativeLuminance(b);
+  const lighter = Math.max(la, lb);
+  const darker = Math.min(la, lb);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+/** Pick the palette swatch that contrasts most with the light sky band. */
+function pickHighestContrastGround(colors: string[], skyReference: string): string {
+  const unique = [...new Set(colors.map((c) => c.trim()).filter(Boolean))];
+  if (unique.length === 0) return '#0f172a';
+  let best = unique[0];
+  let bestRatio = contrastRatio(best, skyReference);
+  for (let i = 1; i < unique.length; i += 1) {
+    const ratio = contrastRatio(unique[i], skyReference);
+    if (ratio > bestRatio) {
+      bestRatio = ratio;
+      best = unique[i];
+    }
+  }
+  return best;
+}
+
+function paletteGroundColor(
+  branding: { primaryColor: string; secondaryColor: string; accentColor?: string },
+  spotPalette: ShopSpotPalette | undefined,
+  skyReference: string,
+): string {
+  const accent = branding.accentColor ?? branding.primaryColor;
+  const candidates = spotPalette
+    ? [
+        spotPalette.deep,
+        spotPalette.muted,
+        spotPalette.wash,
+        spotPalette.accent,
+        branding.primaryColor,
+        branding.secondaryColor,
+        accent,
+      ]
+    : [branding.primaryColor, branding.secondaryColor, accent];
+  return pickHighestContrastGround(candidates, skyReference);
+}
+
 function ensureContrastAgainstGround(fillHex: string, groundHex: string): string {
   const gl = getRelativeLuminance(groundHex);
   const adjust =
@@ -37,11 +81,11 @@ export function runnerThemeFromBranding(
 ): RunnerTheme {
   if (spotPalette) {
     const p = spotPalette;
-    /** Darkest shop tone for the runway strip */
-    const ground = mix(p.deep, '#020617', 0.04);
     /** Bright sky — stay in wash/white, never blend toward `ground` */
     const highlight = mix(p.wash, '#ffffff', 0.82);
     const skyHorizon = mix(p.wash, p.muted, 0.08);
+    /** Ground = palette color with strongest contrast vs the sky */
+    const ground = paletteGroundColor(branding, p, highlight);
     /** Shop primary = hero / CTA color on cards */
     let character = branding.primaryColor;
     character = ensureContrastAgainstGround(character, ground);
@@ -63,7 +107,6 @@ export function runnerThemeFromBranding(
   }
 
   const primary = branding.primaryColor;
-  const secondary = branding.secondaryColor;
   const accent = branding.accentColor ?? primary;
 
   // Sky: light top → airy horizon (never pull `ground` into the sky gradient; draw handles horizon)
@@ -71,8 +114,8 @@ export function runnerThemeFromBranding(
   const highlight = mix('#ffffff', skyCore, 0.58);
   const skyHorizon = mix(skyCore, '#f1f5f9', 0.52);
 
-  // Ground band: darker shop secondary / slate
-  const ground = mix(mix(secondary, '#0f172a', 0.62), '#020617', 0.28);
+  /** Ground = palette color with strongest contrast vs the sky */
+  const ground = paletteGroundColor(branding, undefined, highlight);
 
   const primaryLum = getRelativeLuminance(primary);
   let character =

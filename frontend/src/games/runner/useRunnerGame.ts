@@ -14,10 +14,9 @@ import {
   CHARACTER_HEIGHT,
   CHARACTER_GROUND_OFFSET,
   SCORE_PER_FRAME,
-  OBSTACLE_MIN_GAP,
 } from './runnerConstants';
 import { checkCollision, type Box } from './runnerCollision';
-import { createObstacle, type Obstacle } from './runnerObstacles';
+import { createObstacle, randomObstacleGap, type Obstacle } from './runnerObstacles';
 import { DEFAULT_RUNNER_OUTCOMES } from './runnerTypes';
 
 export interface RunnerFrameState {
@@ -66,7 +65,7 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
   const velocityYRef = useRef(0);
   const obstaclesRef = useRef<Obstacle[]>([]);
   const speedRef = useRef(INITIAL_SPEED);
-  const lastSpawnXRef = useRef<number | null>(null);
+  const nextGapRef = useRef(randomObstacleGap());
   const scoreRef = useRef(0);
   const groundYRef = useRef(0);
   const runningRef = useRef(false);
@@ -85,7 +84,7 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
     velocityYRef.current = 0;
     obstaclesRef.current = [];
     speedRef.current = INITIAL_SPEED;
-    lastSpawnXRef.current = null;
+    nextGapRef.current = randomObstacleGap();
     scoreRef.current = 0;
     const canvas = canvasRef.current;
     if (canvas) {
@@ -222,19 +221,21 @@ export function useRunnerGame(options: UseRunnerGameOptions = {}) {
       }
     });
     obstaclesRef.current = obstacles.filter((_, i) => !toRemove.includes(i));
+    obstacles = obstaclesRef.current;
 
-    const rightEdge = w + 80;
-    const rightmostObstacle = obstacles.length
-      ? Math.max(...obstacles.map((o) => o.x))
-      : -9999;
-    const minGap = OBSTACLE_MIN_GAP;
-    const shouldSpawn =
-      obstacles.length === 0 || rightmostObstacle < w - minGap;
-    if (shouldSpawn) {
-      const newObs = createObstacle(w, groundY + CHARACTER_HEIGHT + CHARACTER_GROUND_OFFSET);
-      newObs.x = rightEdge;
-      lastSpawnXRef.current = rightEdge;
-      obstaclesRef.current = [...obstaclesRef.current, newObs];
+    const spawnBuffer = 60;
+    const rightmostX = obstacles.length ? Math.max(...obstacles.map((o) => o.x)) : null;
+    const gap = nextGapRef.current;
+    const needsObstacle = rightmostX === null || rightmostX + gap < w + spawnBuffer;
+    if (needsObstacle) {
+      const obstacleGroundY = groundY + CHARACTER_HEIGHT + CHARACTER_GROUND_OFFSET;
+      const newObs = createObstacle(w, obstacleGroundY);
+      newObs.x =
+        rightmostX === null
+          ? w + spawnBuffer + Math.random() * 40
+          : rightmostX + gap;
+      nextGapRef.current = randomObstacleGap();
+      obstaclesRef.current = [...obstacles, newObs];
     }
 
     const displayScore = Math.floor(score);

@@ -4,7 +4,8 @@
   "name": "ZARA Albania",
   "enabled": true,
   "expiresAt": "2027-12-31T23:59:59Z",
-  "playCooldownHours": 24,
+  "playCooldownHours": 0,
+  "couponValidDays": 7,
   "branding": {
     "primaryColor": "#000000",
     "secondaryColor": "#FFFFFF",
@@ -146,10 +147,10 @@
     }
   },
   "memory": {
-    "pairCount": 6,
+    "pairCount": 8,
     "revealText": "All pairs matched",
     "revealSubtitle": "Your style perk is ready — shop THE NEW",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 60,
     "maxMistakes": 8,
     "translations": {
       "sq": {

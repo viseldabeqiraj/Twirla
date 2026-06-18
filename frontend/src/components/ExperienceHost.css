@@ -178,14 +178,15 @@
 .twirla-app-button { margin-top: .45rem; display: inline-flex; gap: .45rem; opacity: .8; font-size: .8rem; flex-shrink: 0; }
 .twirla-app-button-logo { height: 14px; }
 
-/* After win: card grows with reward UI — page scrolls, softer backdrop */
+/* After win: page scrolls from the top — no vertical flex centering (it hides the header) */
 .experience-host--has-result {
   overflow: visible;
-  flex: 1 1 0%;
-  min-height: 0;
+  flex: 0 0 auto;
+  min-height: auto;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   padding: clamp(0.5rem, 2.5vh, 1rem) clamp(0.75rem, 3vw, 1rem);
+  padding-bottom: max(1rem, env(safe-area-inset-bottom, 0px) + 0.75rem);
   background: linear-gradient(
     165deg,
     color-mix(in srgb, var(--primary-color) 14%, #f8fafc) 0%,
@@ -201,9 +202,9 @@
 .experience-host--has-result .experience-container {
   max-height: none;
   overflow: visible;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   width: 100%;
-  margin: auto;
+  margin: 0 auto;
 }
 
 .experience-host--has-result .experience-content {

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { recordPlay } from '../../utils/playTracking';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
@@ -18,6 +18,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   const wheel = config.wheel;
   const { shopId } = config;
   const { t } = useTranslation();
+  const { canReplay, markPlayed } = useShopExperience();
   const [hasSpun, setHasSpun] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
   const [awaitingReveal, setAwaitingReveal] = useState(false);
@@ -106,7 +107,7 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
   }, [showResult, selectedPrize, shopId, config.slug, wheel, isWinningPrize]);
 
   /** Wire from play-status API later; keep branch reachable for TypeScript. */
-  const cooldownBlocked = false;
+  const cooldownBlocked = !canReplay;
   const cooldownHoursRemaining: number | null = null;
 
   const labels = useMemo(() => wheel?.prizes.map((p) => p.label) ?? [], [wheel]);
@@ -180,13 +181,14 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
         if (!hasTrackedFinish.current) {
           hasTrackedFinish.current = true;
         }
-        recordPlay(shopId);
+        markPlayed();
       }, 1700);
     },
-    [shopId, wheel],
+    [shopId, wheel, markPlayed],
   );
 
   const resetRound = () => {
+    if (!canReplay) return;
     setShowResult(false);
     setSelectedPrize(null);
     rewardTrackedRef.current = false;
@@ -223,9 +225,11 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
           shopId={shopId}
           gameMode="Wheel"
           extraActions={
-            <PrimaryButton type="button" variant="ghost" block onClick={resetRound}>
-              {t('wheel.spinAgain')}
-            </PrimaryButton>
+            canReplay ? (
+              <PrimaryButton type="button" variant="ghost" block onClick={resetRound}>
+                {t('wheel.spinAgain')}
+              </PrimaryButton>
+            ) : null
           }
         />
       </RewardCelebration>

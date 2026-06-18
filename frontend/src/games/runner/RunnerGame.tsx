@@ -7,6 +7,7 @@ import { drawRunnerFrame } from './runnerDraw';
 import RewardCelebration from '../../components/RewardCelebration';
 import PrimaryButton from '../../components/twirla-ui/PrimaryButton';
 import RewardModal from '../../components/twirla-ui/RewardModal';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
 import { normalizeRunnerReward } from '../../utils/rewardConsolation';
@@ -23,6 +24,7 @@ export interface RunnerGameProps {
 
 export default function RunnerGame(props: RunnerGameProps) {
   const { t } = useTranslation();
+  const { canReplay, markPlayed } = useShopExperience();
   const defaultConfig: RunnerGameConfig = {
     outcomes: DEFAULT_RUNNER_OUTCOMES,
     theme: DEFAULT_RUNNER_THEME,
@@ -99,10 +101,12 @@ export default function RunnerGame(props: RunnerGameProps) {
       trackEvent(shopId, 'game_finish', { mode: gameMode });
       trackEvent(shopId, 'reward_won', { mode: gameMode });
       trackEvent(shopId, 'reward_generated', { mode: gameMode, couponCode: code });
+      markPlayed();
     }
-  }, [state.uiState, displayReward, shopId, shopSlug, gameMode]);
+  }, [state.uiState, displayReward, shopId, shopSlug, gameMode, markPlayed]);
 
   const handleReplay = useCallback(() => {
+    if (!canReplay) return;
     setReplayFading(true);
     setTimeout(() => {
       finishTrackedRef.current = false;
@@ -110,7 +114,7 @@ export default function RunnerGame(props: RunnerGameProps) {
       startGame();
       setReplayFading(false);
     }, 280);
-  }, [startGame]);
+  }, [startGame, canReplay]);
 
   const draw = useCallback(
     (frame: RunnerFrameState) => {
@@ -287,9 +291,11 @@ export default function RunnerGame(props: RunnerGameProps) {
               shopId={shopId}
               gameMode={gameMode}
               extraActions={
-                <PrimaryButton type="button" variant="ghost" block onClick={handleReplay}>
-                  {t('runner.playAgain')}
-                </PrimaryButton>
+                canReplay ? (
+                  <PrimaryButton type="button" variant="ghost" block onClick={handleReplay}>
+                    {t('runner.playAgain')}
+                  </PrimaryButton>
+                ) : null
               }
             />
             <p className="runner-gameover-run-score">{t('runner.runScore', { n: state.score })}</p>

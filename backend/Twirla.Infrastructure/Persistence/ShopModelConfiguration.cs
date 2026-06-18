@@ -17,7 +17,8 @@ internal static class ShopModelConfiguration
             e.Property(x => x.AdminToken).HasColumnName("admin_token").HasMaxLength(256);
             e.Property(x => x.Enabled).HasColumnName("enabled").HasDefaultValue(true);
             e.Property(x => x.ExpiresAt).HasColumnName("expires_at");
-            e.Property(x => x.PlayCooldownHours).HasColumnName("play_cooldown_hours").HasDefaultValue(24);
+            e.Property(x => x.PlayCooldownHours).HasColumnName("play_cooldown_hours").HasDefaultValue(0);
+            e.Property(x => x.CouponValidDays).HasColumnName("coupon_valid_days").HasDefaultValue(7);
             e.Property(x => x.Mode).HasColumnName("mode").HasMaxLength(32);
             e.Property(x => x.CreatedAt).HasColumnName("created_at");
             e.Property(x => x.UpdatedAt).HasColumnName("updated_at");

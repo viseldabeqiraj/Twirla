@@ -63,7 +63,8 @@ export function buildShopConfigFromForm(input: {
     name: input.name.trim() || undefined,
     adminToken: input.adminToken,
     enabled: true,
-    playCooldownHours: 24,
+    playCooldownHours: 0,
+    couponValidDays: 7,
     branding: {
       primaryColor: input.primaryColor,
       secondaryColor: input.secondaryColor,
@@ -134,7 +135,8 @@ export function buildShopConfigFromForm(input: {
   }
   if (input.enableMemory) {
     config.memory = {
-      pairCount: 6,
+      pairCount: 8,
+      timeLimitSeconds: 60,
       revealText: 'You matched them all!',
       revealSubtitle: 'Claim your prize',
     };

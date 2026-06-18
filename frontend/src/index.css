@@ -92,6 +92,8 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  justify-content: flex-start;
+  align-items: stretch;
 }
 
 @media (min-width: 769px) {

@@ -10,6 +10,8 @@ export interface ShopConfig {
   name?: string;
   adminToken?: string;
   playCooldownHours?: number;
+  /** Days the customer has to redeem a generated coupon (default 7). */
+  couponValidDays?: number;
   mode?: ExperienceMode;
   branding: BrandingConfig;
   text: TextConfig;
@@ -154,7 +156,7 @@ export interface CountdownConfig {
 }
 
 export interface MemoryMatchConfig {
-  /** Number of pairs (3–8). Total cards = 2 × pairCount */
+  /** Number of pairs (fixed at 8 in the game UI → 16 cards). */
   pairCount: number;
   /** Shown when all pairs are found */
   revealText: string;

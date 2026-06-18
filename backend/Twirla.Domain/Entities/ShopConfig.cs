@@ -12,7 +12,8 @@ public class ShopConfig
     public string? Slug { get; set; }
     public string? Name { get; set; }
     public string? AdminToken { get; set; }
-    public int? PlayCooldownHours { get; set; } = 24;
+    public int? PlayCooldownHours { get; set; } = 0;
+    public int? CouponValidDays { get; set; } = 7;
     public string? Mode { get; set; }
     public BrandingConfig Branding { get; set; } = new();
     public TextConfig Text { get; set; } = new();
@@ -50,6 +51,7 @@ public class ShopConfig
             Name = Name,
             AdminToken = AdminToken,
             PlayCooldownHours = PlayCooldownHours,
+            CouponValidDays = CouponValidDays,
             Branding = Branding,
             Text = Text.GetForLanguage(language),
             Cta = Cta,

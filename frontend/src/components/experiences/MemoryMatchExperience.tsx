@@ -1,12 +1,16 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { ShopConfig } from '../../types/ShopConfig';
-import { recordPlay } from '../../utils/playTracking';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
+import {
+  MEMORY_PAIR_COUNT,
+  MEMORY_TIME_LIMIT_SECONDS,
+} from '../../games/memory/memoryMatchConstants';
 import './MemoryMatchExperience.css';
 
 const DEFAULT_SYMBOLS = ['🎁', '🎯', '✨', '🏃', '💝', '⭐', '🎀', '🔔'];
@@ -27,12 +31,13 @@ interface CardModel {
 }
 
 function buildDeck(memory: NonNullable<ShopConfig['memory']>): CardModel[] {
-  const raw = memory.pairCount;
-  const pairCount = Math.min(8, Math.max(3, Number.isFinite(raw) ? Math.floor(raw) : 6));
-  const labels =
-    memory.pairLabels && memory.pairLabels.length >= pairCount
-      ? memory.pairLabels.slice(0, pairCount)
-      : DEFAULT_SYMBOLS.slice(0, pairCount);
+  const pairCount = MEMORY_PAIR_COUNT;
+  const labels: string[] = [];
+  for (let i = 0; i < pairCount; i += 1) {
+    labels.push(
+      memory.pairLabels?.[i] ?? DEFAULT_SYMBOLS[i % DEFAULT_SYMBOLS.length],
+    );
+  }
 
   const pairs: CardModel[] = [];
   for (let p = 0; p < pairCount; p++) {
@@ -56,6 +61,7 @@ interface MemoryMatchExperienceProps {
 export default function MemoryMatchExperience({ config }: MemoryMatchExperienceProps) {
   const { memory, shopId, branding, cta, text } = config;
   const { t } = useTranslation();
+  const { canReplay, markPlayed } = useShopExperience();
   const [started, setStarted] = useState(false);
   const [cards, setCards] = useState<CardModel[]>(() => (memory ? buildDeck(memory) : []));
   const [matched, setMatched] = useState<Record<string, boolean>>({});
@@ -75,12 +81,9 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
   const gameStartRef = useRef<number | null>(null);
   const [finishCode, setFinishCode] = useState<string | null>(null);
 
-  const totalPairs = useMemo(() => {
-    if (!memory) return 0;
-    return Math.min(8, Math.max(3, Math.floor(memory.pairCount)));
-  }, [memory]);
+  const totalPairs = MEMORY_PAIR_COUNT;
 
-  const timeLimitSec = memory?.timeLimitSeconds;
+  const timeLimitSec = MEMORY_TIME_LIMIT_SECONDS;
   const maxMistakes = memory?.maxMistakes;
 
   const matchedPairCount = useMemo(
@@ -122,7 +125,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
 
   useEffect(() => {
     if (!started || won || winRecorded.current || lost) return;
-    if (matchedPairCount < totalPairs || totalPairs === 0) return;
+    if (matchedPairCount < totalPairs) return;
     winRecorded.current = true;
     if (gameStartRef.current) {
       setFinalClockMs(Date.now() - gameStartRef.current);
@@ -138,10 +141,11 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
     trackEvent(shopId, 'game_finish', { mode: 'MemoryMatch' });
     trackEvent(shopId, 'reward_won', { mode: 'MemoryMatch' });
     trackEvent(shopId, 'reward_generated', { mode: 'MemoryMatch', couponCode: code });
-    recordPlay(shopId);
+    markPlayed();
   }, [started, won, lost, matchedPairCount, totalPairs, shopId, config.slug]);
 
   const resetGame = useCallback(() => {
+    if (!canReplay) return;
     if (!memory) return;
     setCards(buildDeck(memory));
     setMatched({});
@@ -161,7 +165,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
     lostRecorded.current = false;
     setFinishCode(null);
     setStarted(false);
-  }, [memory]);
+  }, [memory, canReplay]);
 
   useEffect(() => {
     if (!started || !lost || lostRecorded.current) return;
@@ -176,7 +180,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
     trackEvent(shopId, 'game_finish', { mode: 'MemoryMatch' });
     trackEvent(shopId, 'reward_won', { mode: 'MemoryMatch' });
     trackEvent(shopId, 'reward_generated', { mode: 'MemoryMatch', couponCode: code });
-    recordPlay(shopId);
+    markPlayed();
   }, [started, lost, shopId, config.slug]);
 
   const handleStart = () => {
@@ -253,17 +257,13 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
       {!started && (
         <div className="memory-match-intro">
           <p className="memory-match-intro-text">{t('memoryMatch.instruction')}</p>
-          {(timeLimitSec != null && timeLimitSec > 0) || (maxMistakes != null && maxMistakes > 0) ? (
-            <ul className="memory-match-rules">
-              {timeLimitSec != null && timeLimitSec > 0 ? (
-                <li>{t('memoryMatch.ruleTimeLimit', { seconds: String(timeLimitSec) })}</li>
-              ) : null}
-              {maxMistakes != null && maxMistakes > 0 ? (
-                <li>{t('memoryMatch.ruleMaxMistakes', { max: String(maxMistakes) })}</li>
-              ) : null}
-              <li>{t('memoryMatch.ruleMoves')}</li>
-            </ul>
-          ) : null}
+          <ul className="memory-match-rules">
+            <li>{t('memoryMatch.ruleTimeLimit', { seconds: String(timeLimitSec) })}</li>
+            {maxMistakes != null && maxMistakes > 0 ? (
+              <li>{t('memoryMatch.ruleMaxMistakes', { max: String(maxMistakes) })}</li>
+            ) : null}
+            <li>{t('memoryMatch.ruleMoves')}</li>
+          </ul>
           <button type="button" className="memory-match-start" onClick={handleStart}>
             {t('memoryMatch.start')}
           </button>
@@ -282,9 +282,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
               >
                 {t('memoryMatch.timeLeft', { seconds: String(remainingSec) })}
               </span>
-            ) : (
-              <span className="memory-match-hud-item">{t('memoryMatch.timeElapsed', { time: formatElapsed(clockMs) })}</span>
-            )}
+            ) : null}
             <span className="memory-match-hud-item">{t('memoryMatch.movesCount', { n: String(moves) })}</span>
             <span className="memory-match-hud-item">
               {maxMistakes != null && maxMistakes > 0
@@ -317,9 +315,11 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
               );
             })}
           </div>
-          <button type="button" className="memory-match-reset" onClick={resetGame}>
-            {t('memoryMatch.reset')}
-          </button>
+          {canReplay ? (
+            <button type="button" className="memory-match-reset" onClick={resetGame}>
+              {t('memoryMatch.reset')}
+            </button>
+          ) : null}
         </>
       )}
 
@@ -337,9 +337,11 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
             shopId={shopId}
             gameMode="MemoryMatch"
             extraActions={
-              <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
-                {t('memoryMatch.playAgain')}
-              </PrimaryButton>
+              canReplay ? (
+                <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
+                  {t('memoryMatch.playAgain')}
+                </PrimaryButton>
+              ) : null
             }
           />
           <p className="memory-match-lose-stats memory-match-lose-stats--muted">
@@ -380,9 +382,11 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
                     <dd>{mistakes}</dd>
                   </div>
                 </dl>
-                <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
-                  {t('memoryMatch.playAgain')}
-                </PrimaryButton>
+                {canReplay ? (
+                  <PrimaryButton type="button" variant="ghost" block onClick={resetGame}>
+                    {t('memoryMatch.playAgain')}
+                  </PrimaryButton>
+                ) : null}
               </>
             }
           />

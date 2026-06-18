@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ShopConfig } from '../../types/ShopConfig';
-import { recordPlay } from '../../utils/playTracking';
+import { useShopExperience } from '../../context/ShopExperienceContext';
 import { trackEvent } from '../../api/analyticsApi';
 import { useTranslation } from '../../i18n/i18n';
 import RewardCelebration from '../RewardCelebration';
@@ -16,6 +16,7 @@ interface ScratchExperienceProps {
 export default function ScratchExperience({ config }: ScratchExperienceProps) {
   const { scratch, text, shopId, branding, cta } = config;
   const { t } = useTranslation();
+  const { markPlayed } = useShopExperience();
   const [showRewardPanel, setShowRewardPanel] = useState(false);
   const [finishCode, setFinishCode] = useState<string | null>(null);
   const rewardTrackedRef = useRef(false);
@@ -36,32 +37,15 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
 
   if (!scratch) return null;
 
-  const playStatus = { canPlay: true, hoursRemaining: null as number | null };
-
   const handleReveal = () => {
     setShowRewardPanel(true);
     trackEvent(shopId, 'game_finish', { mode: 'Scratch' });
-    recordPlay(shopId);
+    markPlayed();
   };
 
   const handleFirstTouch = () => {
     trackEvent(shopId, 'game_start', { mode: 'Scratch' });
   };
-
-  if (!playStatus.canPlay) {
-    const hoursText = playStatus.hoursRemaining === 1 ? t('wheel.hour') : t('wheel.hours');
-    return (
-      <div className="scratch-message">
-        <p>{t('wheel.alreadyPlayed')}</p>
-        <p className="cooldown-message">
-          {t('wheel.comeBackIn', {
-            hours: playStatus.hoursRemaining?.toString() || '0',
-            hoursText,
-          })}
-        </p>
-      </div>
-    );
-  }
 
   const rewardTitle = scratch.revealText;
   const rewardDescription = scratch.revealSubtitle;
