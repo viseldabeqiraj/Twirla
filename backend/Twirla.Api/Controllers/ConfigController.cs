@@ -45,7 +45,7 @@ public class ConfigController : ControllerBase
         if (config == null)
             return NotFound(new { error = "Shop configuration not found" });
 
-        if (!Enum.TryParse<ExperienceMode>(mode, true, out var experienceMode))
+        if (!ExperienceModeParser.TryParse(mode, out var experienceMode))
             return BadRequest(new { error = $"Invalid mode: {mode}" });
 
         if (!ShopHasMode(config, experienceMode))
@@ -73,7 +73,7 @@ public class ConfigController : ControllerBase
         if (config == null)
             return NotFound(new { error = "Shop not found" });
 
-        if (!Enum.TryParse<ExperienceMode>(mode, true, out var experienceMode))
+        if (!ExperienceModeParser.TryParse(mode, out var experienceMode))
             return BadRequest(new { error = $"Invalid mode: {mode}" });
 
         if (!ShopHasMode(config, experienceMode))

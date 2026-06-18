@@ -2,6 +2,7 @@ import type { CSSProperties, MouseEvent } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import type { HeroConfig } from '../../types/ShopLandingConfig';
 import { resolveAssetUrl } from '../../config/api';
+import { cssUrl } from '../../utils/cssUrl';
 import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
 import StaggeredEntrance from '../twirla-ui/StaggeredEntrance';
 
@@ -63,7 +64,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
 
   const innerStyle: CSSProperties = hasImage
     ? {
-        backgroundImage: `${IMAGE_OVERLAY[overlay]}, url(${resolvedBg})`,
+        backgroundImage: `${IMAGE_OVERLAY[overlay]}, ${cssUrl(resolvedBg)}`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat',
@@ -86,17 +87,31 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
     </AnimatedPrimaryButton>
   );
 
+  /** Sticky app header already shows logo/name when `hideBar` — avoid repeating on the hero card. */
+  const showHeroBranding = !hideBar;
+
   const staggerItems = [
-    <div key="logo" className="shop-hero-logo-wrap">
-      {hero.logoUrl ? (
-        <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} className="shop-hero-logo" />
-      ) : (
-        <span className="shop-hero-logo-placeholder" aria-hidden>{initial}</span>
-      )}
-    </div>,
-    <p key="shop" className="shop-hero-shop-name">
-      {hero.shopName}
-    </p>,
+    ...(showHeroBranding
+      ? [
+          <div key="logo" className="shop-hero-logo-wrap">
+            {hero.logoUrl ? (
+              <img
+                src={resolveAssetUrl(hero.logoUrl)}
+                alt={hero.shopName}
+                className="shop-hero-logo"
+                referrerPolicy="no-referrer"
+              />
+            ) : (
+              <span className="shop-hero-logo-placeholder" aria-hidden>
+                {initial}
+              </span>
+            )}
+          </div>,
+          <p key="shop" className="shop-hero-shop-name">
+            {hero.shopName}
+          </p>,
+        ]
+      : []),
     <h1 key="title" className="shop-hero-title">
       {headline}
     </h1>,
@@ -123,7 +138,12 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
       <div className={`shop-hero-bar ${hideBar ? 'shop-hero-bar-hidden' : ''}`}>
         <div className="shop-hero-bar-logo">
           {hero.logoUrl ? (
-            <img src={resolveAssetUrl(hero.logoUrl)} alt="" className="shop-hero-bar-logo-img" />
+            <img
+              src={resolveAssetUrl(hero.logoUrl)}
+              alt=""
+              className="shop-hero-bar-logo-img"
+              referrerPolicy="no-referrer"
+            />
           ) : (
             <span className="shop-hero-bar-logo-placeholder" aria-hidden>{initial}</span>
           )}

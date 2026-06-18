@@ -55,14 +55,28 @@ async function loadFromCatalogByShopId(shopId: string, language?: string): Promi
 }
 
 /** Fetch config by slug (e.g. "pinkster", "demo") so URLs like /wheel/pinkster/any work. */
+/** Map public URL segments to API mode names (memory → MemoryMatch). */
+function normalizeModeForApi(mode?: string): string | undefined {
+  if (!mode) return mode;
+  const m = mode.toLowerCase();
+  if (m === 'memory' || m === 'memorymatch') return 'MemoryMatch';
+  if (m === 'taphearts' || m === 'tap-hearts') return 'TapHearts';
+  if (m === 'runner') return 'Runner';
+  if (m === 'wheel') return 'Wheel';
+  if (m === 'scratch') return 'Scratch';
+  if (m === 'countdown') return 'Countdown';
+  return mode;
+}
+
 export async function fetchShopConfigBySlug(
   slug: string,
   mode?: string,
   language?: string
 ): Promise<ShopConfig> {
   const api = getApiUrl();
-  const baseUrl = mode
-    ? `${api}/config/by-slug/${encodeURIComponent(slug)}/${mode}`
+  const apiMode = normalizeModeForApi(mode);
+  const baseUrl = apiMode
+    ? `${api}/config/by-slug/${encodeURIComponent(slug)}/${apiMode}`
     : `${api}/config/by-slug/${encodeURIComponent(slug)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
   const response = await fetch(url);
@@ -85,7 +99,8 @@ export async function fetchShopConfigBySlug(
 
 export async function fetchShopConfig(shopId: string, mode?: string, language?: string): Promise<ShopConfig> {
   const api = getApiUrl();
-  const baseUrl = mode ? `${api}/config/${encodeURIComponent(shopId)}/${mode}` : `${api}/config/${encodeURIComponent(shopId)}`;
+  const apiMode = normalizeModeForApi(mode);
+  const baseUrl = apiMode ? `${api}/config/${encodeURIComponent(shopId)}/${apiMode}` : `${api}/config/${encodeURIComponent(shopId)}`;
   const url = language ? `${baseUrl}?lang=${language}` : baseUrl;
 
   try {

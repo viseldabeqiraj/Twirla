@@ -1,0 +1,124 @@
+.shop-admin-list {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.shop-admin-list-header {
+  margin-bottom: 1.5rem;
+}
+
+.shop-admin-list-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.35rem;
+}
+
+.shop-admin-list-lead {
+  color: #64748b;
+  margin: 0 0 1rem;
+}
+
+.shop-admin-list-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.shop-admin-list-search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.shop-admin-table-wrap {
+  overflow-x: auto;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.shop-admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.shop-admin-table th,
+.shop-admin-table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.shop-admin-table th {
+  font-weight: 600;
+  color: #475569;
+  background: #f8fafc;
+}
+
+.shop-admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.shop-admin-table tbody tr {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.shop-admin-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.shop-admin-swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  vertical-align: middle;
+  margin-right: 0.35rem;
+}
+
+.shop-admin-badge {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.shop-admin-badge--on {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.shop-admin-badge--off {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.shop-admin-games {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.shop-admin-game-chip {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.4rem;
+  background: #f1f5f9;
+  border-radius: 4px;
+  color: #334155;
+}
+
+.shop-admin-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #64748b;
+}

@@ -18,13 +18,24 @@ import type {
 } from '../types/ShopConfig';
 import { SHOP_SQ_FALLBACKS, type ShopSqCampaignPatch, type ShopSqFallback } from './shopSqFallbacks';
 
+/** Copy locale overlay fields; skip null/undefined/blank so SQ text does not wipe images or URLs. */
+function mergeOverlayFields<T extends object>(base: T | undefined, overlay: Partial<T>): T {
+  const out = { ...(base ?? {}) } as Record<string, unknown>;
+  for (const [key, value] of Object.entries(overlay as Record<string, unknown>)) {
+    if (value === null || value === undefined) continue;
+    if (typeof value === 'string' && value.trim() === '') continue;
+    out[key] = value;
+  }
+  return out as T;
+}
+
 function mergeIndexed<T extends object>(
   base: T[] | undefined,
   overlay: Partial<T>[] | undefined
 ): T[] | undefined {
   if (!base?.length) return base;
   if (!overlay?.length) return base;
-  return base.map((item, i) => (overlay[i] ? ({ ...item, ...overlay[i] } as T) : item));
+  return base.map((item, i) => (overlay[i] ? mergeOverlayFields(item, overlay[i]) : item));
 }
 
 /** Deep-merge campaign overlay onto base (hero, nested blocks, arrays by index). */
@@ -33,18 +44,39 @@ export function deepMergeCampaign(
   overlay: Partial<ShopCampaignPageConfig> | ShopSqCampaignPatch
 ): ShopCampaignPageConfig {
   const o = overlay as Record<string, unknown>;
+  const { translations: _tr, ...overlayRest } = overlay as ShopCampaignPageConfig & {
+    translations?: unknown;
+  };
   return {
     ...base,
-    ...overlay,
-    hero: o.hero ? { ...base.hero, ...(o.hero as object) } : base.hero,
+    ...overlayRest,
+    hero: o.hero
+      ? mergeOverlayFields(base.hero ?? {}, o.hero as Partial<NonNullable<ShopCampaignPageConfig['hero']>>)
+      : base.hero,
     valueProposition:
       o.valueProposition != null
-        ? { ...base.valueProposition, ...(o.valueProposition as object) }
+        ? mergeOverlayFields(
+            base.valueProposition ?? {},
+            o.valueProposition as Partial<NonNullable<ShopCampaignPageConfig['valueProposition']>>
+          )
         : base.valueProposition,
     howToOrder:
-      o.howToOrder != null ? { ...base.howToOrder, ...(o.howToOrder as object) } : base.howToOrder,
-    about: o.about != null ? { ...base.about, ...(o.about as object) } : base.about,
-    social: o.social ? { ...base.social, ...(o.social as object) } : base.social,
+      o.howToOrder != null
+        ? mergeOverlayFields(
+            base.howToOrder ?? {},
+            o.howToOrder as Partial<NonNullable<ShopCampaignPageConfig['howToOrder']>>
+          )
+        : base.howToOrder,
+    about:
+      o.about != null
+        ? mergeOverlayFields(
+            base.about ?? {},
+            o.about as Partial<NonNullable<ShopCampaignPageConfig['about']>>
+          )
+        : base.about,
+    social: o.social
+      ? mergeOverlayFields(base.social ?? {}, o.social as Partial<NonNullable<ShopCampaignPageConfig['social']>>)
+      : base.social,
     featuredProducts: mergeIndexed<FeaturedProductConfig>(base.featuredProducts, overlay.featuredProducts),
     testimonials: mergeIndexed<TestimonialConfig>(base.testimonials, overlay.testimonials),
     trustBadges: mergeIndexed<TrustBadgeConfig>(base.trustBadges, overlay.trustBadges),

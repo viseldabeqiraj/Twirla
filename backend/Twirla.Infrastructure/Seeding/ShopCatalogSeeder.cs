@@ -55,18 +55,21 @@ public sealed class ShopCatalogSeeder
             if (config == null || string.IsNullOrWhiteSpace(config.ShopId))
                 continue;
 
-            var existing = await _db.Shops.FirstOrDefaultAsync(s => s.ShopId == config.ShopId, cancellationToken);
+            var existing = await _db.Shops.WithFullConfig().FirstOrDefaultAsync(s => s.ShopId == config.ShopId, cancellationToken);
             if (existing != null)
+            {
                 _db.Shops.Remove(existing);
+                await _db.SaveChangesAsync(cancellationToken);
+            }
 
             var entity = new ShopEntity { ShopId = config.ShopId };
             ShopAggregateMapper.ApplyGraph(entity, config);
             _db.Shops.Add(entity);
+            await _db.SaveChangesAsync(cancellationToken);
             count++;
         }
 
-        await _db.SaveChangesAsync(cancellationToken);
         Console.WriteLine($"Imported {count} shops from {path} into the database.");
-        return true;
+        return count > 0;
     }
 }

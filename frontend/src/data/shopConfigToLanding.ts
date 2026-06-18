@@ -69,7 +69,9 @@ export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string):
         label: ch?.ctaLabel ?? text.ctaText,
         url: ch?.ctaUrl ?? cta.url,
       },
-      backgroundStyle: ch?.backgroundStyle ?? 'gradient',
+      backgroundStyle: ch?.backgroundImageUrl?.trim()
+        ? (ch?.backgroundStyle ?? 'solid')
+        : (ch?.backgroundStyle ?? 'gradient'),
       primaryColor: branding.primaryColor,
       secondaryColor: branding.secondaryColor,
       backgroundImageUrl: ch?.backgroundImageUrl,

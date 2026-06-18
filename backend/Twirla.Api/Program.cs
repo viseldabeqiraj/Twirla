@@ -15,6 +15,7 @@ builder.Services.AddScoped<IShopConfigService, ShopConfigService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddSingleton<CampaignSetupTokenService>();
+builder.Services.AddScoped<ShopBuilderService>();
 
 builder.Services.AddControllers();
 
@@ -54,7 +55,7 @@ file static class TwirlaCorsMiddleware
         {
             context.Response.Headers["Access-Control-Allow-Origin"] = origin;
             context.Response.Headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, PATCH, OPTIONS";
-            context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, Accept, Origin";
+            context.Response.Headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, Accept, Origin, X-Requested-With";
             context.Response.Headers["Vary"] = "Origin";
         }
 

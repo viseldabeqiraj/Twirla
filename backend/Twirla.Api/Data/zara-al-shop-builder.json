@@ -1,0 +1,410 @@
+{
+  "shopId": "zara-albania-m8k2p9x4q7n1",
+  "slug": "zara-al",
+  "name": "ZARA Albania",
+  "enabled": true,
+  "expiresAt": "2027-12-31T23:59:59Z",
+  "playCooldownHours": 24,
+  "branding": {
+    "primaryColor": "#000000",
+    "secondaryColor": "#FFFFFF",
+    "accentColor": "#767676",
+    "logoUrl": "/logos/zara.svg",
+    "brandName": "ZARA",
+    "backgroundMode": "light",
+    "logoBackgroundColor": "#FFFFFF",
+    "spotPalette": {
+      "deep": "#000000",
+      "muted": "#767676",
+      "wash": "#F2F2F2",
+      "accent": "#E5E5E5"
+    },
+    "theme": {
+      "backgroundPattern": "grain",
+      "surfaceStyle": "solid",
+      "ambientMotion": "none",
+      "ambientParticles": {
+        "enabled": true,
+        "shape": "dot",
+        "density": "few",
+        "color": "#000000",
+        "accentColor": "#E5E5E5"
+      },
+      "fontFamily": "Helvetica Neue, Helvetica, Arial, sans-serif",
+      "borderRadius": 0,
+      "buttonRadius": 0
+    }
+  },
+  "text": {
+    "title": "Spin THE NEW",
+    "subtitle": "Woman · Man · Kids · Beauty · Zara Home — play for a style perk.",
+    "ctaText": "Shop at zara.com/al/en",
+    "resultTitle": "Your ZARA perk",
+    "resultSubtitle": "Screenshot this screen. Online codes apply at checkout on zara.com; in-store perks per boutique policy.",
+    "translations": {
+      "sq": {
+        "title": "Rrotullo E REJËN",
+        "subtitle": "Femra · Mashkull · Fëmijë · Beauty · Zara Home — luaj për një përfitim stili.",
+        "ctaText": "Bli në zara.com/al/en",
+        "resultTitle": "Përfitimi yt ZARA",
+        "resultSubtitle": "Bëj screenshot. Kodet online vlejnë në checkout; në dyqan sipas politikës së butikut."
+      }
+    }
+  },
+  "cta": {
+    "url": "https://www.zara.com/xk/sq/z-press-mkt1401.html"
+  },
+  "wheel": {
+    "allowRepeatSpins": false,
+    "prizes": [
+      {
+        "label": "15% off selected styles",
+        "weight": 22,
+        "description": "Full-price items in your bag on zara.com.",
+        "translations": {
+          "sq": {
+            "label": "15% zbritje për stile të zgjedhura",
+            "description": "Artikuj me çmim të plotë në shportë në zara.com."
+          }
+        }
+      },
+      {
+        "label": "Free standard delivery",
+        "weight": 22,
+        "description": "On your next online order to Albania.",
+        "translations": {
+          "sq": {
+            "label": "Dërgesë standarde falas",
+            "description": "Porosia e radhës online drejt Shqipërisë."
+          }
+        }
+      },
+      {
+        "label": "Early access — THE NEW",
+        "weight": 18,
+        "description": "Preview the drop before it goes wide.",
+        "translations": {
+          "sq": {
+            "label": "Akses i hershëm — E REJA",
+            "description": "Shiko koleksionin para publikimit të gjerë."
+          }
+        }
+      },
+      {
+        "label": "Gift with purchase",
+        "weight": 13,
+        "description": "Limited beauty or accessories add-on.",
+        "translations": {
+          "sq": {
+            "label": "Dhuratë me blerje",
+            "description": "Shtesë e kufizuar beauty ose aksesorë."
+          }
+        }
+      },
+      {
+        "label": "Try again",
+        "weight": 25,
+        "isWinning": false,
+        "description": "Cooldown applies — come back tomorrow.",
+        "translations": {
+          "sq": {
+            "label": "Provo përsëri",
+            "description": "Prit cooldown-in — kthehu nesër."
+          }
+        }
+      }
+    ]
+  },
+  "scratch": {
+    "overlayColor": "#000000",
+    "overlayText": "Scratch to reveal",
+    "revealText": "Perk unlocked",
+    "revealSubtitle": "Continue to zara.com/al/en to redeem",
+    "translations": {
+      "sq": {
+        "overlayText": "Gërvisht për të zbuluar",
+        "revealText": "Përfitimi u hap",
+        "revealSubtitle": "Vazhdo në zara.com/al/en për ta përdorur"
+      }
+    }
+  },
+  "tapHearts": {
+    "heartsToTap": 14,
+    "heartColor": "#000000",
+    "revealText": "You caught the drop",
+    "revealSubtitle": "Woman · Man · Kids — explore on zara.com",
+    "outcomes": [
+      { "headline": "10% off knitwear", "weight": 35 },
+      { "headline": "Accessory of the week", "weight": 35 },
+      { "headline": "No prize this round", "weight": 30, "isNoWin": true }
+    ],
+    "translations": {
+      "sq": {
+        "revealText": "Kapët koleksionin",
+        "revealSubtitle": "Femra · Mashkull · Fëmijë — shfleto në zara.com"
+      }
+    }
+  },
+  "memory": {
+    "pairCount": 6,
+    "revealText": "All pairs matched",
+    "revealSubtitle": "Your style perk is ready — shop THE NEW",
+    "timeLimitSeconds": 90,
+    "maxMistakes": 8,
+    "translations": {
+      "sq": {
+        "revealText": "Të gjitha çiftet u përputhën",
+        "revealSubtitle": "Përfitimi yt është gati — bli E REJËN"
+      }
+    }
+  },
+  "countdown": {
+    "endAt": "2026-09-30T20:00:00Z",
+    "endMessage": "THE NEW drop window has closed — shop the collection on zara.com.",
+    "showCtaBeforeEnd": true,
+    "translations": {
+      "sq": {
+        "endMessage": "Dritarja e E REJËS mbylli — bli koleksionin në zara.com."
+      }
+    }
+  },
+  "runnerGame": {
+    "outcomes": [
+      { "headline": "Finish-line bonus", "weight": 45, "body": "Extra perk on full-price styles." },
+      { "headline": "Styling tip unlocked", "weight": 35, "body": "Editorial look from THE NEW." },
+      { "headline": "Almost — run again", "weight": 20, "isNoWin": true, "body": "Cooldown before your next run." }
+    ]
+  },
+  "campaign": {
+    "layoutTemplate": "story-driven",
+    "fontPairId": "editorial",
+    "accentColor": "#000000",
+    "featuredGame": "Wheel",
+    "enabledGameModes": ["Wheel", "Scratch", "TapHearts", "MemoryMatch", "Countdown", "Runner"],
+    "experiencesSlug": "zara-al",
+    "experiencesUniqueId": "m8k2p9x4q7n1",
+    "featuredSectionTitle": "From the collection",
+    "gamesSectionTitle": "Play for perks",
+    "particlesBackground": {
+      "enabled": true,
+      "count": 36,
+      "linkDistance": 120,
+      "dotSize": 2,
+      "speed": 0.28,
+      "color": "#000000",
+      "accentColor": "#E5E5E5"
+    },
+    "hero": {
+      "headline": "THE NEW",
+      "tagline": "Koleksioni i ri në internet — Zara Lajme / Press.",
+      "ctaLabel": "Zara Press — Koleksioni i ri",
+      "ctaUrl": "https://www.zara.com/xk/sq/z-press-mkt1401.html",
+      "backgroundStyle": "solid",
+      "backgroundImageUrl": "/logos/zara-hero.jpg",
+      "backgroundImageOverlay": "dark",
+      "backgroundPattern": "grain"
+    },
+    "valueProposition": {
+      "headline": "Minimal by design",
+      "body": "Black, white, and the garment in focus — the same editorial language as the official ZARA site, turned into an interactive campaign for your audience."
+    },
+    "howToOrder": {
+      "heading": "How to shop",
+      "body": "Open Woman, Man, Kids, Beauty or Zara Home, select size and colour, then checkout on zara.com. For boutiques in Albania, use the store locator on the site.",
+      "primaryCtaLabel": "Go to zara.com/al/en",
+      "primaryCtaUrl": "https://www.zara.com/al/en/"
+    },
+    "about": {
+      "whatWeSell": "Women's, men's and kids' fashion, shoes, accessories, Zara Home and beauty.",
+      "aboutUs": "ZARA is a brand of Inditex — trend-led collections with a clean, monochrome identity and frequent new drops.",
+      "city": "Tirana",
+      "country": "Albania",
+      "physicalAddress": "Find your nearest ZARA boutique via the store locator on zara.com."
+    },
+    "social": {
+      "website": "https://www.zara.com/al/en/",
+      "instagram": "https://www.instagram.com/zara/",
+      "facebook": "https://www.facebook.com/Zara"
+    },
+    "featuredProducts": [
+      {
+        "id": "zara-press-mkt1401",
+        "title": "Koleksioni i ri — Zara Lajme",
+        "description": "Press feature: new collection online (z-press-mkt1401).",
+        "price": "Shtypi",
+        "imageUrl": "/logos/zara-hero.jpg",
+        "ctaLabel": "Open press page",
+        "ctaUrl": "https://www.zara.com/xk/sq/z-press-mkt1401.html"
+      },
+      {
+        "id": "zara-studio-shirt",
+        "title": "Oversized combination shirt",
+        "description": "Organza layers, Studio edit.",
+        "price": "View on site",
+        "imageUrl": "https://static.zara.net/assets/public/36e1/32bc/0a724fb0acdb/50ed88c7dcc9/05063023620-p/05063023620-p.jpg?ts=1739869094600&w=1080",
+        "ctaLabel": "Shop Woman",
+        "ctaUrl": "https://www.zara.com/al/en/woman-new-in-l1180.html"
+      },
+      {
+        "id": "zara-cotton-top",
+        "title": "Cotton modal top",
+        "description": "Soft palette, everyday essential.",
+        "price": "View on site",
+        "imageUrl": "https://static.zara.net/assets/public/9bbc/cd97/b00b462eb244/2ab326c473d0/03641842622-e1/03641842622-e1.jpg?ts=1738251517451&w=1080",
+        "ctaLabel": "Shop Woman",
+        "ctaUrl": "https://www.zara.com/al/en/woman-new-in-l1180.html"
+      },
+      {
+        "id": "zara-structured-coat",
+        "title": "Structured coat",
+        "description": "Clean lines, winter-to-spring transition.",
+        "price": "View on site",
+        "imageUrl": "https://static.zara.net/assets/public/f69d/76b5/0b5244ad8427/629818ef2eb8/03152007800-p/03152007800-p.jpg?ts=1738064248644&w=1080",
+        "ctaLabel": "Shop Woman",
+        "ctaUrl": "https://www.zara.com/al/en/woman-new-in-l1180.html"
+      },
+      {
+        "id": "zara-blazer",
+        "title": "Fitted blazer",
+        "description": "Sharp lapels, editorial tailoring.",
+        "price": "View on site",
+        "imageUrl": "https://static.zara.net/photos///2021/I/0/1/p/7808/160/046/2/w/1080/7808160046_1_1_1.jpg?ts=1620821843383",
+        "ctaLabel": "Shop Woman",
+        "ctaUrl": "https://www.zara.com/al/en/woman-new-in-l1180.html"
+      },
+      {
+        "id": "zara-midi",
+        "title": "Fluid midi dress",
+        "description": "Neutral tones, day to evening.",
+        "price": "View on site",
+        "imageUrl": "https://static.zara.net/photos///2019/I/0/3/p/3860/782/400/2/w/1080/3860782400_1_1_1.jpg?ts=1559719973394",
+        "ctaLabel": "Shop Woman",
+        "ctaUrl": "https://www.zara.com/al/en/woman-new-in-l1180.html"
+      }
+    ],
+    "testimonials": [
+      {
+        "quote": "Clean layout, fast checkout — exactly what I expect from ZARA online.",
+        "author": "Online shopper",
+        "role": "Tirana"
+      },
+      {
+        "quote": "THE NEW drops are easy to browse on mobile.",
+        "author": "Campaign player",
+        "role": "Albania"
+      }
+    ],
+    "trustBadges": [
+      { "label": "zara.com/al/en", "icon": "🛍️" },
+      { "label": "Woman · Man · Kids", "icon": "✨" },
+      { "label": "Secure payment", "icon": "🔒" },
+      { "label": "Store locator", "icon": "📍" }
+    ],
+    "faq": [
+      {
+        "question": "Which site should I use?",
+        "answer": "This campaign links to https://www.zara.com/al/en/ — the English experience for Albania. Switch language on the site header if needed."
+      },
+      {
+        "question": "Are wheel prizes official ZARA offers?",
+        "answer": "Perks here are for this Twirla demo unless you replace them with approved commercial terms from ZARA."
+      },
+      {
+        "question": "How do I switch language on this page?",
+        "answer": "Use the language switcher in the header — Albanian (sq) uses the translations block in this config."
+      },
+      {
+        "question": "Where is the logo hosted?",
+        "answer": "The wordmark is served from your API at /logos/zara.svg (Helvetica-style tracking matching the retail site)."
+      }
+    ],
+    "translations": {
+      "sq": {
+        "featuredSectionTitle": "Nga koleksioni",
+        "gamesSectionTitle": "Luaj për përfitime",
+        "hero": {
+          "headline": "E REJA",
+          "tagline": "Koleksioni i ri online — Pranverë - Vere 2026",
+          "ctaLabel": "Zara — Koleksioni i ri",
+          "ctaUrl": "https://www.zara.com/xk/sq/z-press-mkt1401.html"
+        },
+        "valueProposition": {
+          "headline": "Minimalizëm i qëllimshëm",
+          "body": "E zezë, e bardhë dhe veshja në qendër — i njëjti gjuhë editorial si faqja zyrtare ZARA, në një kampanjë interaktive."
+        },
+        "howToOrder": {
+          "heading": "Si të blesh",
+          "body": "Hap Femra, Mashkull, Fëmijë, Beauty ose Zara Home, zgjidh madhësinë dhe ngjyrën, pastaj përfundo porosinë në zara.com. Për butiket në Shqipëri, përdor lokatorin e dyqaneve në site.",
+          "primaryCtaLabel": "Shko te zara.com/al/en"
+        },
+        "about": {
+          "whatWeSell": "Modë për femra, burra dhe fëmijë, këpucë, aksesorë, Zara Home dhe beauty.",
+          "aboutUs": "ZARA është pjesë e Inditex — koleksione trend dhe identitet monokrom me risi të shpeshta.",
+          "city": "Tiranë",
+          "country": "Shqipëri",
+          "physicalAddress": "Gjej butikun më të afërt ZARA përmes lokatorit në zara.com."
+        },
+        "featuredProducts": [
+          {
+            "title": "Koleksioni i ri — Zara Lajme",
+            "description": "Shtypi: koleksioni i ri online (z-press-mkt1401).",
+            "ctaLabel": "Hap faqen e shtypit"
+          },
+          {
+            "title": "Këmishë oversized",
+            "description": "Shtresa organza, edicion Studio.",
+            "ctaLabel": "Femra"
+          },
+          {
+            "title": "Top cotton modal",
+            "description": "Palette e butë, essential i përditshëm.",
+            "ctaLabel": "Femra"
+          },
+          {
+            "title": "Palto e strukturuar",
+            "description": "Vija të pastra, kalim dimër–pranverë.",
+            "ctaLabel": "Femra"
+          },
+          {
+            "title": "Blazer i strukturuar",
+            "description": "Lapela të mprehta, tailoring editorial.",
+            "ctaLabel": "Femra"
+          },
+          {
+            "title": "Fustan midi fluid",
+            "description": "Nuanca neutrale, nga dita në mbrëmje.",
+            "ctaLabel": "Femra"
+          }
+        ],
+        "testimonials": [
+          { "quote": "Faqe e pastër, checkout i shpejtë — saktësisht çfarë pres nga ZARA online.", "author": "Blerës online", "role": "Tiranë" },
+          { "quote": "E REJA është e lehtë për t'u shfletuar në telefon.", "author": "Lojtar kampanje", "role": "Shqipëri" }
+        ],
+        "trustBadges": [
+          { "label": "zara.com/al/en", "icon": "🛍️" },
+          { "label": "Femra · Mashkull · Fëmijë", "icon": "✨" },
+          { "label": "Pagesë e sigurt", "icon": "🔒" },
+          { "label": "Lokatori i dyqaneve", "icon": "📍" }
+        ],
+        "faq": [
+          {
+            "question": "Cilin site duhet të përdor?",
+            "answer": "Kampanja lidhet me https://www.zara.com/al/en/ — përvoja në anglisht për Shqipëri. Ndrysho gjuhën nga header-i i site-it nëse duhet."
+          },
+          {
+            "question": "A janë çmimet e rrotës zyrtare ZARA?",
+            "answer": "Përfitimet këtu janë për demo Twirla, përveç nëse i zëvendësoni me kushte të miratuara nga ZARA."
+          },
+          {
+            "question": "Si ndryshoj gjuhën këtu?",
+            "answer": "Përdor ndërruesin e gjuhës në header — shqipja (sq) vjen nga blloku translations në këtë konfigurim."
+          },
+          {
+            "question": "Ku hostohet logoja?",
+            "answer": "Marka shërbehet nga API juaj në /logos/zara.svg."
+          }
+        ]
+      }
+    }
+  }
+}

@@ -170,14 +170,17 @@ export default function ShopLandingPage() {
       >
         <header className="shop-landing-app-header">
           <div className="shop-landing-app-header-inner">
-            <div className="shop-landing-app-logo" style={{ background: tokens.logoBackground }}>
+            <div
+              className={`shop-landing-app-logo${hero.logoUrl ? ' shop-landing-app-logo--wordmark' : ''}`}
+              style={{ background: tokens.logoBackground }}
+            >
               {hero.logoUrl ? (
-                <img src={resolveAssetUrl(hero.logoUrl)} alt="" />
+                <img src={resolveAssetUrl(hero.logoUrl)} alt={hero.shopName} referrerPolicy="no-referrer" />
               ) : (
                 <span className="shop-landing-app-logo-placeholder" aria-hidden>{initial}</span>
               )}
             </div>
-            <span className="shop-landing-app-name">{hero.shopName}</span>
+            {!hero.logoUrl ? <span className="shop-landing-app-name">{hero.shopName}</span> : null}
             <LanguageSwitcher />
           </div>
         </header>

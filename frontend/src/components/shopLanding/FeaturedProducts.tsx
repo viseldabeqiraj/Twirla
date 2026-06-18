@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
 import { resolveAssetUrl } from '../../config/api';
@@ -34,6 +35,67 @@ function defaultOrderCta(
   return null;
 }
 
+function resolveProductCta(
+  p: FeaturedProductConfig,
+  fallbackCta: { url: string; label: string } | null
+): { url: string; label: string } | null {
+  const ctaUrl = p.ctaUrl?.trim();
+  const ctaLabel = p.ctaLabel?.trim();
+  if (ctaUrl && ctaLabel) return { url: ctaUrl, label: ctaLabel };
+  if (ctaUrl && fallbackCta) return { url: ctaUrl, label: fallbackCta.label };
+  if (!ctaUrl && fallbackCta) return fallbackCta;
+  return null;
+}
+
+function ProductCard({
+  product: p,
+  fallbackCta,
+}: {
+  product: FeaturedProductConfig;
+  fallbackCta: { url: string; label: string } | null;
+}) {
+  const [imageFailed, setImageFailed] = useState(false);
+  const src = p.imageUrl?.trim() ? resolveAssetUrl(p.imageUrl) : '';
+  const showImage = !!src && !imageFailed;
+  const resolved = resolveProductCta(p, fallbackCta);
+
+  return (
+    <article className="shop-product-card">
+      {showImage ? (
+        <div className="shop-product-image-wrap">
+          <img
+            src={src}
+            alt={p.title}
+            className="shop-product-image"
+            referrerPolicy="no-referrer"
+            loading="lazy"
+            decoding="async"
+            onError={() => setImageFailed(true)}
+          />
+        </div>
+      ) : (
+        <div className="shop-product-placeholder" aria-hidden />
+      )}
+      <div className="shop-product-body">
+        <h3 className="shop-product-title">{p.title}</h3>
+        {p.description ? <p className="shop-product-desc">{p.description}</p> : null}
+        {p.price ? <p className="shop-product-price">{p.price}</p> : null}
+        {resolved ? (
+          <AnimatedPrimaryButton
+            href={resolved.url}
+            external
+            pulse
+            small
+            className="shop-product-cta"
+          >
+            {resolved.label}
+          </AnimatedPrimaryButton>
+        ) : null}
+      </div>
+    </article>
+  );
+}
+
 export default function FeaturedProducts({ products, sectionTitle, social }: FeaturedProductsProps) {
   const { t } = useTranslation();
   if (products.length === 0) return null;
@@ -48,53 +110,9 @@ export default function FeaturedProducts({ products, sectionTitle, social }: Fea
         <p className="shop-section-subtitle shop-products-subtitle">{t('landing.featuredProductsSubtitle')}</p>
         <div className="shop-products-showcase">
           <div className="shop-products-grid">
-            {products.map((p) => {
-              const ctaUrl = p.ctaUrl?.trim();
-              const ctaLabel = p.ctaLabel?.trim();
-              const resolved =
-                ctaUrl && ctaLabel
-                  ? { url: ctaUrl, label: ctaLabel }
-                  : ctaUrl && fallbackCta
-                    ? { url: ctaUrl, label: fallbackCta.label }
-                    : !ctaUrl && fallbackCta
-                      ? fallbackCta
-                      : null;
-
-              return (
-                <article key={p.id} className="shop-product-card">
-                  {p.imageUrl && (
-                    <div className="shop-product-image-wrap">
-                      <img
-                        src={resolveAssetUrl(p.imageUrl)}
-                        alt={p.title}
-                        className="shop-product-image"
-                      />
-                    </div>
-                  )}
-                  {!p.imageUrl && <div className="shop-product-placeholder" aria-hidden />}
-                  <div className="shop-product-body">
-                    <h3 className="shop-product-title">{p.title}</h3>
-                    {p.description && (
-                      <p className="shop-product-desc">{p.description}</p>
-                    )}
-                    {p.price && (
-                      <p className="shop-product-price">{p.price}</p>
-                    )}
-                    {resolved && (
-                      <AnimatedPrimaryButton
-                        href={resolved.url}
-                        external
-                        pulse
-                        small
-                        className="shop-product-cta"
-                      >
-                        {resolved.label}
-                      </AnimatedPrimaryButton>
-                    )}
-                  </div>
-                </article>
-              );
-            })}
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} fallbackCta={fallbackCta} />
+            ))}
           </div>
         </div>
       </div>

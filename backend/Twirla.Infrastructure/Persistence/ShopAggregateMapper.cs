@@ -292,12 +292,15 @@ internal static class ShopAggregateMapper
                 Wash = c.SpotWash,
                 Accent = c.SpotAccent
             } : null,
-            Translations = ShopJsonHelper.Deserialize<Dictionary<string, ShopCampaignConfig>>(c.TranslationsJson)
+            Translations = CampaignTranslationSanitizer.Sanitize(
+                ShopJsonHelper.Deserialize<Dictionary<string, ShopCampaignConfig>>(c.TranslationsJson))
         };
     }
 
     private static bool HasHero(ShopCampaignEntity c) =>
-        c.HeroHeadline != null || c.HeroTagline != null || c.HeroCtaLabel != null || c.HeroBackgroundPattern != null;
+        c.HeroHeadline != null || c.HeroTagline != null || c.HeroCtaLabel != null || c.HeroCtaUrl != null
+        || c.HeroBackgroundStyle != null || !string.IsNullOrWhiteSpace(c.HeroBackgroundImageUrl)
+        || c.HeroBackgroundImageOverlay != null || c.HeroBackgroundPattern != null;
 
     private static bool HasSocial(ShopCampaignEntity c) =>
         c.SocialInstagram != null || c.SocialWebsite != null || c.SocialWhatsapp != null
@@ -478,7 +481,7 @@ internal static class ShopAggregateMapper
             EnabledGameModesJson = ShopJsonHelper.Serialize(c.EnabledGameModes),
             ExperiencesSlug = c.ExperiencesSlug,
             ExperiencesUniqueId = c.ExperiencesUniqueId,
-            TranslationsJson = ShopJsonHelper.Serialize(c.Translations)
+            TranslationsJson = ShopJsonHelper.Serialize(CampaignTranslationSanitizer.Sanitize(c.Translations))
         };
         if (c.Hero != null)
         {
