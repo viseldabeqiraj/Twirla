@@ -10,6 +10,9 @@ import {
   randomToken,
   slugify,
 } from '../utils/shopConfigDefaults';
+import { parseShopConfigJson } from '../utils/shopConfigImages';
+import ShopConfigImagePanel from '../components/setup/ShopConfigImagePanel';
+import type { ShopConfig } from '../types/ShopConfig';
 import './ShopCampaignSetupPage.css';
 
 export default function ShopBuilderPage() {
@@ -39,6 +42,7 @@ export default function ShopBuilderPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<CreateShopResponse | null>(null);
+  const [sessionToken, setSessionToken] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -54,7 +58,10 @@ export default function ShopBuilderPage() {
         return;
       }
       const ok = await validateCampaignSetupSession(token);
-      if (!cancelled) setSessionAuth(ok ? 'ok' : 'fail');
+      if (!cancelled) {
+        setSessionAuth(ok ? 'ok' : 'fail');
+        if (ok) setSessionToken(token);
+      }
     })();
     return () => {
       cancelled = true;
@@ -76,6 +83,48 @@ export default function ShopBuilderPage() {
 
   const regenerateShopId = () => setShopId(generateShopId(name || slug || 'shop'));
   const regenerateToken = () => setAdminToken(randomToken(32));
+
+  const uploadSlug = slug.trim() || slugify(name).trim() || shopId.trim() || 'draft';
+
+  const buildFormConfig = (): ShopConfig =>
+    buildShopConfigFromForm({
+      name,
+      slug: slug.trim(),
+      shopId: shopId.trim(),
+      adminToken,
+      primaryColor,
+      secondaryColor,
+      logoUrl,
+      ctaUrl,
+      title,
+      subtitle,
+      experienceSlug: experienceSlug.trim() || slug.trim(),
+      experienceUniqueId: experienceUniqueId.trim(),
+      enableWheel,
+      enableTapHearts,
+      enableScratch,
+      enableCountdown,
+      enableMemory,
+      enableRunner,
+      heroImageUrl: undefined,
+      aboutPhotoUrl: undefined,
+      featuredProducts: undefined,
+      advancedJson: undefined,
+    });
+
+  const getWorkingConfig = (): ShopConfig => {
+    if (showAdvanced && advancedJson.trim()) {
+      const parsed = parseShopConfigJson(advancedJson);
+      if (parsed) return parsed;
+    }
+    return buildFormConfig();
+  };
+
+  const handleConfigImagesChange = (config: ShopConfig) => {
+    setLogoUrl(config.branding?.logoUrl ?? '');
+    setShowAdvanced(true);
+    setAdvancedJson(JSON.stringify(config, null, 2));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -102,29 +151,16 @@ export default function ShopBuilderPage() {
       return;
     }
 
-    let config;
+    let config: ShopConfig;
     try {
-      config = buildShopConfigFromForm({
-        name,
-        slug: slug.trim(),
-        shopId: shopId.trim(),
-        adminToken,
-        primaryColor,
-        secondaryColor,
-        logoUrl,
-        ctaUrl,
-        title,
-        subtitle,
-        experienceSlug: experienceSlug.trim() || slug.trim(),
-        experienceUniqueId: experienceUniqueId.trim(),
-        enableWheel,
-        enableTapHearts,
-        enableScratch,
-        enableCountdown,
-        enableMemory,
-        enableRunner,
-        advancedJson: showAdvanced ? advancedJson : undefined,
-      });
+      if (showAdvanced && advancedJson.trim()) {
+        config = JSON.parse(advancedJson) as ShopConfig;
+        if (!config.shopId) config.shopId = shopId.trim();
+        if (!config.slug) config.slug = slug.trim();
+        if (!config.adminToken) config.adminToken = adminToken;
+      } else {
+        config = buildFormConfig();
+      }
     } catch {
       setError('Advanced JSON is invalid. Fix the JSON or turn off advanced mode.');
       return;
@@ -257,14 +293,20 @@ export default function ShopBuilderPage() {
                 placeholder="My Boutique"
               />
             </label>
-            <label className="campaign-setup-label">
+            <label className="campaign-setup-label" id="shop-builder-slug">
               URL slug (/shop/…)
               <input
                 className="campaign-setup-input"
                 value={slug}
                 onChange={(e) => setSlug(e.target.value)}
                 placeholder="my-boutique"
+                aria-describedby={slug.trim() ? undefined : 'shop-builder-slug-hint'}
               />
+              {!slug.trim() ? (
+                <span id="shop-builder-slug-hint" className="campaign-setup-hint">
+                  Required for image uploads and the public landing URL. Fills automatically when you type the display name.
+                </span>
+              ) : null}
             </label>
             <label className="campaign-setup-label">
               Shop ID (Twirla internal)
@@ -297,8 +339,8 @@ export default function ShopBuilderPage() {
               <input className="campaign-setup-input" type="color" value={secondaryColor} onChange={(e) => setSecondaryColor(e.target.value)} />
             </label>
             <label className="campaign-setup-label">
-              Logo URL (optional)
-              <input className="campaign-setup-input" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="/logos/my-logo.png" />
+              Logo URL (optional — or use Images section below)
+              <input className="campaign-setup-input" value={logoUrl} onChange={(e) => setLogoUrl(e.target.value)} placeholder="https://… after upload" />
             </label>
             <label className="campaign-setup-label">
               Experience title
@@ -313,6 +355,16 @@ export default function ShopBuilderPage() {
               <input className="campaign-setup-input" value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} />
             </label>
           </fieldset>
+
+          {sessionToken ? (
+            <ShopConfigImagePanel
+              shopSlug={uploadSlug}
+              sessionToken={sessionToken}
+              config={getWorkingConfig()}
+              onConfigChange={handleConfigImagesChange}
+              slugMissing={!slug.trim()}
+            />
+          ) : null}
 
           <fieldset className="campaign-setup-fieldset">
             <legend className="campaign-setup-legend">Game URL path</legend>

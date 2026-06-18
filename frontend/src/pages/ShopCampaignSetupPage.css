@@ -188,3 +188,49 @@
   color: #166534;
   line-height: 1.45;
 }
+
+.shop-image-upload {
+  margin-bottom: 1rem;
+}
+
+.shop-image-upload-row {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  margin: 0.35rem 0 0.5rem;
+}
+
+.shop-image-upload-preview {
+  flex-shrink: 0;
+  width: 96px;
+  height: 72px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+}
+
+.shop-image-upload-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shop-image-upload-preview--empty {
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+}
+
+.shop-image-upload-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  align-items: flex-start;
+}
+
+.shop-image-upload-file {
+  display: none;
+}
+
+.shop-config-image-panel .campaign-setup-actions {
+  margin-top: 0.5rem;
+}

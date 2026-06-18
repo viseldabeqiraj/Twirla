@@ -9,6 +9,8 @@ import {
 import { useSetupSession } from '../hooks/useSetupSession';
 import { clearShopCatalogCache } from '../data/shopCatalog';
 import type { ShopConfig } from '../types/ShopConfig';
+import { parseShopConfigJson } from '../utils/shopConfigImages';
+import ShopConfigImagePanel from '../components/setup/ShopConfigImagePanel';
 import './ShopCampaignSetupPage.css';
 import './ShopAdminListPage.css';
 
@@ -117,6 +119,8 @@ export default function ShopAdminEditPage() {
     );
   }
 
+  const draftConfig = parseShopConfigJson(json);
+
   return (
     <div className="shop-admin-list campaign-setup">
       <header className="shop-admin-list-header">
@@ -159,6 +163,17 @@ export default function ShopAdminEditPage() {
               Reload from DB
             </button>
           </div>
+
+          {draftConfig && sessionToken && (meta.slug || draftConfig.slug) ? (
+            <ShopConfigImagePanel
+              shopSlug={(meta.slug ?? draftConfig.slug ?? shopIdParam ?? 'shop').trim()}
+              sessionToken={sessionToken}
+              config={draftConfig}
+              onConfigChange={(c: ShopConfig) => setJson(JSON.stringify(c, null, 2))}
+            />
+          ) : json.trim() ? (
+            <p className="campaign-setup-hint">Fix JSON syntax to enable image uploads.</p>
+          ) : null}
 
           <label className="campaign-setup-label">
             Shop configuration

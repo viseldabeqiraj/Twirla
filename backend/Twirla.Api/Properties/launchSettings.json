@@ -4,7 +4,12 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "TWIRLA_CAMPAIGN_SETUP_ACCESS_CODE": "local-dev-campaign-code-change-me"
+        "TWIRLA_CAMPAIGN_SETUP_ACCESS_CODE": "local-dev-campaign-code-change-me",
+        "TWIRLA_R2_ACCOUNT_ID": "",
+        "TWIRLA_R2_ACCESS_KEY_ID": "",
+        "TWIRLA_R2_SECRET_ACCESS_KEY": "",
+        "TWIRLA_R2_BUCKET_NAME": "",
+        "TWIRLA_R2_PUBLIC_BASE_URL": ""
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5050"

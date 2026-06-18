@@ -36,9 +36,33 @@ async function shopBuilderFetch(
 async function parseShopBuilderError(res: Response): Promise<never> {
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) throw new Error('SESSION_EXPIRED');
-  if (res.status === 503) throw new Error('NOT_CONFIGURED');
+  if (res.status === 503) {
+    const msg = typeof data?.error === 'string' ? data.error : 'NOT_CONFIGURED';
+    throw new Error(msg);
+  }
   const msg = typeof data?.error === 'string' ? data.error : `Request failed (${res.status})`;
   throw new Error(msg);
+}
+
+export async function uploadShopAsset(
+  file: File,
+  shopSlug: string,
+  purpose: string,
+  sessionToken: string
+): Promise<{ url: string; key: string }> {
+  const form = new FormData();
+  form.append('file', file);
+  form.append('shopSlug', shopSlug);
+  form.append('purpose', purpose);
+
+  const res = await fetch(`${apiPrefix()}/shop-builder/upload`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${sessionToken}` },
+    body: form,
+  });
+
+  if (!res.ok) await parseShopBuilderError(res);
+  return (await res.json()) as { url: string; key: string };
 }
 
 export async function listShopsInDatabase(sessionToken: string): Promise<ShopListItem[]> {

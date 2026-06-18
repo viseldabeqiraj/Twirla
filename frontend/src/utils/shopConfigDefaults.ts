@@ -44,6 +44,9 @@ export function buildShopConfigFromForm(input: {
   enableCountdown: boolean;
   enableMemory: boolean;
   enableRunner: boolean;
+  heroImageUrl?: string;
+  aboutPhotoUrl?: string;
+  featuredProducts?: import('../types/ShopLandingConfig').FeaturedProductConfig[];
   advancedJson?: string;
 }): ShopConfig {
   if (input.advancedJson?.trim()) {
@@ -81,7 +84,18 @@ export function buildShopConfigFromForm(input: {
       hero: {
         headline: input.title.trim() || undefined,
         tagline: input.subtitle.trim() || undefined,
+        ...(input.heroImageUrl?.trim()
+          ? {
+              backgroundImageUrl: input.heroImageUrl.trim(),
+              backgroundImageOverlay: 'dark' as const,
+              backgroundStyle: 'solid' as const,
+            }
+          : {}),
       },
+      ...(input.featuredProducts?.length ? { featuredProducts: input.featuredProducts } : {}),
+      ...(input.aboutPhotoUrl?.trim()
+        ? { about: { ownerPhotoUrl: input.aboutPhotoUrl.trim() } }
+        : {}),
     },
   };
 

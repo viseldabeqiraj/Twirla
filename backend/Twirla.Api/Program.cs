@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.EntityFrameworkCore;
 using Twirla.Application.Interfaces;
 using Twirla.Infrastructure.Persistence;
@@ -15,7 +16,13 @@ builder.Services.AddScoped<IShopConfigService, ShopConfigService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddSingleton<CampaignSetupTokenService>();
+builder.Services.AddSingleton<R2AssetStorageService>();
 builder.Services.AddScoped<ShopBuilderService>();
+
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.MultipartBodyLengthLimit = 6 * 1024 * 1024;
+});
 
 builder.Services.AddControllers();
 
