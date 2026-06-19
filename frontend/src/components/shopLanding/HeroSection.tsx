@@ -12,10 +12,10 @@ interface HeroSectionProps {
   scrollToId?: string;
 }
 
-const IMAGE_OVERLAY: Record<'dark' | 'medium' | 'light', string> = {
-  dark: 'linear-gradient(165deg, rgba(15,23,42,0.9) 0%, rgba(15,23,42,0.45) 50%, rgba(15,23,42,0.82) 100%)',
-  medium: 'linear-gradient(165deg, rgba(15,23,42,0.72) 0%, rgba(15,23,42,0.38) 100%)',
-  light: 'linear-gradient(165deg, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.72) 55%, rgba(255,255,255,0.88) 100%)',
+const IMAGE_OVERLAY_CLASS: Record<'dark' | 'medium' | 'light', string> = {
+  dark: 'shop-hero-img-dark',
+  medium: 'shop-hero-img-medium',
+  light: 'shop-hero-img-light',
 };
 
 export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroSectionProps) {
@@ -50,8 +50,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
 
   let innerToneClass = '';
   if (hasImage) {
-    innerToneClass =
-      overlay === 'light' ? 'shop-hero-with-image shop-hero-img-light' : 'shop-hero-with-image shop-hero-img-dark';
+    innerToneClass = `shop-hero-with-image ${IMAGE_OVERLAY_CLASS[overlay]}`;
   }
 
   const innerClassName = [
@@ -63,12 +62,9 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
     .join(' ');
 
   const innerStyle: CSSProperties = hasImage
-    ? {
-        backgroundImage: `${IMAGE_OVERLAY[overlay]}, ${cssUrl(resolvedBg)}`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-      }
+    ? ({
+        '--shop-hero-image': cssUrl(resolvedBg),
+      } as CSSProperties)
     : {};
 
   const ctaNode = isAnchor ? (

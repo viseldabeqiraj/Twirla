@@ -765,6 +765,17 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Single contact/social card stays centered (not stuck in column 1 of a 2-col grid) */
+.shop-contact-grid:has(> :only-child) {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  max-width: 280px;
+}
+
+.shop-contact-grid:has(> :only-child) > li {
+  width: 100%;
+}
 .shop-contact-card {
   display: flex;
   flex-direction: column;
@@ -1068,6 +1079,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  justify-content: center;
+  width: 100%;
+}
+
+.shop-social-buttons:has(> :only-child) {
   justify-content: center;
 }
 
@@ -1433,26 +1449,83 @@
 
 /* Hero: optional photo + overlay (ShopLandingConfig.hero.backgroundImageUrl) */
 .shop-hero-with-image {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  background-color: #0f172a;
+}
+
+.shop-hero-with-image::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  z-index: 0;
+  background-image: var(--shop-hero-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: translateZ(0);
+}
+
+.shop-hero-with-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.shop-hero-img-dark::after {
+  background: linear-gradient(
+    165deg,
+    rgba(15, 23, 42, 0.9) 0%,
+    rgba(15, 23, 42, 0.45) 50%,
+    rgba(15, 23, 42, 0.82) 100%
+  );
+}
+
+.shop-hero-img-medium::after {
+  background: linear-gradient(165deg, rgba(15, 23, 42, 0.72) 0%, rgba(15, 23, 42, 0.38) 100%);
+}
+
+.shop-hero-img-light::after {
+  background: linear-gradient(
+    165deg,
+    rgba(255, 255, 255, 0.94) 0%,
+    rgba(255, 255, 255, 0.72) 55%,
+    rgba(255, 255, 255, 0.88) 100%
+  );
+}
+
+.shop-hero-with-image > * {
+  position: relative;
+  z-index: 2;
 }
 
 .shop-hero-with-image.shop-hero-img-dark .shop-hero-shop-name,
+.shop-hero-with-image.shop-hero-img-medium .shop-hero-shop-name,
 .shop-hero-with-image.shop-hero-img-dark .shop-hero-title,
-.shop-hero-with-image.shop-hero-img-dark .shop-hero-tagline {
+.shop-hero-with-image.shop-hero-img-medium .shop-hero-title,
+.shop-hero-with-image.shop-hero-img-dark .shop-hero-tagline,
+.shop-hero-with-image.shop-hero-img-medium .shop-hero-tagline {
   color: rgba(255, 255, 255, 0.96);
 }
 
-.shop-hero-img-dark .shop-hero-logo {
+.shop-hero-img-dark .shop-hero-logo,
+.shop-hero-img-medium .shop-hero-logo {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
 }
 
-.shop-hero-img-dark .shop-hero-logo-placeholder {
+.shop-hero-img-dark .shop-hero-logo-placeholder,
+.shop-hero-img-medium .shop-hero-logo-placeholder {
   background: rgba(255, 255, 255, 0.22);
   color: #fff;
 }
 
-.shop-hero-img-dark .shop-hero-cta-button {
+.shop-hero-img-dark .shop-hero-cta-button,
+.shop-hero-img-medium .shop-hero-cta-button {
   background: #fff;
   color: var(--shop-primary, #db2777);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.2);
