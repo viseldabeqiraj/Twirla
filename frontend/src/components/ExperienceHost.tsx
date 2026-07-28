@@ -9,6 +9,7 @@ import CatchPrizeExperience from './experiences/CatchPrizeExperience';
 import ScratchExperience from './experiences/ScratchExperience';
 import CountdownExperience from './experiences/CountdownExperience';
 import MemoryMatchExperience from './experiences/MemoryMatchExperience';
+import MysteryBoxExperience from './experiences/MysteryBoxExperience';
 import AlreadyPlayedMessage from './experiences/AlreadyPlayedMessage';
 import RunnerGame from '../games/runner/RunnerGame';
 import AmbientParticles from './AmbientParticles';
@@ -167,6 +168,8 @@ export default function ExperienceHost({ config }: ExperienceHostProps) {
         return config.countdown ? <CountdownExperience config={config} /> : null;
       case ExperienceMode.MemoryMatch:
         return config.memory ? <MemoryMatchExperience config={config} /> : null;
+      case ExperienceMode.MysteryBox:
+        return config.mysteryBox ? <MysteryBoxExperience config={config} /> : null;
       default:
         return <div>{t('common.unknownMode')}</div>;
     }

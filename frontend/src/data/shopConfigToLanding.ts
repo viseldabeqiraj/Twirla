@@ -25,6 +25,7 @@ export function shopConfigToLandingConfig(config: ShopConfig, shopSlug: string):
   if (config.scratch) allFromConfig.push(ExperienceMode.Scratch);
   if (config.countdown) allFromConfig.push(ExperienceMode.Countdown);
   if (config.memory) allFromConfig.push(ExperienceMode.MemoryMatch);
+  if (config.mysteryBox) allFromConfig.push(ExperienceMode.MysteryBox);
   allFromConfig.unshift(ExperienceMode.Runner);
 
   let enabledGames = allFromConfig.filter((m) => PUBLIC_CAMPAIGN_GAMES.includes(m));

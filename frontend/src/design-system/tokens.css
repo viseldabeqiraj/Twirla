@@ -31,4 +31,21 @@
   /* Motion */
   --tw-tap-duration: 0.18s;
   --tw-reveal-duration: 0.42s;
+
+  /* Premium display font (already loaded in index.html) */
+  --tw-font-display: 'Space Grotesk', 'Sora', system-ui, -apple-system, sans-serif;
+
+  /* Elevation scale — layered, soft, premium */
+  --tw-elev-1: 0 10px 26px -14px rgba(2, 6, 23, 0.45);
+  --tw-elev-2: 0 26px 64px -30px rgba(2, 6, 23, 0.55);
+  --tw-elev-glow: 0 34px 84px -40px color-mix(in srgb, var(--primary-color, #ff2e9a) 65%, transparent);
+  /* Hairline top gloss for glass surfaces */
+  --tw-inset-gloss: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+
+  /* Premium spring easing for reveals / pops */
+  --tw-ease-spring: cubic-bezier(0.18, 1.4, 0.4, 1);
+
+  /* Radius scale */
+  --tw-radius-md: 18px;
+  --tw-radius-lg: 26px;
 }

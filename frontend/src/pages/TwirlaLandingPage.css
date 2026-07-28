@@ -20,11 +20,503 @@
   --tw-shadow: 0 4px 24px rgba(219, 39, 119, 0.08);
   --tw-shadow-lg: 0 24px 64px rgba(123, 92, 255, 0.14);
 
+  --tw-card: #ffffff;
+  --tw-nav-bg: rgba(255, 255, 255, 0.92);
+
   min-height: 100%;
   background: var(--tw-gradient-soft);
   color: var(--tw-ink);
   font-family: var(--tw-font-body);
+  transition: background 0.4s ease, color 0.3s ease;
 }
+
+/* ---- Dark mode (toggle sets data-theme="dark" on .tw-page) ---- */
+.tw-page[data-theme='dark'] {
+  --tw-ink: #f3ecfa;
+  --tw-muted: #a99bc4;
+  --tw-border: rgba(255, 255, 255, 0.12);
+  --tw-surface: #140a24;
+  --tw-card: #1a1030;
+  --tw-nav-bg: rgba(16, 8, 30, 0.72);
+  --tw-gradient-soft: radial-gradient(1300px 640px at 35% -6%, #1c1030 0%, #0b0514 52%);
+  --tw-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --tw-shadow-lg: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+/* ---- Theme toggle button ---- */
+.tw-theme-toggle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--tw-border);
+  background: var(--tw-card);
+  color: var(--tw-ink);
+  cursor: pointer;
+  font-size: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+.tw-theme-toggle:hover {
+  transform: rotate(25deg) scale(1.1);
+}
+
+/* ---- "Pse lojëra" — old vs new comparison ---- */
+.tw-section-lead {
+  color: var(--tw-muted);
+  max-width: 620px;
+  margin: 10px auto 0;
+  line-height: 1.6;
+}
+.tw-vs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 900px;
+  margin: 32px auto 0;
+}
+@media (max-width: 760px) {
+  .tw-vs { grid-template-columns: 1fr; }
+}
+.tw-vs-card {
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius-lg);
+  padding: 28px;
+  box-shadow: var(--tw-shadow);
+  transition: transform 0.3s ease;
+}
+.tw-vs-card--old { opacity: 0.8; }
+.tw-vs-card--new {
+  border-color: color-mix(in srgb, var(--tw-primary) 45%, var(--tw-border));
+  box-shadow: var(--tw-shadow-lg);
+}
+.tw-vs-card--new:hover { transform: translateY(-4px); }
+.tw-vs-card h3 {
+  font-family: var(--tw-font-headline);
+  margin: 12px 0 8px;
+  color: var(--tw-ink);
+}
+.tw-vs-card p {
+  color: var(--tw-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.tw-vs-tag {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tw-muted) 15%, transparent);
+  color: var(--tw-muted);
+}
+.tw-vs-tag--good {
+  background: var(--tw-gradient);
+  color: #fff;
+}
+
+/* ============================================================
+   Prototype-match visual pass — bold typography, glass cards,
+   gradient accents. Appended as overrides (single-tenant page).
+   ============================================================ */
+.tw-page {
+  --tw-font-headline: 'Space Grotesk', 'Sora', system-ui, sans-serif;
+}
+
+/* Eyebrows → pill chips */
+.tw-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--tw-font-headline);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--tw-primary);
+  background: color-mix(in srgb, var(--tw-primary) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tw-primary) 25%, transparent);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.tw-eyebrow--light {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.tw-hero-copy h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Shared premium card treatment */
+.tw-service-card,
+.tw-vs-card,
+.tw-work-card,
+.tw-pricing-card,
+.tw-step {
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius-lg, 24px);
+  box-shadow: var(--tw-shadow-lg);
+  transition: transform 0.28s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.tw-service-card:hover,
+.tw-work-card:hover,
+.tw-pricing-card:hover,
+.tw-step:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--tw-primary) 40%, var(--tw-border));
+  box-shadow: 0 30px 70px -30px color-mix(in srgb, var(--tw-purple, #7b5cff) 55%, transparent);
+}
+
+/* Service icon → soft gradient badge */
+.tw-service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  font-size: 26px;
+  background: linear-gradient(
+    150deg,
+    color-mix(in srgb, var(--tw-primary) 18%, transparent),
+    color-mix(in srgb, var(--tw-purple, #7b5cff) 18%, transparent)
+  );
+  border: 1px solid var(--tw-border);
+}
+
+/* Step number → gradient circle */
+.tw-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  font-family: var(--tw-font-headline);
+  font-weight: 800;
+  color: #fff;
+  background: var(--tw-gradient);
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--tw-primary) 60%, transparent);
+}
+
+/* Buttons — premium press + glow */
+.tw-btn {
+  transition: transform 0.18s ease, box-shadow 0.25s ease;
+}
+.tw-btn--primary {
+  box-shadow: 0 14px 30px -12px color-mix(in srgb, var(--tw-primary) 60%, transparent);
+}
+.tw-btn:active {
+  transform: scale(0.97);
+}
+
+/* ===== Hero: background lights, benefit chips, floating cards ===== */
+.tw-hero {
+  position: relative;
+  overflow: hidden;
+}
+.tw-hero-grid {
+  position: relative;
+  z-index: 1;
+}
+.tw-hero-visual {
+  position: relative;
+  width: min(300px, 100%);
+  margin-inline: auto;
+}
+.tw-hero-visual .tw-demo-scene {
+  justify-content: center;
+}
+/* hero-specific orbs removed: page-level glows cover the whole page uniformly,
+   so the hero no longer glows brighter than the nav (that edge looked like a band). */
+.tw-hero-lights {
+  display: none;
+}
+.tw-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(72px);
+  opacity: 0.5;
+}
+.tw-hero-orb--a {
+  width: 360px;
+  height: 360px;
+  top: -110px;
+  left: -60px;
+  background: color-mix(in srgb, var(--tw-primary) 70%, transparent);
+}
+.tw-hero-orb--b {
+  width: 420px;
+  height: 420px;
+  bottom: -150px;
+  right: -80px;
+  background: color-mix(in srgb, var(--tw-purple, #7b5cff) 70%, transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tw-hero-orb--a { animation: tw-hero-orb-a 18s ease-in-out infinite; }
+  .tw-hero-orb--b { animation: tw-hero-orb-b 22s ease-in-out infinite; }
+}
+@keyframes tw-hero-orb-a { 50% { transform: translate(40px, 30px) scale(1.1); } }
+@keyframes tw-hero-orb-b { 50% { transform: translate(-36px, -24px) scale(1.08); } }
+
+.tw-grad-text {
+  background: linear-gradient(100deg, var(--tw-primary), #ff5c7a 55%, #ffd36e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tw-hero-trust {
+  margin-top: 16px;
+  font-size: 13px;
+  color: var(--tw-muted);
+}
+.tw-hero-chips {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 4px;
+  padding: 0;
+}
+.tw-hero-chips li {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tw-ink);
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  padding: 9px 15px;
+  border-radius: 12px;
+  box-shadow: var(--tw-shadow);
+}
+
+.tw-hero-floater {
+  position: absolute;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tw-ink);
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  padding: 9px 13px;
+  border-radius: 14px;
+  box-shadow: var(--tw-shadow-lg);
+  white-space: nowrap;
+}
+.tw-hero-floater span { font-size: 16px; }
+.tw-hero-floater--1 { top: 2%; left: -42%; }
+.tw-hero-floater--2 { top: 20%; right: -40%; }
+.tw-hero-floater--3 { bottom: 24%; left: -42%; }
+.tw-hero-floater--4 { bottom: 4%; right: -36%; }
+@media (prefers-reduced-motion: no-preference) {
+  .tw-hero-floater { animation: tw-float-chip 5s ease-in-out infinite; }
+  .tw-hero-floater--2 { animation-delay: -1.5s; }
+  .tw-hero-floater--3 { animation-delay: -2.5s; }
+  .tw-hero-floater--4 { animation-delay: -3.5s; }
+}
+@keyframes tw-float-chip { 50% { transform: translateY(-10px); } }
+@media (max-width: 900px) {
+  .tw-hero-floater { display: none; }
+}
+
+/* ===== Cursor-following spotlight glow on cards ===== */
+.tw-service-card,
+.tw-vs-card,
+.tw-work-card,
+.tw-pricing-card,
+.tw-step {
+  position: relative;
+  overflow: hidden;
+}
+.tw-service-card > *,
+.tw-vs-card > *,
+.tw-work-card > *,
+.tw-pricing-card > *,
+.tw-step > * {
+  position: relative;
+  z-index: 1;
+}
+.tw-service-card::after,
+.tw-vs-card::after,
+.tw-work-card::after,
+.tw-pricing-card::after,
+.tw-step::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    220px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in srgb, var(--tw-primary) 26%, transparent),
+    transparent 62%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 0;
+}
+.tw-service-card:hover::after,
+.tw-vs-card:hover::after,
+.tw-work-card:hover::after,
+.tw-pricing-card:hover::after,
+.tw-step:hover::after {
+  opacity: 1;
+}
+
+/* ===== About stat cards (animated count-up) ===== */
+.tw-about-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.tw-stat {
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius-lg, 20px);
+  padding: 22px 18px;
+  box-shadow: var(--tw-shadow);
+  transition: transform 0.28s ease, box-shadow 0.3s ease;
+}
+.tw-stat:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--tw-shadow-lg);
+}
+.tw-stat-value {
+  display: block;
+  font-family: var(--tw-font-headline);
+  font-weight: 800;
+  font-size: clamp(1.7rem, 4vw, 2.2rem);
+  line-height: 1;
+  background: var(--tw-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.tw-stat-label {
+  display: block;
+  margin-top: 8px;
+  font-size: 0.85rem;
+  color: var(--tw-muted);
+}
+
+/* Floating animation on the "Çfarë ofrojmë" service icons (like the HTML) */
+@media (prefers-reduced-motion: no-preference) {
+  .tw-service-icon {
+    animation: tw-icon-float 4s ease-in-out infinite;
+  }
+  .tw-service-card:nth-child(2) .tw-service-icon { animation-delay: 0.4s; }
+  .tw-service-card:nth-child(3) .tw-service-icon { animation-delay: 0.8s; }
+  .tw-service-card:nth-child(4) .tw-service-icon { animation-delay: 1.2s; }
+  .tw-service-card:nth-child(5) .tw-service-icon { animation-delay: 1.6s; }
+  .tw-service-card:nth-child(6) .tw-service-icon { animation-delay: 2s; }
+}
+@keyframes tw-icon-float {
+  50% { transform: translateY(-7px); }
+}
+
+/* Trust line under the hero CTAs — fine print, single tidy line */
+.tw-hero-trust {
+  margin-top: 18px;
+  font-size: 12px;
+  color: var(--tw-muted);
+  opacity: 0.72;
+  white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .tw-hero-trust { white-space: normal; }
+}
+
+/* ===== Standalone wheel showcase section ===== */
+.tw-wheel-demo {
+  padding: clamp(48px, 7vw, 90px) 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.tw-wheel-demo-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tw-wheel-stage {
+  position: relative;
+  width: min(300px, 80vw);
+  aspect-ratio: 1;
+  margin-top: 30px;
+}
+.tw-wheel-pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 26px solid var(--tw-ink);
+  filter: drop-shadow(0 3px 5px rgba(0, 0, 0, 0.4));
+}
+.tw-wheel-disc {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: conic-gradient(
+    #db2777 0deg 60deg,
+    #7b5cff 60deg 120deg,
+    #e11d74 120deg 180deg,
+    #8a25c9 180deg 240deg,
+    #ff5c7a 240deg 300deg,
+    #b3138a 300deg 360deg
+  );
+  box-shadow:
+    0 0 0 8px color-mix(in srgb, var(--tw-primary) 18%, transparent),
+    0 30px 70px -30px color-mix(in srgb, var(--tw-purple, #7b5cff) 60%, transparent),
+    inset 0 0 0 6px rgba(255, 255, 255, 0.15);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tw-wheel-disc { animation: tw-wheel-spin 12s linear infinite; }
+}
+@keyframes tw-wheel-spin { to { transform: rotate(360deg); } }
+.tw-wheel-hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 26%;
+  height: 26%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fff, #ffd7ec);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--tw-font-headline);
+  font-weight: 800;
+  color: var(--tw-primary);
+  font-size: clamp(12px, 2.4vw, 16px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-service-card,
+  .tw-work-card,
+  .tw-pricing-card,
+  .tw-step,
+  .tw-btn {
+    transition: none;
+  }
+}
+
 
 .tw-container {
   width: 100%;
@@ -38,9 +530,8 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--tw-border);
+  background: transparent;
+  border-bottom: none;
 }
 
 .tw-header-inner {
@@ -160,7 +651,7 @@
 }
 
 .tw-btn--light {
-  background: #fff;
+  background: var(--tw-card);
   color: var(--tw-primary);
   font-weight: 700;
 }
@@ -228,12 +719,23 @@
   margin-top: 32px;
 }
 
-/* Hero visual — phone demo aligned right on desktop */
+/* Hero visual — phone demo; box hugs the phone so floating cards sit close to it */
 .tw-hero-visual {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   align-items: center;
-  width: 100%;
+  width: min(320px, 100%);
+  margin-inline: auto;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tw-hero-visual {
+    animation: tw-hero-float 6s ease-in-out infinite;
+  }
+}
+@keyframes tw-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
 }
 
 /* ── Sections ── */
@@ -241,9 +743,50 @@
   padding: clamp(64px, 8vw, 100px) 0;
 }
 
+/* transparent so the continuous page background + glows show through (no band cuts) */
 .tw-section--muted {
-  background: var(--tw-surface);
+  background: transparent;
 }
+
+/* Continuous ambient glows behind the whole page (fixed, like the HTML) */
+.tw-page {
+  position: relative;
+}
+.tw-page::before,
+.tw-page::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  z-index: 0;
+  pointer-events: none;
+}
+.tw-page::before {
+  width: 480px;
+  height: 480px;
+  top: -120px;
+  left: -140px;
+  background: color-mix(in srgb, var(--tw-primary) 42%, transparent);
+}
+.tw-page::after {
+  width: 560px;
+  height: 560px;
+  bottom: -160px;
+  right: -160px;
+  background: color-mix(in srgb, var(--tw-purple, #7b5cff) 42%, transparent);
+}
+.tw-page > header,
+.tw-page > main,
+.tw-page > footer {
+  position: relative;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tw-page::before { animation: tw-page-glow-a 20s ease-in-out infinite; }
+  .tw-page::after { animation: tw-page-glow-b 24s ease-in-out infinite; }
+}
+@keyframes tw-page-glow-a { 50% { transform: translate(60px, 40px) scale(1.12); } }
+@keyframes tw-page-glow-b { 50% { transform: translate(-50px, -30px) scale(1.1); } }
 
 .tw-section-head {
   max-width: 640px;
@@ -285,7 +828,7 @@
 }
 
 .tw-service-card {
-  background: #fff;
+  background: var(--tw-card);
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius-lg);
   padding: 32px 28px;
@@ -293,7 +836,7 @@
 }
 
 .tw-section--muted .tw-service-card {
-  background: #fff;
+  background: var(--tw-card);
 }
 
 .tw-service-card:hover {
@@ -329,7 +872,7 @@
 }
 
 .tw-step {
-  background: #fff;
+  background: var(--tw-card);
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius-lg);
   padding: 28px 20px;
@@ -388,7 +931,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: #fff;
+  background: var(--tw-card);
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius);
   padding: 20px;
@@ -418,7 +961,7 @@
 .tw-work-card {
   display: flex;
   flex-direction: column;
-  background: #fff;
+  background: var(--tw-card);
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius-lg);
   overflow: hidden;
@@ -496,9 +1039,9 @@
 
 /* ── Reviews strip ── */
 .tw-reviews {
-  background: var(--tw-gradient);
-  color: #fff;
-  padding: 40px 0;
+  background: transparent;
+  color: var(--tw-ink);
+  padding: 48px 0;
 }
 
 .tw-reviews-inner {
@@ -507,6 +1050,13 @@
   justify-content: center;
   gap: 32px;
   flex-wrap: wrap;
+  max-width: 680px;
+  margin: 0 auto;
+  background: var(--tw-card);
+  border: 1px solid var(--tw-border);
+  border-radius: var(--tw-radius-lg, 24px);
+  padding: 26px 32px;
+  box-shadow: var(--tw-shadow-lg);
 }
 
 .tw-reviews-score {
@@ -525,7 +1075,7 @@
 
 .tw-reviews-score span {
   font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.65);
+  color: var(--tw-muted);
   margin-top: 6px;
 }
 
@@ -539,7 +1089,7 @@
 .tw-pricing-card {
   max-width: 480px;
   margin-inline: auto;
-  background: #fff;
+  background: var(--tw-card);
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius-lg);
   padding: 40px 36px;
@@ -634,7 +1184,7 @@
   border: 1px solid var(--tw-border);
   border-radius: var(--tw-radius);
   overflow: hidden;
-  background: #fff;
+  background: var(--tw-card);
 }
 
 .tw-faq-question {
@@ -714,8 +1264,8 @@
 
 /* ── Contact ── */
 .tw-contact {
-  background: linear-gradient(145deg, #0f172a 0%, #4c1d95 52%, #831843 100%);
-  color: #fff;
+  background: transparent;
+  color: var(--tw-ink);
   padding: clamp(64px, 8vw, 100px) 0;
 }
 
@@ -743,7 +1293,7 @@
 
 /* ── Footer ── */
 .tw-footer {
-  background: #fff;
+  background: var(--tw-card);
   border-top: 1px solid var(--tw-border);
   padding: 40px 0;
 }
@@ -836,7 +1386,7 @@
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    background: #fff;
+    background: var(--tw-card);
     border-bottom: 1px solid var(--tw-border);
     padding: 16px var(--tw-gutter) 24px;
     transform: translateY(-8px);

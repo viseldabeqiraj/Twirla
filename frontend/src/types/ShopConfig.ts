@@ -22,6 +22,8 @@ export interface ShopConfig {
   countdown?: CountdownConfig;
   /** Flip cards to match pairs; MVP uses emoji/symbol deck */
   memory?: MemoryMatchConfig;
+  /** Pick-a-gift: tap one of a few boxes to reveal the reward */
+  mysteryBox?: MysteryBoxConfig;
   /** Runner (/runner/...) — weighted end-of-round prize copy */
   runnerGame?: RunnerGameSettings;
   /** Public campaign landing content (from API / database — no hardcoded shops). */
@@ -35,6 +37,7 @@ export enum ExperienceMode {
   Scratch = 'Scratch',
   Countdown = 'Countdown',
   MemoryMatch = 'MemoryMatch',
+  MysteryBox = 'MysteryBox',
 }
 
 /** Soft drifting shapes behind the experience card (opt-in; keep density low). */
@@ -146,6 +149,14 @@ export interface ScratchConfig {
   revealText: string;
   revealSubtitle?: string;
   translations?: Record<string, Partial<Pick<ScratchConfig, 'overlayText' | 'revealText' | 'revealSubtitle'>>>;
+}
+
+export interface MysteryBoxConfig {
+  /** Number of boxes shown (2–4; default 3) */
+  boxCount?: number;
+  revealText: string;
+  revealSubtitle?: string;
+  translations?: Record<string, Partial<Pick<MysteryBoxConfig, 'revealText' | 'revealSubtitle'>>>;
 }
 
 export interface CountdownConfig {

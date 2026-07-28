@@ -1,7 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { resolveAssetUrl } from '../config/api';
 import TwirlaPhoneDemo from '../components/TwirlaPhoneDemo';
+import TwirlaWheelShowcase from '../components/TwirlaWheelShowcase';
 import './TwirlaLandingPage.css';
+
+const ABOUT_STATS = [
+  { n: 3, suffix: 'x', label: 'Herë më shumë angazhim' },
+  { n: 70, suffix: '%', label: "Ndjekës që s'blejnë menjëherë" },
+  { n: 0, suffix: '€', label: 'Website i nevojshëm' },
+  { n: 2, suffix: ' min', label: "Për t'u ngritur me ne" },
+];
 
 const NAV_LINKS = [
   { href: '#about', label: 'Rreth nesh' },
@@ -107,8 +115,73 @@ export default function TwirlaLandingPage() {
     setLogoFailed(true);
   };
 
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    try {
+      return (localStorage.getItem('tw-landing-theme') as 'light' | 'dark') || 'light';
+    } catch {
+      return 'light';
+    }
+  });
+  const toggleTheme = () =>
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      try {
+        localStorage.setItem('tw-landing-theme', next);
+      } catch {
+        /* ignore */
+      }
+      return next;
+    });
+
+  // Cursor-following spotlight on cards (sets --mx / --my used by CSS glow)
+  useEffect(() => {
+    const selector = '.tw-service-card, .tw-vs-card, .tw-work-card, .tw-pricing-card, .tw-step';
+    const onMove = (e: PointerEvent) => {
+      const card = (e.target as HTMLElement | null)?.closest?.(selector) as HTMLElement | null;
+      if (!card) return;
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', `${((e.clientX - r.left) / r.width) * 100}%`);
+      card.style.setProperty('--my', `${((e.clientY - r.top) / r.height) * 100}%`);
+    };
+    window.addEventListener('pointermove', onMove);
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+
+  // Count-up animation for the About stat cards when they scroll into view
+  useEffect(() => {
+    const els = Array.from(document.querySelectorAll<HTMLElement>('.tw-stat-value[data-count]'));
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target as HTMLElement;
+          io.unobserve(el);
+          const target = Number(el.dataset.count || 0);
+          const suffix = el.dataset.suffix || '';
+          if (target === 0) {
+            el.textContent = `0${suffix}`;
+            return;
+          }
+          let c = 0;
+          const inc = Math.max(1, Math.round(target / 30));
+          const timer = window.setInterval(() => {
+            c += inc;
+            if (c >= target) {
+              c = target;
+              window.clearInterval(timer);
+            }
+            el.textContent = `${c}${suffix}`;
+          }, 24);
+        });
+      },
+      { threshold: 0.4 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <div className="tw-page">
+    <div className="tw-page" data-theme={theme}>
       <header className="tw-header">
         <div className="tw-container tw-header-inner">
           <a href="/" className="tw-brand" aria-label="Twirla">
@@ -142,6 +215,15 @@ export default function TwirlaLandingPage() {
 
           <button
             type="button"
+            className="tw-theme-toggle"
+            aria-label="Ndrysho temën"
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? '☀️' : '🌙'}
+          </button>
+
+          <button
+            type="button"
             className="tw-menu-toggle"
             aria-expanded={menuOpen}
             aria-label="Hap menunë"
@@ -156,22 +238,81 @@ export default function TwirlaLandingPage() {
 
       <main>
         <section className="tw-hero">
+          <div className="tw-hero-lights" aria-hidden="true">
+            <span className="tw-hero-orb tw-hero-orb--a" />
+            <span className="tw-hero-orb tw-hero-orb--b" />
+          </div>
           <div className="tw-container tw-hero-grid">
             <div className="tw-hero-copy">
               <span className="tw-eyebrow">Për cdo biznes</span>
-              <h1>Kthe vizitorët në blerës me lojëra interaktive.</h1>
+              <h1>
+                Kthe vizitorët në blerës me <span className="tw-grad-text">lojëra interaktive</span>.
+              </h1>
               <p>
                 Twirla i jep dyqanit tënd një mini landing page ku klientët luajnë,
-                fitojnë zbritje dhe ta dërgojnë kodin në DM për porosi.
+                fitojnë zbritje dhe ta dërgojnë kodin në DM për porosi. Pa website. Pa Shopify.
               </p>
+              <ul className="tw-hero-chips">
+                <li>🎯 Më shumë angazhim</li>
+                <li>💬 Më shumë DM</li>
+                <li>🛍️ Më shumë porosi</li>
+              </ul>
               <div className="tw-hero-actions">
                 <a href="#contact" className="tw-btn tw-btn--primary">Provoje falas</a>
                 <a href="#how" className="tw-btn tw-btn--outline">Si funksionon</a>
               </div>
+              <p className="tw-hero-trust">
+                Falas për dyqanet e para · Gati brenda pak ditësh · Pa kartë krediti
+              </p>
             </div>
 
-            <div className="tw-hero-visual" aria-hidden="true">
+            <div className="tw-hero-visual">
+              <span className="tw-hero-floater tw-hero-floater--1"><span>💬</span> +18 DM sot</span>
+              <span className="tw-hero-floater tw-hero-floater--2"><span>🎁</span> Dhuratë falas</span>
+              <span className="tw-hero-floater tw-hero-floater--3"><span>🔥</span> -30% zbritje</span>
+              <span className="tw-hero-floater tw-hero-floater--4"><span>🛍️</span> Porosi e re</span>
               <TwirlaPhoneDemo />
+            </div>
+          </div>
+        </section>
+
+        <section className="tw-wheel-demo">
+          <div className="tw-container tw-wheel-demo-inner">
+            <span className="tw-eyebrow">Loja</span>
+            <h2>Rrotullo dhe fito</h2>
+            <p className="tw-section-lead">
+              Kështu e përjeton klienti — rrotullon rrotën, fiton një kod zbritjeje dhe ta dërgon në DM.
+            </p>
+            <TwirlaWheelShowcase />
+          </div>
+        </section>
+
+        <section id="why" className="tw-section">
+          <div className="tw-container">
+            <div className="tw-section-head tw-section-head--center">
+              <span className="tw-eyebrow">Pse lojëra</span>
+              <h2>Një zbritje që e <em>fiton</em> vlen më shumë se një që ta japin</h2>
+              <p className="tw-section-lead">
+                I njëjti kupon, psikologji krejt tjetër — dhe shumë më shumë gjasa që klienti të të shkruajë.
+              </p>
+            </div>
+            <div className="tw-vs">
+              <article className="tw-vs-card tw-vs-card--old">
+                <span className="tw-vs-tag">Mënyra e vjetër, e mërzitshme</span>
+                <h3>“10% zbritje” në Story 😐</h3>
+                <p>
+                  Kodin e ka kushdo, ndaj s'ka vlerë në mendjen e klientit. E kalon Story-n dhe nuk të
+                  shkruan kurrë. Pak angazhim, pak DM.
+                </p>
+              </article>
+              <article className="tw-vs-card tw-vs-card--new">
+                <span className="tw-vs-tag tw-vs-tag--good">Mënyra Twirla</span>
+                <h3>Luajnë dhe fitojnë 🎉</h3>
+                <p>
+                  Mundësia reale për të fituar i bën të provojnë. Kur “fitojnë” kodin, vlera e perceptuar
+                  shumëfishohet — kështu shumë më shumë veta e dërgojnë në DM për ta përdorur.
+                </p>
+              </article>
             </div>
           </div>
         </section>
@@ -225,15 +366,15 @@ export default function TwirlaLandingPage() {
                 të ndalet, të provojë fatin dhe të ketë arsye të të shkruajë tani.
               </p>
             </div>
-            <div className="tw-benefits">
-              {['Më shumë DM', 'Më shumë angazhim', 'Më shumë arsye për blerje', 'Pa website kompleks'].map(
-                (benefit) => (
-                  <div className="tw-benefit" key={benefit}>
-                    <span className="tw-benefit-check">✓</span>
-                    {benefit}
-                  </div>
-                ),
-              )}
+            <div className="tw-about-stats">
+              {ABOUT_STATS.map((s) => (
+                <div className="tw-stat" key={s.label}>
+                  <span className="tw-stat-value" data-count={s.n} data-suffix={s.suffix}>
+                    0{s.suffix}
+                  </span>
+                  <span className="tw-stat-label">{s.label}</span>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -355,7 +496,7 @@ export default function TwirlaLandingPage() {
         <section id="contact" className="tw-contact">
           <div className="tw-container tw-contact-grid">
             <div className="tw-contact-copy">
-              <span className="tw-eyebrow tw-eyebrow--light">Kontakt</span>
+              <span className="tw-eyebrow">Kontakt</span>
               <h2>Do ta provosh për dyqanin tënd?</h2>
               <p>
                 Gati të rritësh angazhimin? Na shkruaj sot dhe zbulo si mund ta
@@ -364,7 +505,7 @@ export default function TwirlaLandingPage() {
             </div>
             <div className="tw-contact-action">
               <a
-                className="tw-btn tw-btn--light"
+                className="tw-btn tw-btn--primary"
                 href="https://instagram.com/"
                 target="_blank"
                 rel="noopener noreferrer"

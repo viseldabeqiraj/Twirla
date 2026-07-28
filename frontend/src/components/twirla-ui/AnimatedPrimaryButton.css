@@ -39,4 +39,8 @@
 
 .tw-anim-btn {
   will-change: transform;
+  transition: transform var(--tw-motion-fast, 150ms) var(--tw-ease-out, ease);
+}
+.tw-anim-btn:active {
+  transform: scale(var(--tw-tap-scale, 0.97));
 }

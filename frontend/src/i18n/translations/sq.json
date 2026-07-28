@@ -75,7 +75,8 @@
     "tapHearts": "Kap Çmimin",
     "scratch": "Gërvisht",
     "countdown": "Numërimi",
-    "memoryMatch": "Loja e kujtesës"
+    "memoryMatch": "Loja e kujtesës",
+    "mysteryBox": "Kutia misterioze"
   },
   "common": {
     "unknownMode": "Mënyra e panjohur e përvojës",
@@ -132,6 +133,13 @@
     "scratchToReveal": "Gërvisht për surprizën",
     "scratchHere": "Gërvisht këtu",
     "revealedTitle": "Çmimi yt u zbulua!",
+    "rewardPanelTitle": "Ja shpërblimi yt"
+  },
+  "mysteryBox": {
+    "title": "Zgjidh kutinë fatlume!",
+    "subtitle": "Prek një kuti dhe hape për të fituar",
+    "hint": "Zgjidh një kuti dhe hape 🎁",
+    "pick": "Zgjidh kutinë",
     "rewardPanelTitle": "Ja shpërblimi yt"
   },
   "countdown": {

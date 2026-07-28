@@ -265,6 +265,17 @@
   opacity: 0.9;
 }
 .shop-hero-gradient .shop-hero-shop-name { color: rgba(255, 255, 255, 0.95); }
+/* Always-on gentle gradient drift on the shop hero (visible without per-shop config). */
+@media (prefers-reduced-motion: no-preference) {
+  .shop-hero-gradient {
+    background-size: 180% 180%;
+    animation: shop-hero-drift 16s ease-in-out infinite;
+  }
+}
+@keyframes shop-hero-drift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
 .shop-hero-solid .shop-hero-shop-name { color: var(--shop-primary, #db2777); }
 .shop-hero-cta-button {
   font: inherit;
@@ -687,7 +698,23 @@
     flex-wrap: nowrap;
     gap: 0.85rem;
     margin-top: 0;
-    padding: 0 0.35rem 0.25rem;
+    padding: 0 0.35rem 0.85rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--shop-primary, #db2777) rgba(148, 163, 184, 0.22);
+  }
+  .shop-products-showcase .shop-products-grid::-webkit-scrollbar {
+    height: 8px;
+  }
+  .shop-products-showcase .shop-products-grid::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+    border-radius: 999px;
+  }
+  .shop-products-showcase .shop-products-grid::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.18);
+    border-radius: 999px;
   }
   .shop-products-showcase .shop-product-card {
     flex: 0 0 min(272px, 86vw);

@@ -8,6 +8,7 @@ export const PUBLIC_CAMPAIGN_GAMES: ExperienceMode[] = [
   ExperienceMode.Scratch,
   ExperienceMode.TapHearts,
   ExperienceMode.MemoryMatch,
+  ExperienceMode.MysteryBox,
   //ExperienceMode.Countdown,
 ];
 

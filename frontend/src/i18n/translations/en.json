@@ -75,7 +75,8 @@
     "tapHearts": "Catch the Prize",
     "scratch": "Scratch",
     "countdown": "Countdown",
-    "memoryMatch": "Memory game"
+    "memoryMatch": "Memory game",
+    "mysteryBox": "Mystery Box"
   },
   "common": {
     "unknownMode": "Unknown experience mode",
@@ -132,6 +133,13 @@
     "scratchToReveal": "Scratch for the surprise",
     "scratchHere": "Scratch here",
     "revealedTitle": "Your prize is unlocked!",
+    "rewardPanelTitle": "Here's your reward"
+  },
+  "mysteryBox": {
+    "title": "Pick the lucky box!",
+    "subtitle": "Tap a box and open it to win",
+    "hint": "Pick a box and open it 🎁",
+    "pick": "Pick the box",
     "rewardPanelTitle": "Here's your reward"
   },
   "countdown": {

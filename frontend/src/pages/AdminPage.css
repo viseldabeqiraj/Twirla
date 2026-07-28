@@ -1,8 +1,11 @@
 .admin-page {
-  max-width: 1000px;
+  max-width: 1040px;
   margin: 0 auto;
   padding: 1.5rem;
   font-family: system-ui, sans-serif;
+  background:
+    radial-gradient(720px 360px at 100% -10%, rgba(219, 39, 119, 0.06), transparent 60%),
+    radial-gradient(620px 320px at 0% 0%, rgba(123, 92, 255, 0.06), transparent 55%);
 }
 
 .admin-loading,
@@ -65,8 +68,10 @@
 .admin-summary h2,
 .admin-redeem h2 {
   margin: 0 0 1rem 0;
-  font-size: 1.15rem;
-  font-weight: 600;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .admin-cards {
@@ -77,22 +82,49 @@
 }
 
 .admin-card {
-  background: #f5f5f5;
-  border-radius: 8px;
-  padding: 1rem;
+  background: linear-gradient(160deg, #ffffff, #fbf6fb);
+  border: 1px solid #eee3ef;
+  border-radius: 16px;
+  padding: 1.1rem 1.15rem;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  gap: 0.3rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 26px -18px rgba(2, 6, 23, 0.35);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
+}
+.admin-card::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #db2777, #7b5cff);
+}
+.admin-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 20px 44px -22px rgba(219, 39, 119, 0.4);
 }
 
 .admin-card-value {
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-weight: 800;
+  font-size: 1.6rem;
+  letter-spacing: -0.02em;
+  background: linear-gradient(120deg, #db2777, #7b5cff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .admin-card-label {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.72rem;
+  color: #7c6a86;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
 }
 
 .admin-redeem-form {
@@ -162,11 +194,12 @@
 }
 
 .admin-chart-block {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #eee3ef;
+  border-radius: 16px;
+  padding: 1.15rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px -20px rgba(2, 6, 23, 0.35);
 }
 
 .admin-chart-title {
@@ -195,11 +228,12 @@
 
 /* Funnel */
 .admin-funnel {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 8px;
-  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #eee3ef;
+  border-radius: 16px;
+  padding: 1.15rem;
   margin-bottom: 1.5rem;
+  box-shadow: 0 12px 30px -20px rgba(2, 6, 23, 0.35);
 }
 
 .admin-funnel-steps {
@@ -217,10 +251,11 @@
 .admin-funnel-bar {
   height: 32px;
   min-width: 40px;
-  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-  border-radius: 6px;
+  background: linear-gradient(90deg, #db2777 0%, #7b5cff 100%);
+  border-radius: 999px;
   flex-shrink: 0;
-  transition: width 0.2s ease;
+  box-shadow: 0 8px 20px -10px rgba(219, 39, 119, 0.5);
+  transition: width 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .admin-funnel-label {

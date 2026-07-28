@@ -17,7 +17,18 @@
   border: 1px solid var(--tw-border-color, color-mix(in srgb, var(--primary-color, #db2777) 22%, transparent));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.65) inset,
-    0 18px 44px color-mix(in srgb, var(--tw-primary, var(--primary-color, #db2777)) 22%, transparent);
+    0 18px 44px color-mix(in srgb, var(--tw-primary, var(--primary-color, #db2777)) 22%, transparent),
+    var(--tw-elev-glow, 0 0 0 transparent);
+  animation: tw-reward-pop 0.55s var(--tw-ease-spring, cubic-bezier(0.18, 1.4, 0.4, 1)) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-reward-modal__card { animation: none; }
+}
+
+@keyframes tw-reward-pop {
+  from { opacity: 0; transform: scale(0.85) translateY(12px); }
+  to { opacity: 1; transform: none; }
 }
 
 .surface-neon .tw-reward-modal__card {

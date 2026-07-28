@@ -312,10 +312,10 @@
   height: 100%;
   border-radius: 50%;
   background: conic-gradient(
-    #D5A419 0deg 90deg,
-    #393F53 90deg 180deg,
+    #d5a419 0deg 90deg,
+    #393f53 90deg 180deg,
     #5c6a8a 180deg 270deg,
-    #0E1526 270deg 360deg
+    #0e1526 270deg 360deg
   );
   box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.15);
   animation: tw-demo-wheel-spin 8s linear infinite;
