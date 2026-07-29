@@ -1,0 +1,156 @@
+/* Reusable premium gold prize wheel — shared across landing, hero preview and the live game. */
+.prize-wheel {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(300px, 82vw);
+  max-width: 100%;
+}
+
+.prize-wheel__scene {
+  perspective: 900px;
+  width: 100%;
+}
+
+.prize-wheel__box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  outline: none;
+}
+.prize-wheel__box--interactive {
+  cursor: pointer;
+}
+.prize-wheel__box--spinning {
+  cursor: default;
+}
+.prize-wheel__box--disabled {
+  cursor: not-allowed;
+}
+.prize-wheel__box--shake {
+  animation: prize-wheel-shake 0.48s ease;
+}
+@keyframes prize-wheel-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+.prize-wheel__box:focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--shop-primary, var(--tw-primary, #db2777)) 55%, transparent);
+  border-radius: 50%;
+}
+
+/* static premium glow (does not spin) */
+.prize-wheel__glow {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: conic-gradient(#ff2e9a, #8a25c9, #f6d67b, #ff2e9a);
+  filter: blur(22px);
+  opacity: 0.6;
+}
+
+/* metallic gold rim */
+.prize-wheel__rim {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(#f6d67b, #8a6420, #f6d67b, #b8892f, #f6d67b, #8a6420, #f6d67b, #b8892f, #f6d67b);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4) inset, 0 14px 34px rgba(0, 0, 0, 0.4), 0 0 34px -6px #f6d67b;
+}
+.prize-wheel__rim::after {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border-radius: 50%;
+  background: #0b0618;
+}
+
+.prize-wheel__light {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #fff7e0;
+  box-shadow: 0 0 8px 2px #f6d67b;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  animation: prize-wheel-light-blink 1.4s ease-in-out infinite;
+}
+@keyframes prize-wheel-light-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.prize-wheel__svg {
+  position: absolute;
+  inset: 20px;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  z-index: 1;
+  filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5));
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.prize-wheel__dome {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(circle at 50% 45%, transparent 52%, rgba(0, 0, 0, 0.38));
+}
+.prize-wheel__gloss {
+  position: absolute;
+  inset: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(130% 90% at 30% 18%, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.05) 38%, transparent 58%);
+}
+
+.prize-wheel__pointer {
+  position: absolute;
+  top: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 26px solid #f6d67b;
+  filter: drop-shadow(0 4px 5px rgba(0, 0, 0, 0.6));
+}
+
+.prize-wheel__hub {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 24%;
+  height: 24%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fff, #f6d67b 55%, #b8892f);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 800;
+  color: #5a3d00;
+  font-size: clamp(9px, 2.2vw, 14px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(255, 255, 255, 0.25) inset;
+}
+.prize-wheel__hub--blank {
+  width: 16%;
+  height: 16%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prize-wheel__glow,
+  .prize-wheel__light {
+    animation: none;
+  }
+}

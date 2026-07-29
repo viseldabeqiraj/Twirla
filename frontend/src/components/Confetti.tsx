@@ -1,26 +1,22 @@
-import './Confetti.css';
+import { useEffect } from 'react';
+import { fireConfetti } from '../utils/confetti';
 
 interface ConfettiProps {
+  /** Particle count for the burst. */
   count?: number;
 }
 
-export default function Confetti({ count = 50 }: ConfettiProps) {
-  const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#95E1D3', '#F38181'];
-  
-  return (
-    <div className="confetti-container">
-      {[...Array(count)].map((_, i) => (
-        <div 
-          key={i} 
-          className="confetti" 
-          style={{
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 2}s`,
-            backgroundColor: colors[Math.floor(Math.random() * colors.length)]
-          }}
-        />
-      ))}
-    </div>
-  );
-}
+/**
+ * Fires the realistic confetti burst (shared canvas util, matching the Twirla
+ * HTML prototype) once when mounted. Renders nothing itself — the util owns a
+ * single full-screen canvas layered above the page.
+ */
+export default function Confetti({ count = 150 }: ConfettiProps) {
+  useEffect(() => {
+    // Keep bursts generous so the effect reads as celebratory, even when
+    // callers pass a small legacy count.
+    fireConfetti({ count: Math.max(count, 140) });
+  }, [count]);
 
+  return null;
+}

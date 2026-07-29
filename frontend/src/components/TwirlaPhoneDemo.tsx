@@ -1,5 +1,9 @@
 import { resolveAssetUrl } from '../config/api';
+import PrizeWheel from './PrizeWheel';
 import './TwirlaPhoneDemo.css';
+
+const DEMO_WHEEL_COLORS = ['#db2777', '#7b5cff', '#e11d74', '#8a25c9', '#ff2e9a', '#b3138a'];
+const DEMO_WHEEL_LABELS = ['5%', '10%', '15%', '20%', '🎁', '30%'];
 
 /** Real Astra Accessories assets from shop config */
 const ASTRA_LOGO = resolveAssetUrl('/logos/astra-accessories.png');
@@ -76,8 +80,15 @@ function DemoScreenContent() {
         <p className="tw-demo-section-label">Loja e ditës</p>
         <div className="tw-demo-game-card">
           <div className="tw-demo-wheel" aria-hidden="true">
-            <div className="tw-demo-wheel-inner" />
-            <span className="tw-demo-wheel-pointer" />
+            <PrizeWheel
+              labels={DEMO_WHEEL_LABELS}
+              colors={DEMO_WHEEL_COLORS}
+              interactive="none"
+              autoSpin
+              showLabels={false}
+              hubText=""
+              size={52}
+            />
           </div>
           <div className="tw-demo-game-copy">
             <h3>Rrotullo fatin</h3>

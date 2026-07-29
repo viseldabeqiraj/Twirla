@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { useParams } from 'react-router-dom';
 import type { ShopLandingConfig } from '../types/ShopLandingConfig';
@@ -34,6 +34,50 @@ export default function ShopLandingPage() {
   const { language, t } = useTranslation();
   const [config, setConfig] = useState<ShopLandingConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const mainRef = useRef<HTMLElement>(null);
+
+  // Scroll-reveal: each section fades / tilts in as it enters the viewport,
+  // mirroring the .reveal system in Twirla_Shop_Demo.html. Tagged before paint
+  // (useLayoutEffect) so there is no flash of un-hidden content.
+  useLayoutEffect(() => {
+    if (!config) return;
+    const root = mainRef.current;
+    if (!root) return;
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+
+    const targets = Array.from(
+      root.querySelectorAll<HTMLElement>('.shop-hero-inner, .shop-section-inner'),
+    );
+    if (targets.length === 0) return;
+
+    targets.forEach((el, i) => {
+      el.classList.add('shop-reveal');
+      el.style.setProperty('--shop-reveal-delay', `${Math.min(i * 70, 350)}ms`);
+    });
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('shop-reveal--in');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.14, rootMargin: '0px 0px -8% 0px' },
+    );
+    targets.forEach((el) => io.observe(el));
+
+    // Safety net: if anything never intersects, reveal it after a moment.
+    const fallback = window.setTimeout(() => {
+      targets.forEach((el) => el.classList.add('shop-reveal--in'));
+    }, 2500);
+
+    return () => {
+      io.disconnect();
+      window.clearTimeout(fallback);
+    };
+  }, [config]);
 
   useEffect(() => {
     if (!shopSlug) {
@@ -185,7 +229,7 @@ export default function ShopLandingPage() {
           </div>
         </header>
 
-        <main className="shop-landing-main">
+        <main className="shop-landing-main" ref={mainRef}>
           <div className="shop-landing-main__decor" aria-hidden>
             <AnimatedBackground primaryColor={primary} secondaryColor={secondary} />
             {config.particlesBackground?.enabled ? (

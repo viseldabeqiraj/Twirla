@@ -8,4 +8,7 @@ public interface IAnalyticsService
     void AppendEvent(string shopId, AnalyticsEventRecord record);
     AdminAnalyticsSummary GetSummary(string shopId);
     IReadOnlyList<DailyRevenuePoint> GetDailyAttributedRevenue(string shopId);
+
+    /// <summary>Composed dashboard payload: daily series, prize distribution, game split, recent wins.</summary>
+    AnalyticsDashboard GetDashboard(string shopId);
 }

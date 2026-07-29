@@ -7,7 +7,8 @@ import RewardCelebration from '../RewardCelebration';
 import RewardModal from '../twirla-ui/RewardModal';
 import PrimaryButton from '../twirla-ui/PrimaryButton';
 import { generateDiscountCode, persistRewardCodeMeta } from '../../utils/discountCode';
-import GesturePrizeWheel, { buildWheelSegmentColors } from './GesturePrizeWheel';
+import PrizeWheel from '../PrizeWheel';
+import { buildWheelSegmentColors } from './GesturePrizeWheel';
 import './WheelExperience.css';
 
 interface WheelExperienceProps {
@@ -263,10 +264,11 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
 
   return (
     <div className={`wheel-container ${hintShake ? 'wheel-container--shake-hint' : ''}`}>
-      <GesturePrizeWheel
+      <PrizeWheel
         labels={labels}
         colors={segColors}
         size={wheelSize}
+        interactive="drag"
         disabled={wheelLocked}
         pickWinnerIndex={pickWinnerIndex}
         onSpinStart={handleSpinStart}

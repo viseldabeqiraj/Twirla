@@ -42,6 +42,50 @@ export async function getDailyRevenue(slug: string, token: string): Promise<Dail
   return res.json() as Promise<DailyRevenuePoint[]>;
 }
 
+export interface DashboardDailyPoint {
+  date: string; // yyyy-MM-dd
+  visits: number;
+  plays: number;
+  dm: number;
+  redeemed: number;
+}
+
+export interface DashboardPrize {
+  label: string;
+  count: number;
+}
+
+export interface DashboardGame {
+  mode: string;
+  count: number;
+}
+
+export interface DashboardRecentWin {
+  time: string; // ISO timestamp
+  mode: string | null;
+  prize: string;
+  code: string;
+  redeemed: boolean;
+}
+
+export interface DashboardData {
+  daily: DashboardDailyPoint[];
+  prizes: DashboardPrize[];
+  games: DashboardGame[];
+  recent: DashboardRecentWin[];
+}
+
+export async function getDashboard(slug: string, token: string): Promise<DashboardData> {
+  const url = `${getApiUrl()}/admin/shops/${encodeURIComponent(slug)}/analytics/dashboard?token=${encodeURIComponent(token)}`;
+  const res = await fetch(url);
+  if (res.status === 401 || res.status === 403) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error((data as { error?: string }).error ?? 'Invalid or missing token.');
+  }
+  if (!res.ok) throw new Error(`Request failed: ${res.status}`);
+  return res.json() as Promise<DashboardData>;
+}
+
 export async function redeemCoupon(
   slug: string,
   token: string,

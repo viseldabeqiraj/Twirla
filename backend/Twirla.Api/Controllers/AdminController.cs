@@ -57,6 +57,29 @@ public class AdminController : ControllerBase
         return Ok(data);
     }
 
+    /// <summary>
+    /// GET /api/admin/shops/{slug}/analytics/dashboard?token=
+    /// Composed dashboard payload (daily series, prize distribution, game split, recent wins).
+    /// </summary>
+    [HttpGet("{slug}/analytics/dashboard")]
+    public IActionResult GetDashboard(string slug, [FromQuery] string? token)
+    {
+        try
+        {
+            var shop = _configService.ValidateAdminToken(slug, token);
+            if (shop == null)
+                return StatusCode(403, new { error = "Invalid or missing token." });
+
+            var dashboard = _analyticsService.GetDashboard(shop.ShopId);
+            return Ok(dashboard);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Admin dashboard failed for slug {Slug}", slug);
+            return StatusCode(500, new { error = "Server error.", detail = ex.Message });
+        }
+    }
+
     /// <summary>POST /api/admin/shops/{slug}/redeem-coupon?token=</summary>
     [HttpPost("{slug}/redeem-coupon")]
     public async Task<IActionResult> RedeemCoupon(string slug, [FromQuery] string? token, CancellationToken cancellationToken)

@@ -1,4 +1,5 @@
 import { ExperienceMode } from '../types/ShopConfig';
+import PrizeWheel from './PrizeWheel';
 import './GameIntroPreview.css';
 
 interface GameIntroPreviewProps {
@@ -56,6 +57,21 @@ export default function GameIntroPreview({ mode, className }: GameIntroPreviewPr
         <div className={rootClass} aria-hidden>
           <div className="game-intro-preview__countdown-ring" />
           <span className="game-intro-preview__countdown-icon">⏳</span>
+        </div>
+      );
+
+    case ExperienceMode.Wheel:
+      return (
+        <div className={rootClass} aria-hidden>
+          <PrizeWheel
+            labels={['5%', '10%', '15%', '20%', '🎁', '30%']}
+            colors={['#db2777', '#7b5cff', '#e11d74', '#8a25c9', '#ff2e9a', '#b3138a']}
+            interactive="none"
+            autoSpin
+            showLabels={false}
+            hubText=""
+            size={104}
+          />
         </div>
       );
 

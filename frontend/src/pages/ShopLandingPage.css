@@ -1614,3 +1614,153 @@
 }
 
 /* Game card / hero CTA motion: see AnimatedGameCard + AnimatedPrimaryButton */
+
+/* ============================================================
+   Premium pass — match the shop HTML: ambient glow, glass cards,
+   gradient borders, floating animation. Uses per-shop colors.
+   ============================================================ */
+.shop-landing::before,
+.shop-landing::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(100px);
+  z-index: 0;
+  pointer-events: none;
+}
+.shop-landing::before {
+  width: 540px; height: 540px; top: -160px; left: -150px;
+  /* blend the shop color with a vivid base so even muted shops glow visibly */
+  background: color-mix(in srgb, var(--shop-primary, #db2777) 55%, #ff2e9a);
+  opacity: 0.6;
+}
+.shop-landing::after {
+  width: 600px; height: 600px; bottom: -180px; right: -170px;
+  background: color-mix(in srgb, var(--shop-secondary, #7b5cff) 55%, #8a25c9);
+  opacity: 0.55;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .shop-landing::before { animation: shop-page-glow-a 22s ease-in-out infinite; }
+  .shop-landing::after { animation: shop-page-glow-b 26s ease-in-out infinite; }
+}
+@keyframes shop-page-glow-a { 50% { transform: translate(50px, 36px) scale(1.12); } }
+@keyframes shop-page-glow-b { 50% { transform: translate(-44px, -28px) scale(1.1); } }
+.shop-landing-app-header,
+.shop-landing-main,
+.shop-footer { position: relative; z-index: 1; }
+
+/* Premium card treatment — DEFAULT for ALL shops (elevation, hover lift, motion).
+   Colors come from each shop (--shop-primary / --shop-secondary). */
+.shop-landing .shop-featured-game-card,
+.shop-landing .shop-game-card,
+.shop-landing .shop-product-card,
+.shop-landing .shop-testimonial-card,
+.shop-landing .shop-how-step,
+.shop-landing .shop-contact-card {
+  box-shadow: 0 24px 60px -34px rgba(2, 6, 23, 0.5);
+  transition: transform 0.28s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+/* Dark shops get the glass fill; light shops keep their own surface + still get the premium frame/motion. */
+.shop-landing--dark .shop-featured-game-card,
+.shop-landing--dark .shop-game-card,
+.shop-landing--dark .shop-product-card,
+.shop-landing--dark .shop-testimonial-card,
+.shop-landing--dark .shop-how-step,
+.shop-landing--dark .shop-contact-card {
+  background: linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+.shop-landing .shop-featured-game-card:hover,
+.shop-landing .shop-game-card:hover,
+.shop-landing .shop-product-card:hover {
+  transform: translateY(-6px);
+  border-color: color-mix(in srgb, var(--shop-primary, #db2777) 50%, transparent);
+  box-shadow: 0 30px 70px -30px color-mix(in srgb, var(--shop-secondary, #7b5cff) 55%, transparent);
+}
+
+/* Featured game — gradient hairline border */
+.shop-featured-game-card {
+  position: relative;
+  overflow: hidden;
+}
+.shop-featured-game-card::after {
+  content: '';
+  position: absolute; inset: -1px; border-radius: inherit; padding: 1px;
+  background: linear-gradient(120deg, var(--shop-primary, #db2777), var(--shop-secondary, #7b5cff));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0.55; pointer-events: none;
+}
+
+/* Floating game emoji */
+@media (prefers-reduced-motion: no-preference) {
+  .shop-featured-game-emoji { animation: shop-emoji-float 3.6s ease-in-out infinite; display: inline-block; }
+}
+@keyframes shop-emoji-float { 50% { transform: translateY(-8px); } }
+
+/* ============================================================
+   Desktop: widen content column to match Twirla_Shop_Demo.html
+   (its .app uses max-width:980px at min-width:860px). The mobile
+   layout keeps its narrow, phone-like column.
+   ============================================================ */
+@media (min-width: 861px) {
+  .shop-landing-app-header-inner,
+  .shop-hero,
+  .shop-section,
+  .shop-section-inner,
+  .shop-footer-inner {
+    max-width: 980px;
+  }
+  /* Let the hero copy and the featured game card breathe on wide screens. */
+  .shop-hero-inner {
+    max-width: 640px;
+  }
+  .shop-featured-game-card {
+    max-width: 560px;
+  }
+}
+
+/* ============================================================
+   Desktop products: 2 per row, smaller images (they were 1-up
+   and filled the whole column, taking too much space).
+   ============================================================ */
+@media (min-width: 769px) {
+  .shop-products-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .shop-products .shop-product-image-wrap,
+  .shop-products .shop-product-placeholder {
+    aspect-ratio: 5 / 4;
+  }
+}
+
+/* ============================================================
+   Scroll-reveal — sections fade / tilt in on entry.
+   Matches the .reveal system in Twirla_Shop_Demo.html.
+   ============================================================ */
+.shop-reveal {
+  opacity: 0;
+  transform: perspective(800px) rotateX(12deg) translateY(38px);
+  transition:
+    opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--shop-reveal-delay, 0ms);
+  will-change: opacity, transform;
+}
+.shop-reveal--in {
+  opacity: 1;
+  transform: perspective(800px) rotateX(0) translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-reveal,
+  .shop-reveal--in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
