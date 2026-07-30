@@ -374,6 +374,28 @@
   margin-top: 0.5rem;
 }
 
+/* Touch devices never get the desktop cursor-tilt (useTiltEffect no-ops
+   without a fine pointer), so give the hero card its own ambient motion so
+   it doesn't read as static on the phones this app is mostly used on.
+   box-shadow only (not transform) so it can't fight the .shop-reveal
+   entrance transition, which animates transform on this same element. */
+@media (hover: none) and (prefers-reduced-motion: no-preference),
+  (pointer: coarse) and (prefers-reduced-motion: no-preference) {
+  .shop-hero-inner {
+    animation: shop-hero-inner-breathe 5s ease-in-out 0.9s infinite;
+  }
+}
+
+@keyframes shop-hero-inner-breathe {
+  0%,
+  100% {
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.08);
+  }
+  50% {
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.14);
+  }
+}
+
 .shop-hero-gradient {
   background: linear-gradient(135deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
   color: #fff;
@@ -1762,5 +1784,59 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+}
+
+/* ============================================================
+   Sticky "Play & win" floating CTA — nudges visitors back to the
+   game section once they've scrolled past it. Ported from the
+   shop demo's .play-fab.
+   ============================================================ */
+.shop-play-fab {
+  position: fixed;
+  left: 50%;
+  bottom: max(18px, env(safe-area-inset-bottom, 0px) + 12px);
+  z-index: 30;
+  transform: translateX(-50%) translateY(24px);
+  opacity: 0;
+  pointer-events: none;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #fff;
+  background: linear-gradient(120deg, var(--shop-primary, #db2777), var(--shop-secondary, #be185d));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 16px 40px -12px color-mix(in srgb, var(--shop-primary, #db2777) 70%, transparent);
+  transition: opacity 0.35s ease, transform 0.35s ease, bottom 0.2s ease;
+}
+/* Below 768px the "Powered by Twirla" footer (.twirla-footer-fixed) switches
+   to position:fixed at the same viewport edge with a higher z-index, so the
+   FAB needs to sit above its ~48px bar instead of underneath it. */
+@media (max-width: 768px) {
+  .shop-play-fab {
+    bottom: calc(48px + env(safe-area-inset-bottom, 0px) + 22px);
+  }
+}
+.shop-play-fab--visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+.shop-play-fab:active {
+  transform: translateX(-50%) scale(0.96);
+}
+.shop-play-fab--visible:active {
+  transform: translateX(-50%) translateY(0) scale(0.96);
+}
+@media (prefers-reduced-motion: reduce) {
+  .shop-play-fab {
+    transition: opacity 0.2s linear;
+    transform: translateX(-50%);
+  }
+  .shop-play-fab--visible {
+    transform: translateX(-50%);
   }
 }

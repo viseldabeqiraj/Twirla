@@ -6,6 +6,7 @@ import { cssUrl } from '../../utils/cssUrl';
 import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
 import AnimatedWords from '../twirla-ui/AnimatedWords';
 import StaggeredEntrance from '../twirla-ui/StaggeredEntrance';
+import { useTiltEffect } from '../../hooks/useTiltEffect';
 
 interface HeroSectionProps {
   hero: HeroConfig;
@@ -21,6 +22,7 @@ const IMAGE_OVERLAY_CLASS: Record<'dark' | 'medium' | 'light', string> = {
 
 export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroSectionProps) {
   const { t } = useTranslation();
+  const tiltRef = useTiltEffect<HTMLDivElement>(6);
   const primary = hero.primaryColor ?? '#db2777';
   const secondary = hero.secondaryColor ?? '#be185d';
   const isGradient = hero.backgroundStyle !== 'solid';
@@ -148,7 +150,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
         </div>
         <span className="shop-hero-bar-name">{hero.shopName}</span>
       </div>
-      <div className={innerClassName} style={innerStyle}>
+      <div ref={tiltRef} className={innerClassName} style={innerStyle}>
         <StaggeredEntrance items={staggerItems} stagger={0.05} />
       </div>
     </header>

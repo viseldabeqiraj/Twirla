@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import type { ReactNode } from 'react';
 import Confetti from './Confetti';
+import { fireWinFeedback } from '../utils/winFeedback';
 import './RewardCelebration.css';
 
 interface RewardCelebrationProps {
@@ -25,6 +27,11 @@ export default function RewardCelebration({
   ]
     .filter(Boolean)
     .join(' ');
+
+  useEffect(() => {
+    if (celebrate) fireWinFeedback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={rootClass}>

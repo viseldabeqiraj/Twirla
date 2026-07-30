@@ -2,7 +2,18 @@ import { useState } from 'react';
 import { useTranslation } from '../../i18n/i18n';
 import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
 import { resolveAssetUrl } from '../../config/api';
+import { useCarouselCenterFx } from '../../hooks/useCarouselCenterFx';
+import { useDragScroll } from '../../hooks/useDragScroll';
 import type { FeaturedProductConfig, SocialLinksConfig } from '../../types/ShopLandingConfig';
+
+/** Merges two refs onto a single DOM node. */
+function mergeRefs<T>(...refs: Array<React.RefObject<T> | React.MutableRefObject<T | null>>) {
+  return (node: T | null) => {
+    refs.forEach((r) => {
+      (r as React.MutableRefObject<T | null>).current = node;
+    });
+  };
+}
 
 interface FeaturedProductsProps {
   products: FeaturedProductConfig[];
@@ -98,6 +109,8 @@ function ProductCard({
 
 export default function FeaturedProducts({ products, sectionTitle, social }: FeaturedProductsProps) {
   const { t } = useTranslation();
+  const carouselRef = useCarouselCenterFx<HTMLDivElement>('.shop-product-card', '.shop-product-image');
+  const dragRef = useDragScroll<HTMLDivElement>();
   if (products.length === 0) return null;
 
   const fallbackCta = defaultOrderCta(social, t);
@@ -109,7 +122,7 @@ export default function FeaturedProducts({ products, sectionTitle, social }: Fea
         <h2 id="shop-products-heading" className="shop-section-title">{title}</h2>
         <p className="shop-section-subtitle shop-products-subtitle">{t('landing.featuredProductsSubtitle')}</p>
         <div className="shop-products-showcase">
-          <div className="shop-products-grid">
+          <div ref={mergeRefs(carouselRef, dragRef)} className="shop-products-grid">
             {products.map((p) => (
               <ProductCard key={p.id} product={p} fallbackCta={fallbackCta} />
             ))}

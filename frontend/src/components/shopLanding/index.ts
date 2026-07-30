@@ -11,3 +11,4 @@ export { default as TestimonialsSection } from './TestimonialsSection';
 export { default as TrustBadgesSection } from './TrustBadgesSection';
 export { default as FAQSection } from './FAQSection';
 export { default as FooterSection } from './FooterSection';
+export { default as PlayFab } from './PlayFab';

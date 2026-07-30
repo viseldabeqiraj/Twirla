@@ -20,6 +20,7 @@ import {
   TestimonialsSection,
   TrustBadgesSection,
   FAQSection,
+  PlayFab,
 } from '../components/shopLanding';
 import { resolveAssetUrl } from '../config/api';
 import { useTranslation } from '../i18n/i18n';
@@ -246,6 +247,7 @@ export default function ShopLandingPage() {
           <HeroSection hero={config.hero} hideBar scrollToId="featured-game" />
           {mainSections}
         </main>
+        <PlayFab targetId="featured-game" />
       </div>
     </ShopThemeProvider>
   );
