@@ -11,14 +11,14 @@ export default function LanguageSwitcher() {
         onClick={() => setLanguage('sq')}
         aria-label="Shqip"
       >
-        🇦🇱 SQ
+        AL
       </button>
       <button
         className={`lang-button ${language === 'en' ? 'active' : ''}`}
         onClick={() => setLanguage('en')}
         aria-label="English"
       >
-        🇬🇧 EN
+        EN
       </button>
     </div>
   );
