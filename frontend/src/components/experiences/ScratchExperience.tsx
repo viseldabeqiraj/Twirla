@@ -61,10 +61,7 @@ export default function ScratchExperience({ config }: ScratchExperienceProps) {
           } as React.CSSProperties
         }
       >
-        <RewardCelebration
-          className="scratch-reward-panel wheel-result wheel-result-winning"
-          confettiCount={40}
-        >
+        <RewardCelebration className="scratch-reward-panel wheel-result wheel-result-winning">
           <RewardModal
             title={rewardTitle}
             description={rewardDescription}

@@ -53,8 +53,15 @@ function normalizeDeg(d: number): number {
   return x;
 }
 
-function easeOutCubic(t: number): number {
-  return 1 - (1 - t) ** 3;
+/**
+ * Spin deceleration curve. A higher power stays close to full speed for
+ * longer and crams the slowdown into a much shorter window at the very end —
+ * "long fast spin, snappy hard stop" — versus a cubic ease-out, which
+ * decelerates smoothly and noticeably through the whole spin. Same start/end
+ * values and duration, just a punchier feel.
+ */
+function easeOutSpin(t: number): number {
+  return 1 - (1 - t) ** 5;
 }
 
 /** Wrap label into up to 2 lines that fit `maxWidth` (SVG user units). */
@@ -157,6 +164,7 @@ export default function PrizeWheel({
   const angularSpeedRef = useRef(0);
   const [spinning, setSpinning] = useState(false);
   const [hintShake, setHintShake] = useState(false);
+  const [justSettled, setJustSettled] = useState(false);
 
   const n = labels.length;
   const step = n > 0 ? 360 / n : 360;
@@ -249,7 +257,7 @@ export default function PrizeWheel({
 
       const tick = (now: number) => {
         const t = Math.min(1, (now - t0) / duration);
-        const e = easeOutCubic(t);
+        const e = easeOutSpin(t);
         rotationRef.current = start + (end - start) * e;
         applyRotation();
         if (t < 1) {
@@ -259,6 +267,8 @@ export default function PrizeWheel({
           applyRotation();
           phaseRef.current = 'idle';
           setSpinning(false);
+          setJustSettled(true);
+          window.setTimeout(() => setJustSettled(false), 260);
           if (confettiOnWin) burstConfetti();
           onSettled?.(winnerIndex);
         }
@@ -396,6 +406,7 @@ export default function PrizeWheel({
             'prize-wheel__box',
             interactive !== 'none' ? 'prize-wheel__box--interactive' : '',
             spinning ? 'prize-wheel__box--spinning' : '',
+            justSettled ? 'prize-wheel__box--settle' : '',
             hintShake ? 'prize-wheel__box--shake' : '',
             disabled ? 'prize-wheel__box--disabled' : '',
           ]

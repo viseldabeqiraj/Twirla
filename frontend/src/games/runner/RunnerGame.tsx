@@ -270,7 +270,6 @@ export default function RunnerGame(props: RunnerGameProps) {
           <RewardCelebration
             className={`runner-gameover runner-state-enter ${replayFading ? 'runner-replay-fade' : ''} ${isShaking ? 'runner-shake' : ''}`}
             celebrate={celebrateResult}
-            confettiCount={22}
           >
             <RewardModal
               title={displayReward.headline}

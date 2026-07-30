@@ -366,7 +366,7 @@ export default function MemoryMatchExperience({ config }: MemoryMatchExperienceP
       )}
 
       {won && (
-        <RewardCelebration className="memory-match-win" confettiCount={36}>
+        <RewardCelebration className="memory-match-win">
           <RewardModal
             title={text.resultTitle}
             description={[text.resultSubtitle, memory.revealText, memory.revealSubtitle].filter(Boolean).join(' · ')}

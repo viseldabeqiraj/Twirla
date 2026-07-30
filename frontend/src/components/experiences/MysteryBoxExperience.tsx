@@ -65,10 +65,7 @@ export default function MysteryBoxExperience({ config }: MysteryBoxExperiencePro
   if (showRewardPanel) {
     return (
       <div className="mystery-experience-wrap" style={styleVars}>
-        <RewardCelebration
-          className="mystery-reward-panel wheel-result wheel-result-winning"
-          confettiCount={40}
-        >
+        <RewardCelebration className="mystery-reward-panel wheel-result wheel-result-winning">
           <RewardModal
             title={mysteryBox.revealText}
             description={mysteryBox.revealSubtitle}

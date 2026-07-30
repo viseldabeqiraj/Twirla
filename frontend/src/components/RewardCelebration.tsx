@@ -15,7 +15,7 @@ interface RewardCelebrationProps {
 export default function RewardCelebration({
   children,
   className,
-  confettiCount = 40,
+  confettiCount = 150,
   celebrate = true,
 }: RewardCelebrationProps) {
   const rootClass = [

@@ -27,6 +27,14 @@ export interface FloatingScore {
   createdAt: number;
 }
 
+/** Small sparkle-burst juice effect spawned at a catch point. */
+export interface CatchBurst {
+  id: number;
+  x: number;
+  y: number;
+  createdAt: number;
+}
+
 export type GamePhase = 'idle' | 'countdown' | 'playing' | 'ended';
 
 export interface CatchPrizeGameState {
@@ -50,6 +58,12 @@ export interface CatchPrizeGameState {
   comboCount: number;
   /** Weighted random result when `phase === 'ended'`. */
   endOutcome: TapHeartsOutcome | null;
+  /** Small sparkle-burst effects spawned at each good catch. */
+  bursts: CatchBurst[];
+  /** Next id for bursts. */
+  nextBurstId: number;
+  /** Bumped on every bomb hit; component watches this to trigger a screen shake. */
+  shakeToken: number;
 }
 
 export const GAME_DURATION_MS = 20000;

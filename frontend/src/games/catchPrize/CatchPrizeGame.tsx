@@ -52,6 +52,16 @@ export default function CatchPrizeGame({
   const hasFiredStart = useRef(false);
   const [finishCode, setFinishCode] = useState<string | null>(null);
   const finishTrackedRef = useRef(false);
+  const [isShaking, setIsShaking] = useState(false);
+  const shakeTokenRef = useRef(0);
+
+  useEffect(() => {
+    if (state.shakeToken === shakeTokenRef.current) return;
+    shakeTokenRef.current = state.shakeToken;
+    setIsShaking(true);
+    const t = window.setTimeout(() => setIsShaking(false), 350);
+    return () => window.clearTimeout(t);
+  }, [state.shakeToken]);
 
   const displayOutcome = useMemo(
     () => (state.endOutcome ? normalizeTapHeartsReward(state.endOutcome, t) : null),
@@ -155,7 +165,7 @@ export default function CatchPrizeGame({
             </div>
           <div
             ref={playAreaRef}
-            className="catch-prize-play-area"
+            className={`catch-prize-play-area ${isShaking ? 'catch-prize-play-area--shake' : ''}`}
             onPointerDown={onPlayAreaPointer}
             role="button"
             tabIndex={0}
@@ -188,13 +198,21 @@ export default function CatchPrizeGame({
                 {f.text}
               </span>
             ))}
+            {state.bursts.map((b) => (
+              <span
+                key={b.id}
+                className="catch-prize-burst"
+                style={{ left: `${b.x}%`, top: `${b.y}%` }}
+                aria-hidden="true"
+              />
+            ))}
           </div>
           </div>
         </>
       )}
 
       {state.phase === 'ended' && displayOutcome && (
-        <RewardCelebration className="catch-prize-ended" celebrate={celebrateResult} confettiCount={28}>
+        <RewardCelebration className="catch-prize-ended" celebrate={celebrateResult}>
           <RewardModal
             title={displayOutcome.headline}
             description={displayOutcome.description}

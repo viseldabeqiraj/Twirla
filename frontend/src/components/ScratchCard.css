@@ -75,17 +75,60 @@
 }
 
 .scratch-card-content.scratch-card-reveal-anim {
-  animation: scratch-reveal-scale 0.38s ease-out;
+  animation: scratch-reveal-scale 0.42s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 @keyframes scratch-reveal-scale {
-  from {
-    opacity: 0.92;
+  0% {
+    opacity: 0.85;
+    transform: scale(0.94);
+  }
+  55% {
+    opacity: 1;
     transform: scale(1.03);
   }
-  to {
+  100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+/*
+ * Radial flash right at the point the reveal threshold is crossed — punctuates
+ * the "you got it" moment instead of the foil just quietly fading away.
+ */
+.scratch-card-flash {
+  position: absolute;
+  z-index: 5;
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0%,
+    color-mix(in srgb, var(--scratch-primary, #db2777) 70%, white) 35%,
+    transparent 72%
+  );
+  animation: scratch-flash-burst 0.6s ease-out forwards;
+}
+
+@keyframes scratch-flash-burst {
+  0% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(18);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scratch-card-flash {
+    animation: none;
+    opacity: 0;
   }
 }
 

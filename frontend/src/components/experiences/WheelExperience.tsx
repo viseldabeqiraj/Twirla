@@ -212,7 +212,6 @@ export default function WheelExperience({ config }: WheelExperienceProps) {
       <RewardCelebration
         className={`wheel-result ${isWinning ? 'wheel-result-winning' : 'wheel-result-consolation'}`}
         celebrate={isWinning}
-        confettiCount={40}
       >
         <RewardModal
           title={title}

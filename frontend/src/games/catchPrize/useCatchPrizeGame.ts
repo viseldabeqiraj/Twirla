@@ -42,6 +42,9 @@ const initialState: CatchPrizeGameState = {
   nextFloatId: 1,
   comboCount: 0,
   endOutcome: null,
+  bursts: [],
+  nextBurstId: 1,
+  shakeToken: 0,
 };
 
 /** ~14 fps — fewer React updates on phones (was 50ms). Physics still feels smooth at this step. */
@@ -69,6 +72,18 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
         { id: prev.nextFloatId, text, x, y, positive, createdAt: Date.now() },
       ],
     }));
+  }, []);
+
+  const addBurst = useCallback((x: number, y: number) => {
+    setState((prev) => ({
+      ...prev,
+      nextBurstId: prev.nextBurstId + 1,
+      bursts: [...prev.bursts, { id: prev.nextBurstId, x, y, createdAt: Date.now() }],
+    }));
+  }, []);
+
+  const triggerShake = useCallback(() => {
+    setState((prev) => ({ ...prev, shakeToken: prev.shakeToken + 1 }));
   }, []);
 
   const startCountdown = useCallback(() => {
@@ -151,6 +166,8 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
             }
             const maxAge = 800;
             const floatingScores = prev.floatingScores.filter((f) => now - f.createdAt < maxAge);
+            const burstMaxAge = 550;
+            const bursts = prev.bursts.filter((b) => now - b.createdAt < burstMaxAge);
             return {
               ...prev,
               timeLeft,
@@ -158,6 +175,7 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
               items,
               nextItemId: shouldSpawn ? prev.nextItemId + 1 : prev.nextItemId,
               floatingScores: floatingScores.length === prev.floatingScores.length ? prev.floatingScores : floatingScores,
+              bursts: bursts.length === prev.bursts.length ? prev.bursts : bursts,
             };
           });
         }
@@ -213,6 +231,7 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
           multiplierUntil: now + MULTIPLIER_DURATION_MS,
         }));
         addFloating('2x', item.x, item.y, true);
+        addBurst(item.x, item.y);
         removeItem(item.id);
         return;
       }
@@ -226,6 +245,7 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
           comboCount: 0,
         }));
         addFloating(`${rounded}`, item.x, item.y, false);
+        triggerShake();
         removeItem(item.id);
         return;
       }
@@ -242,9 +262,10 @@ export function useCatchPrizeGame(outcomes?: TapHeartsOutcome[]) {
       }));
       addFloating(rounded >= 0 ? `+${rounded}` : `${rounded}`, item.x, item.y, true);
       if (bonus) addFloating('Combo!', item.x, item.y - 4, true);
+      addBurst(item.x, item.y);
       removeItem(item.id);
     },
-    [hitTest, removeItem, addFloating]
+    [hitTest, removeItem, addFloating, addBurst, triggerShake]
   );
 
   useEffect(() => {

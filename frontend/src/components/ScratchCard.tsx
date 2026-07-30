@@ -54,6 +54,7 @@ export default function ScratchCard({
   const [isPressing, setIsPressing] = useState(false);
   const [isTouchPointer, setIsTouchPointer] = useState(false);
   const [coinVisible, setCoinVisible] = useState(false);
+  const [flashPos, setFlashPos] = useState<{ x: number; y: number } | null>(null);
 
   const drawOverlay = useCallback(() => {
     const canvas = canvasRef.current;
@@ -297,7 +298,10 @@ export default function ScratchCard({
       ctx.globalCompositeOperation = 'source-over';
 
       const pct = getRevealedPercent();
-      if (pct >= revealThreshold) setIsRevealing(true);
+      if (pct >= revealThreshold) {
+        setFlashPos({ x, y });
+        setIsRevealing(true);
+      }
     },
     [isRevealed, isRevealing, revealThreshold, getRevealedPercent]
   );
@@ -325,7 +329,10 @@ export default function ScratchCard({
       ctx.globalCompositeOperation = 'source-over';
 
       const pct = getRevealedPercent();
-      if (pct >= revealThreshold) setIsRevealing(true);
+      if (pct >= revealThreshold) {
+        setFlashPos(to);
+        setIsRevealing(true);
+      }
     },
     [isRevealed, isRevealing, revealThreshold, getRevealedPercent]
   );
@@ -449,6 +456,13 @@ export default function ScratchCard({
                 onPointerLeave={handlePointerLeave}
               />
               <div className="scratch-card-shine" aria-hidden="true" />
+              {flashPos && (
+                <span
+                  className="scratch-card-flash"
+                  style={{ left: flashPos.x, top: flashPos.y }}
+                  aria-hidden="true"
+                />
+              )}
               <div
                 ref={coinRef}
                 className={`scratch-card-coin-pointer ${isTouchPointer ? 'scratch-card-coin-pointer--touch' : ''} ${

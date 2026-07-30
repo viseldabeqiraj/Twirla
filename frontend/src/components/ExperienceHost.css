@@ -290,6 +290,19 @@
   overflow: visible;
 }
 
+/*
+ * Result content sits flex-start (not centered) by default so a tall winning
+ * card (confetti, sparkles, discount code, CTA) never gets clipped at the top
+ * on short viewports. The loss/no-win card is always short and never
+ * overflows, so it looked stranded near the top with empty space below it.
+ * Auto margins on just this item center it in the remaining space without
+ * touching the safer flex-start behavior everything else relies on.
+ */
+.experience-host--has-result .experience-content > .reward-celebration--loss {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 @media (max-width: 768px) {
   .experience-host {
     padding: clamp(0.45rem, 2vh, 0.85rem) 0.75rem;

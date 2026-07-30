@@ -103,7 +103,7 @@ export default function CountdownExperience({ config }: CountdownExperienceProps
 
   if (hasEnded || !timeRemaining) {
     return (
-      <RewardCelebration className="countdown-ended" confettiCount={50}>
+      <RewardCelebration className="countdown-ended">
         <h2 className="end-title">{text.resultTitle}</h2>
         <p className="end-message">{countdown.endMessage}</p>
         {text.resultSubtitle && <p className="end-subtitle">{text.resultSubtitle}</p>}

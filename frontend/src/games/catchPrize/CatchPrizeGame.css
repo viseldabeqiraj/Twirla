@@ -222,6 +222,67 @@
   }
 }
 
+/* Small sparkle burst at every good catch — cheap CSS-only "juice". */
+.catch-prize-burst {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: #fff;
+  box-shadow:
+    0 0 0 0 rgba(255, 255, 255, 0.9),
+    12px -4px 0 -1px #ffd166,
+    -12px -6px 0 -1px #ff6b9d,
+    8px 10px 0 -1px #34d399,
+    -9px 9px 0 -1px #60a5fa,
+    2px -14px 0 -1px #fff;
+  opacity: 0;
+  animation: catch-burst-pop 0.5s ease-out forwards;
+}
+
+@keyframes catch-burst-pop {
+  0% {
+    opacity: 1;
+    transform: scale(0.2);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.9);
+  }
+}
+
+/* Directional screen shake on bomb hit — amplitude decays each step. */
+.catch-prize-play-area--shake {
+  animation: catch-prize-shake 0.35s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes catch-prize-shake {
+  0% { transform: translate(0, 0); }
+  10% { transform: translate(-6px, 2px); }
+  20% { transform: translate(5px, -2px); }
+  30% { transform: translate(-4px, 2px); }
+  40% { transform: translate(3px, -1px); }
+  50% { transform: translate(-2px, 1px); }
+  60% { transform: translate(1px, -1px); }
+  100% { transform: translate(0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .catch-prize-burst {
+    animation: none;
+    opacity: 0;
+  }
+  .catch-prize-play-area--shake {
+    animation: none;
+  }
+}
+
 /* Ended / result — RewardModal only (shared experience shell) */
 .catch-prize-ended {
   position: relative;

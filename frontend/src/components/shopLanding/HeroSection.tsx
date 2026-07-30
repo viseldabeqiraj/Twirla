@@ -4,6 +4,7 @@ import type { HeroConfig } from '../../types/ShopLandingConfig';
 import { resolveAssetUrl } from '../../config/api';
 import { cssUrl } from '../../utils/cssUrl';
 import AnimatedPrimaryButton from '../twirla-ui/AnimatedPrimaryButton';
+import AnimatedWords from '../twirla-ui/AnimatedWords';
 import StaggeredEntrance from '../twirla-ui/StaggeredEntrance';
 
 interface HeroSectionProps {
@@ -71,6 +72,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
     <AnimatedPrimaryButton
       type="button"
       block
+      magnetic
       className="shop-hero-cta shop-hero-cta-button"
       onClick={handleCtaClick}
       aria-label={ctaLabel}
@@ -78,7 +80,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
       {ctaLabel}
     </AnimatedPrimaryButton>
   ) : (
-    <AnimatedPrimaryButton href={ctaHref} external block className="shop-hero-cta">
+    <AnimatedPrimaryButton href={ctaHref} external block magnetic className="shop-hero-cta">
       {ctaLabel}
     </AnimatedPrimaryButton>
   );
@@ -109,7 +111,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
         ]
       : []),
     <h1 key="title" className="shop-hero-title">
-      {headline}
+      <AnimatedWords text={headline} />
     </h1>,
     <p key="tag" className="shop-hero-tagline">
       {hero.tagline}

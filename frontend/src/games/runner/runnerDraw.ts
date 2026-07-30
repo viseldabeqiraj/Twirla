@@ -208,13 +208,30 @@ export function drawRunnerFrame(
     ctx.restore();
   }
 
-  // Character: no bounce or squash, stable on ground
+  // Character: squash on landing / stretch on takeoff, anchored at the feet
+  // so the jump arc itself doesn't shift — classic "juice" for a jump game.
   const charY = characterY;
   const radius = 10;
-  const drawX = charX;
-  const drawY = charY;
-  const drawWidth = CHARACTER_WIDTH;
-  const drawHeight = CHARACTER_HEIGHT;
+  const feetY = charY + CHARACTER_HEIGHT;
+
+  let scaleX = 1;
+  let scaleY = 1;
+  if (velocityY < -2) {
+    // Rising fast: stretch tall and thin.
+    const s = Math.min(0.22, -velocityY / 45);
+    scaleY = 1 + s;
+    scaleX = 1 - s * 0.5;
+  } else if (velocityY > 2) {
+    // Falling / just landed: squash short and wide.
+    const s = Math.min(0.2, velocityY / 45);
+    scaleY = 1 - s;
+    scaleX = 1 + s * 0.6;
+  }
+
+  const drawWidth = CHARACTER_WIDTH * scaleX;
+  const drawHeight = CHARACTER_HEIGHT * scaleY;
+  const drawX = charX + (CHARACTER_WIDTH - drawWidth) / 2;
+  const drawY = feetY - drawHeight;
 
   ctx.fillStyle = accent;
   ctx.beginPath();
