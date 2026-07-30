@@ -53,6 +53,7 @@ export default function ExperiencePage() {
       if (m === 'scratch') return 'Scratch';
       if (m === 'countdown') return 'Countdown';
       if (m === 'memory' || m === 'memorymatch') return 'MemoryMatch';
+      if (m === 'mysterybox' || m === 'mystery-box') return 'MysteryBox';
       return raw;
     };
 
@@ -138,6 +139,7 @@ export default function ExperiencePage() {
     config.scratch ? ExperienceMode.Scratch : null,
     config.countdown ? ExperienceMode.Countdown : null,
     config.memory ? ExperienceMode.MemoryMatch : null,
+    config.mysteryBox ? ExperienceMode.MysteryBox : null,
   ].filter(Boolean) as ExperienceMode[];
 
   return (

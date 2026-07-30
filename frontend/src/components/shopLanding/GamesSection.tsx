@@ -17,6 +17,7 @@ const GAME_META: Record<string, { key: string; path: string; emoji: string }> = 
   Scratch: { key: 'nav.scratch', path: 'scratch', emoji: '✨' },
   Countdown: { key: 'nav.countdown', path: 'countdown', emoji: '⏳' },
   MemoryMatch: { key: 'memoryMatch.title', path: 'memory', emoji: '🃏' },
+  MysteryBox: { key: 'nav.mysteryBox', path: 'mysterybox', emoji: '📦' },
 };
 
 export default function GamesSection({
