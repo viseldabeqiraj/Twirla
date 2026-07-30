@@ -57,6 +57,72 @@ function easeOutCubic(t: number): number {
   return 1 - (1 - t) ** 3;
 }
 
+/** Wrap label into up to 2 lines that fit `maxWidth` (SVG user units). */
+function wrapPrizeLabel(label: string, maxWidth: number, fontSize: number): string[] {
+  const trimmed = label.trim();
+  if (!trimmed) return [''];
+
+  let measure: (text: string) => number;
+  if (typeof document !== 'undefined') {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.font = `800 ${fontSize}px "Space Grotesk", ui-sans-serif, system-ui, sans-serif`;
+      measure = (text) => ctx.measureText(text).width;
+    } else {
+      measure = (text) => text.length * fontSize * 0.62;
+    }
+  } else {
+    measure = (text) => text.length * fontSize * 0.62;
+  }
+
+  if (measure(trimmed) <= maxWidth) return [trimmed];
+
+  const words = trimmed.split(/\s+/);
+  if (words.length === 1) {
+    // Break a long token roughly in half, then trim to fit.
+    const mid = Math.ceil(trimmed.length / 2);
+    let left = trimmed.slice(0, mid);
+    let right = trimmed.slice(mid);
+    while (measure(left) > maxWidth && left.length > 1) left = left.slice(0, -1);
+    while (measure(right) > maxWidth && right.length > 1) right = right.slice(0, -1);
+    return [left, right].filter(Boolean);
+  }
+
+  // Prefer a balanced two-line split on word boundaries.
+  let best: string[] | null = null;
+  let bestScore = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    const wa = measure(a);
+    const wb = measure(b);
+    if (wa > maxWidth || wb > maxWidth) continue;
+    const score = Math.abs(wa - wb) + Math.max(wa, wb);
+    if (score < bestScore) {
+      bestScore = score;
+      best = [a, b];
+    }
+  }
+  if (best) return best;
+
+  // Fallback: greedy wrap, then clamp to 2 lines.
+  const lines: string[] = [];
+  let current = '';
+  for (const word of words) {
+    const trial = current ? `${current} ${word}` : word;
+    if (measure(trial) <= maxWidth) {
+      current = trial;
+    } else {
+      if (current) lines.push(current);
+      current = word;
+    }
+  }
+  if (current) lines.push(current);
+  if (lines.length <= 2) return lines.length ? lines : [trimmed];
+  return [lines[0], lines.slice(1).join(' ')];
+}
+
 /**
  * Reusable premium prize wheel — the gold-rim / rim-lights / glossy dome look from
  * the landing showcase, now driven by props so it can be used everywhere: as a
@@ -103,12 +169,16 @@ export default function PrizeWheel({
         const a1 = (i + 1) * step;
         const [x0, y0] = polar(R, a0);
         const [x1, y1] = polar(R, a1);
-        const [tx, ty] = polar(R * 0.62, a0 + step / 2);
+        const labelR = R * 0.58;
+        const [tx, ty] = polar(labelR, a0 + step / 2);
         const large = step > 180 ? 1 : 0;
+        // Chord width at label radius, with padding so text stays inside the wedge.
+        const maxLabelWidth = Math.max(18, 2 * labelR * Math.sin((step * Math.PI) / 360) * 0.78);
         return {
           d: `M${R},${R} L${x0},${y0} A${R},${R} 0 ${large},1 ${x1},${y1} Z`,
           color: colors[i % colors.length] || '#db2777',
           label,
+          maxLabelWidth,
           tx,
           ty,
           rot: a0 + step / 2,
@@ -130,11 +200,21 @@ export default function PrizeWheel({
     const longest = labels.reduce((m, l) => Math.max(m, l.trim().length), 0);
     let f = 11;
     if (n > 8) f -= 1.5;
-    if (longest > 5) f -= 1.5;
-    if (longest > 8) f -= 1.5;
-    if (longest > 12) f -= 1.5;
+    if (longest > 5) f -= 1;
+    if (longest > 8) f -= 1.25;
+    if (longest > 12) f -= 1.25;
+    if (longest > 16) f -= 1;
     return Math.max(6.5, f);
   }, [labels, n]);
+
+  const labeledSegments = useMemo(
+    () =>
+      segments.map((s) => ({
+        ...s,
+        lines: wrapPrizeLabel(s.label, s.maxLabelWidth, fontSize),
+      })),
+    [segments, fontSize],
+  );
 
   const applyRotation = useCallback(() => {
     if (svgRef.current) svgRef.current.style.transform = `rotate(${rotationRef.current}deg)`;
@@ -288,7 +368,13 @@ export default function PrizeWheel({
   const draggable = interactive === 'drag';
 
   const boxProps = draggable
-    ? { onPointerDown, onPointerMove, onPointerUp: endDrag, onPointerCancel: endDrag, style: { touchAction: 'none' as const } }
+    ? {
+        onPointerDown,
+        onPointerMove,
+        onPointerUp: endDrag,
+        onPointerCancel: endDrag,
+        style: { touchAction: 'none' as const, cursor: spinning ? 'default' : 'grab' },
+      }
     : tappable
       ? {
           role: 'button',
@@ -329,25 +415,32 @@ export default function PrizeWheel({
           ))}
           <div className="prize-wheel__pointer" />
           <svg ref={svgRef} className="prize-wheel__svg" viewBox="0 0 200 200">
-            {segments.map((s, i) => (
+            {labeledSegments.map((s, i) => (
               <path key={`p${i}`} d={s.d} fill={s.color} stroke="rgba(255,255,255,.18)" strokeWidth={0.6} />
             ))}
             {showLabels &&
-              segments.map((s, i) => (
-                <text
-                  key={`t${i}`}
-                  x={s.tx}
-                  y={s.ty}
-                  fill={getContrastText(s.color)}
-                  fontSize={fontSize}
-                  fontWeight={800}
-                  fontFamily="'Space Grotesk', sans-serif"
-                  textAnchor="middle"
-                  transform={`rotate(${s.rot} ${s.tx} ${s.ty})`}
-                >
-                  {s.label}
-                </text>
-              ))}
+              labeledSegments.map((s, i) => {
+                const lineH = fontSize * 1.15;
+                const startY = s.ty - ((s.lines.length - 1) * lineH) / 2;
+                return (
+                  <text
+                    key={`t${i}`}
+                    fill={getContrastText(s.color)}
+                    fontSize={fontSize}
+                    fontWeight={800}
+                    fontFamily="'Space Grotesk', sans-serif"
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    transform={`rotate(${s.rot} ${s.tx} ${s.ty})`}
+                  >
+                    {s.lines.map((line, li) => (
+                      <tspan key={li} x={s.tx} y={startY + li * lineH}>
+                        {line}
+                      </tspan>
+                    ))}
+                  </text>
+                );
+              })}
           </svg>
           <div className="prize-wheel__dome" />
           <div className="prize-wheel__gloss" />

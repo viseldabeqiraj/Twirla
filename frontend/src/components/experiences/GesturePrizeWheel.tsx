@@ -36,18 +36,18 @@ function easeOutCubic(t: number): number {
   return 1 - (1 - t) ** 3;
 }
 
-/** Split into lines so each fits `maxWidth` (px); breaks long words by character. */
+/** Split into at most 2 lines so each fits `maxWidth` (px); breaks long words by character. */
 function wrapLabelToLines(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string[] {
   const trimmed = text.trim();
   if (!trimmed) return [''];
-  const words = trimmed.split(/\s+/);
-  const lines: string[] = [];
-  let current = '';
 
-  const pushChunk = (chunk: string) => {
-    if (chunk.length === 0) return;
+  if (ctx.measureText(trimmed).width <= maxWidth) return [trimmed];
+
+  const words = trimmed.split(/\s+/);
+  const pushChunk = (chunk: string, into: string[]) => {
+    if (!chunk) return;
     if (ctx.measureText(chunk).width <= maxWidth) {
-      lines.push(chunk);
+      into.push(chunk);
       return;
     }
     let part = '';
@@ -55,31 +55,53 @@ function wrapLabelToLines(ctx: CanvasRenderingContext2D, text: string, maxWidth:
       const next = part + ch;
       if (ctx.measureText(next).width <= maxWidth) part = next;
       else {
-        if (part) lines.push(part);
+        if (part) into.push(part);
         part = ch;
       }
     }
-    if (part) lines.push(part);
+    if (part) into.push(part);
   };
 
+  if (words.length === 1) {
+    const lines: string[] = [];
+    pushChunk(words[0], lines);
+    if (lines.length <= 2) return lines.length ? lines : [trimmed];
+    return [lines[0], lines.slice(1).join('')];
+  }
+
+  // Prefer a balanced two-line word split when both lines fit.
+  let best: string[] | null = null;
+  let bestScore = Infinity;
+  for (let i = 1; i < words.length; i++) {
+    const a = words.slice(0, i).join(' ');
+    const b = words.slice(i).join(' ');
+    const wa = ctx.measureText(a).width;
+    const wb = ctx.measureText(b).width;
+    if (wa > maxWidth || wb > maxWidth) continue;
+    const score = Math.abs(wa - wb) + Math.max(wa, wb);
+    if (score < bestScore) {
+      bestScore = score;
+      best = [a, b];
+    }
+  }
+  if (best) return best;
+
+  const lines: string[] = [];
+  let current = '';
   for (const word of words) {
     const trial = current ? `${current} ${word}` : word;
     if (ctx.measureText(trial).width <= maxWidth) {
       current = trial;
     } else {
-      if (current) {
-        lines.push(current);
-        current = '';
-      }
-      if (ctx.measureText(word).width <= maxWidth) {
-        current = word;
-      } else {
-        pushChunk(word);
-      }
+      if (current) lines.push(current);
+      current = '';
+      if (ctx.measureText(word).width <= maxWidth) current = word;
+      else pushChunk(word, lines);
     }
   }
   if (current) lines.push(current);
-  return lines.length ? lines : [''];
+  if (lines.length <= 2) return lines.length ? lines : [trimmed];
+  return [lines[0], lines.slice(1).join(' ')];
 }
 
 export function buildWheelSegmentColors(
@@ -176,17 +198,21 @@ export default function GesturePrizeWheel({
       let fontPx = Math.max(9, Math.min(13, size / 22));
       let lines: string[] = [];
       let lineHeight = 0;
-      for (let attempt = 0; attempt < 10; attempt++) {
+      for (let attempt = 0; attempt < 12; attempt++) {
         ctx.font = `700 ${fontPx}px ui-sans-serif, system-ui, sans-serif`;
         lineHeight = fontPx * 1.18;
         lines = wrapLabelToLines(ctx, rawLabel, maxRadialLineWidth);
+        // Keep labels to at most two rows inside the wedge.
+        if (lines.length > 2) {
+          lines = [lines[0], lines.slice(1).join(' ')];
+        }
         const blockHalf = (lines.length * lineHeight) / 2;
         const widths = lines.map((ln) => ctx.measureText(ln).width);
         const widest = widths.length ? Math.max(...widths) : 0;
         const fitsTangent = blockHalf <= maxTangentHalf;
         const fitsRadial = widest <= maxRadialLineWidth + 0.5;
-        if (fitsTangent && fitsRadial) break;
-        fontPx = Math.max(8, fontPx - 0.75);
+        if (fitsTangent && fitsRadial && lines.length <= 2) break;
+        fontPx = Math.max(7, fontPx - 0.75);
       }
 
       const startY = -((lines.length - 1) * lineHeight) / 2;

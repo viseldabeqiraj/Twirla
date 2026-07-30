@@ -30,14 +30,18 @@ export default function TwirlaWheelShowcase() {
       <PrizeWheel
         labels={LABELS}
         colors={COLORS}
-        interactive="tap"
+        interactive="drag"
         confettiOnWin
         onSpinStart={handleSpinStart}
         onSettled={handleSettled}
         ariaLabel="Rrotullo rrotën"
       />
       <p className={`twx-wheel-hint ${win ? 'twx-wheel-hint--win' : ''}`}>
-        {spinning ? '🎡 Duke u rrotulluar…' : win ? `🎉 Fitove ${win}!` : '👆 Prek rrotën për ta rrotulluar'}
+        {spinning
+          ? '🎡 Duke u rrotulluar…'
+          : win
+            ? `🎉 Fitove ${win}!`
+            : '👆 Tërhiq rrotën për ta rrotulluar'}
       </p>
     </div>
   );
