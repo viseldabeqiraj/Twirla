@@ -530,15 +530,31 @@
 }
 
 /* ── Header ── */
+/*
+ * `backdrop-filter` establishes a containing block for `position: fixed`
+ * descendants (same rule as `filter`/`transform`), which used to hijack the
+ * mobile nav dropdown (`.tw-nav`, position: fixed) and anchor it to this
+ * header's small box instead of the viewport — pushing it out of place on
+ * mobile. The blur now lives on a separate `.tw-header-bg` layer that sits
+ * behind the header content but is NOT an ancestor of `.tw-nav`, so the glass
+ * effect is unchanged while the nav stays correctly viewport-fixed.
+ */
 .tw-header {
   position: sticky;
   top: 0;
   z-index: 1000;
   isolation: isolate;
+  border-bottom: 1px solid var(--tw-border);
+}
+
+.tw-header-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
   background: var(--tw-nav-bg, rgba(255, 255, 255, 0.92));
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--tw-border);
+  pointer-events: none;
 }
 
 .tw-header-inner {
@@ -787,7 +803,16 @@
   right: -160px;
   background: color-mix(in srgb, var(--tw-purple, #7b5cff) 42%, transparent);
 }
-.tw-page > header,
+/*
+ * NOTE: `header` intentionally excluded here. `.tw-header` already sets its
+ * own `position: sticky; z-index: 1000;`. Because `.tw-page > header` has
+ * higher CSS specificity (type selector + class) than `.tw-header` (class
+ * only), including `header` in this list was silently overriding those
+ * values down to `position: relative; z-index: 1` — the same z-index as
+ * `<main>`. With both at the same stacking level, `<main>` (later in the
+ * DOM) painted on top of the sticky header, so the mobile nav dropdown
+ * rendered underneath the hero's phone mockup instead of floating above it.
+ */
 .tw-page > main,
 .tw-page > footer {
   position: relative;

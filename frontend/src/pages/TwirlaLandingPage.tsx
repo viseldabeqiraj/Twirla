@@ -183,6 +183,7 @@ export default function TwirlaLandingPage() {
   return (
     <div className="tw-page" data-theme={theme}>
       <header className="tw-header">
+        <div className="tw-header-bg" aria-hidden="true" />
         <div className="tw-container tw-header-inner">
           <a href="/" className="tw-brand" aria-label="Twirla">
             {!logoFailed ? (

@@ -101,7 +101,16 @@ export default function ShopAdminListPage() {
                 {filtered.map((shop) => (
                   <tr
                     key={shop.shopId}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={`View and edit ${shop.brandName || shop.name || shop.shopId}`}
                     onClick={() => navigate(`/setup/shops/${encodeURIComponent(shop.shopId)}`)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigate(`/setup/shops/${encodeURIComponent(shop.shopId)}`);
+                      }
+                    }}
                   >
                     <td>
                       <span

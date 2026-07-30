@@ -93,7 +93,7 @@ export default function HeroSection({ hero, hideBar = false, scrollToId }: HeroS
             {hero.logoUrl ? (
               <img
                 src={resolveAssetUrl(hero.logoUrl)}
-                alt={hero.shopName}
+                alt=""
                 className="shop-hero-logo"
                 referrerPolicy="no-referrer"
               />
